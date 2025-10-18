@@ -1,0 +1,3 @@
+[submodule "Hardware/EG-498-Temperature-Chamber-Team-Thermocline/Libraries/kenwoodfox-kicad-libraries"]
+	path = Hardware/EG-498-Temperature-Chamber-Team-Thermocline/Libraries/kenwoodfox-kicad-libraries
+	url = https://github.com/KenwoodFox/kenwoodfox-kicad-libraries.git
