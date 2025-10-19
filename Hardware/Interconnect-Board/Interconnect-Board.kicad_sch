@@ -5,7 +5,7 @@
 	(uuid "894f620e-3404-4a40-a2a7-513bc1d5f99b")
 	(paper "A4")
 	(title_block
-		(title "EG-498-Temperature-Chamber-Team-Thermocline")
+		(title "Interconnect-Board")
 		(rev "${REVISION}")
 		(company "SNHU EG-498")
 	)
@@ -2605,7 +2605,7 @@
 			(uuid "1e90358c-ff02-46f9-bcbf-de8a166105e0")
 		)
 		(instances
-			(project "EG-498-Temperature-Chamber-Team-Thermocline"
+			(project "Interconnect-Board"
 				(path "/894f620e-3404-4a40-a2a7-513bc1d5f99b"
 					(reference "#PWR04")
 					(unit 1)
@@ -2860,7 +2860,7 @@
 			(uuid "fc9844d4-ab21-4ef3-8b01-2a5528b5fe37")
 		)
 		(instances
-			(project "EG-498-Temperature-Chamber-Team-Thermocline"
+			(project "Interconnect-Board"
 				(path "/894f620e-3404-4a40-a2a7-513bc1d5f99b"
 					(reference "#PWR06")
 					(unit 1)

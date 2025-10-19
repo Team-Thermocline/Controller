@@ -423,7 +423,7 @@
 		(property ki_fp_filters "Connector*:*_2x??_*")
 		(path "/3f77fd37-ae85-43ae-8a6a-b22781c9f190")
 		(sheetname "/")
-		(sheetfile "EG-498-Temperature-Chamber-Team-Thermocline.kicad_sch")
+		(sheetfile "Interconnect-Board.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -4.68 -0.5)
@@ -1025,7 +1025,7 @@
 		(property ki_fp_filters "Connector*:*_1x??_*")
 		(path "/0d74b703-c15d-4d55-9c09-58b47e74c7db")
 		(sheetname "/")
-		(sheetfile "EG-498-Temperature-Chamber-Team-Thermocline.kicad_sch")
+		(sheetfile "Interconnect-Board.kicad_sch")
 		(attr through_hole)
 		(fp_line
 			(start -1.38 -1.38)

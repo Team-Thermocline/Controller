@@ -37,8 +37,8 @@ jobs:
 
           # Hardware Files
           #
-          schema: "Hardware/EG-498-Temperature-Chamber-Team-Thermocline/EG-498-Temperature-Chamber-Team-Thermocline.kicad_sch"
-          board: "Hardware/EG-498-Temperature-Chamber-Team-Thermocline/EG-498-Temperature-Chamber-Team-Thermocline.kicad_pcb"
+          schema: "Hardware/Interconnect-Board/Interconnect-Board.kicad_sch"
+          board: "Hardware/Interconnect-Board/Interconnect-Board.kicad_pcb"
           #
 
       - name: upload results

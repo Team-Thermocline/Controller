@@ -1,7 +1,7 @@
 /**
  * @file main.cpp
  * @author Joe
- * @brief Source code for EG-498-Temperature-Chamber-Team-Thermocline
+ * @brief Source code for Interconnect-Board
  */
 
 // Libs

@@ -19,7 +19,7 @@ preflight:
     - name: "ISSUE"
       command: "date '+%Y-%m-%d'"
     # - name: "KENWOODFOX_3DMODELS" # My custom libs!
-    #   command: "echo 'Hardware/EG-498-Temperature-Chamber-Team-Thermocline/Libraries/kenwoodfox-kicad-libraries/3d'"
+    #   command: "echo 'Hardware/Interconnect-Board/Libraries/kenwoodfox-kicad-libraries/3d'"
 
 filters:
   - name: only_jlc_parts
