@@ -92,7 +92,7 @@ jobs:
       - run: cp JLCPCB/*.zip _staging/Board-$(git rev-parse --short HEAD)-JLCPCB.zip
 
       - name: Upload artifacts to release
-        uses: svenstaro/upload-release-action@v2.0.0
+        uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: "_staging/*"
