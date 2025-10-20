@@ -2354,6 +2354,32 @@
 			(justify left bottom mirror)
 		)
 	)
+	(gr_text "${FULL_REVISION}"
+		(at -21.5 16 90)
+		(layer "F.SilkS")
+		(uuid "48343552-c800-46b7-bf9d-e5a7c4a7ad3c")
+		(effects
+			(font
+				(size 0.9 0.9)
+				(thickness 0.18)
+				(bold yes)
+			)
+			(justify left top)
+		)
+	)
+	(gr_text "JLCJLCJLCJLC"
+		(at -19.5 16 90)
+		(layer "F.SilkS")
+		(uuid "7fbbc8bb-fcec-453d-852c-f5267a244947")
+		(effects
+			(font
+				(size 0.9 0.9)
+				(thickness 0.18)
+				(bold yes)
+			)
+			(justify left top)
+		)
+	)
 	(segment
 		(start -8.4965 -6.08)
 		(end -8.5 -6.08)
