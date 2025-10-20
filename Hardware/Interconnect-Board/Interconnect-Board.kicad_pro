@@ -632,9 +632,5 @@
       "Root"
     ]
   ],
-  "text_variables": {
-    "FULL_REVISION": "119c3ef",
-    "ISSUE": "2025-10-19",
-    "REVISION": "119c3ef"
-  }
+  "text_variables": {}
 }

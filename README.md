@@ -1,4 +1,3 @@
-[![Docs](https://github.com/Team-Thermocline/EG-498-Temperature-Chamber-Team-Thermocline/actions/workflows/docs_workflow.yml/badge.svg)](https://github.com/Team-Thermocline/EG-498-Temperature-Chamber-Team-Thermocline/actions/workflows/docs_workflow.yml)
 [![Hardware](https://github.com/Team-Thermocline/EG-498-Temperature-Chamber-Team-Thermocline/actions/workflows/hardware_workflow.yml/badge.svg)](https://github.com/Team-Thermocline/EG-498-Temperature-Chamber-Team-Thermocline/actions/workflows/hardware_workflow.yml)
 [![Firmware](https://github.com/Team-Thermocline/EG-498-Temperature-Chamber-Team-Thermocline/actions/workflows/firmware_workflow.yml/badge.svg)](https://github.com/Team-Thermocline/EG-498-Temperature-Chamber-Team-Thermocline/actions/workflows/firmware_workflow.yml)
 
