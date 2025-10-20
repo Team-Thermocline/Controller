@@ -55,12 +55,12 @@ jobs:
     needs: [KiCad_Hardware]
 
     steps:
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v4
         with:
           name: Board-Hardware
 
       - name: Upload KiCAD Artifacts
-        uses: edunad/actions-image@v2.0.3
+        uses: edunad/actions-image@v2.1.0
         with:
           path: "*-3D_top.png"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -79,7 +79,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v4
         with:
           name: Board-Hardware
 
@@ -92,7 +92,7 @@ jobs:
       - run: cp JLCPCB/*.zip _staging/Board-$(git rev-parse --short HEAD)-JLCPCB.zip
 
       - name: Upload artifacts to release
-        uses: svenstaro/upload-release-action@v2
+        uses: svenstaro/upload-release-action@v2.0.0
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: "_staging/*"
