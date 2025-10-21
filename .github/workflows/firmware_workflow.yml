@@ -39,12 +39,12 @@ jobs:
           pip install --upgrade platformio
 
       - name: Run PlatformIO
-        run: cd Firmware && make build
+        run: cd Firmware && pio run
 
       - uses: actions/upload-artifact@v4
         with:
           name: Display_Binaries
-          path: Firmware/.pio/build/ATmega328P/firmware.*
+          path: Firmware/.pio/build/crowpanel_pico_hmi_43/*.uf2
 
   delint:
     runs-on: ubuntu-latest
