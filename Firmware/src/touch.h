@@ -16,21 +16,18 @@
 // #define TOUCH_MAP_Y1 0
 // #define TOUCH_MAP_Y2 240
 
-/* uncomment for GT911 - DISABLED FOR MVP */
-// #define TOUCH_GT911
-// #define TOUCH_GT911_SCL 21 // 20
-// #define TOUCH_GT911_SDA 20 // 19
-// #define TOUCH_GT911_INT 25 //-1
-// #define TOUCH_GT911_RST 29 // 38
+/* uncomment for GT911 */
+#define TOUCH_GT911
+#define TOUCH_GT911_SCL 21 // 20
+#define TOUCH_GT911_SDA 20 // 19
+#define TOUCH_GT911_INT 25 //-1
+#define TOUCH_GT911_RST 29 // 38
 // #define TOUCH_GT911_EN 25 //-1
-// #define TOUCH_GT911_ROTATION ROTATION_NORMAL
-// #define TOUCH_MAP_X1 800// 800 // 480
-// #define TOUCH_MAP_X2 0
-// #define TOUCH_MAP_Y1 480// 480 // 272
-// #define TOUCH_MAP_Y2 0
-
-/* Simple mock touch for MVP testing */
-#define TOUCH_MOCK
+#define TOUCH_GT911_ROTATION ROTATION_NORMAL
+#define TOUCH_MAP_X1 800// 800 // 480
+#define TOUCH_MAP_X2 0
+#define TOUCH_MAP_Y1 480// 480 // 272
+#define TOUCH_MAP_Y2 0
 
 /* uncomment for XPT2046 */
 // #define TOUCH_XPT2046
@@ -66,10 +63,6 @@ TAMC_GT911 ts = TAMC_GT911(TOUCH_GT911_SDA, TOUCH_GT911_SCL, TOUCH_GT911_INT, TO
 #include <SPI.h>
 XPT2046_Touchscreen ts(TOUCH_XPT2046_CS, TOUCH_XPT2046_INT);
 // T2046_Touchscreen ts(TOUCH_XPT2046_CS);  // Param 2 - NULL - No interrupts
-
-#elif defined(TOUCH_MOCK)
-// Mock touch implementation for MVP testing
-bool mock_touch_active = false;
 #endif
 
 #if defined(TOUCH_FT6X36)
@@ -138,11 +131,6 @@ void touch_init(uint16_t width, uint16_t height)
   ts.begin();
   ts.setRotation(TOUCH_XPT2046_ROTATION);
 
-#elif defined(TOUCH_MOCK)
-  // Mock touch initialization - just set up variables
-  mock_touch_active = false;
-  Serial.println("Mock touch initialized");
-
 #endif
 }
 
@@ -157,19 +145,6 @@ bool touch_has_signal()
 
 #elif defined(TOUCH_XPT2046)
   return ts.tirqTouched();
-
-#elif defined(TOUCH_MOCK)
-  // Mock touch - simulate touch every 3 seconds for testing
-  static unsigned long last_touch = 0;
-  unsigned long now = millis();
-  if (now - last_touch > 3000) {
-    last_touch = now;
-    mock_touch_active = true;
-    touch_last_x = 160; // Center of screen
-    touch_last_y = 120;
-    return true;
-  }
-  return false;
 
 #else
   return false;
@@ -225,17 +200,6 @@ bool touch_touched()
     return false;
   }
 
-#elif defined(TOUCH_MOCK)
-  if (mock_touch_active) {
-    mock_touch_active = false;
-    Serial.print("Mock touch at: ");
-    Serial.print(touch_last_x);
-    Serial.print(", ");
-    Serial.println(touch_last_y);
-    return true;
-  }
-  return false;
-
 #else
   return false;
 #endif
@@ -259,9 +223,6 @@ bool touch_released()
 
 #elif defined(TOUCH_XPT2046)
   return true;
-
-#elif defined(TOUCH_MOCK)
-  return true; // Mock touch always releases immediately
 
 #else
   return false;
