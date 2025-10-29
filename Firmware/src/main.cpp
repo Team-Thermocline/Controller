@@ -1,16 +1,37 @@
 // Core
 #include <Arduino.h>
 
+#include "ui.h"
 #include <PicoDVI.h>
 #include <Wire.h>
 #include <lvgl.h>
 
-DVIGFX16 display(DVI_RES_320x240p60, picodvi_dvi_cfg);
+// Custom config using PIO1 instead of PIO0 to avoid conflict
+static const struct dvi_serialiser_cfg custom_pio1_cfg = {
+    .pio = pio1,
+    .sm_tmds = {0, 1, 2},
+    .pins_tmds = {10, 12, 14},
+    .pins_clk = 8,
+    .invert_diffpairs = true};
+
+DVIGFX16 display(DVI_RES_320x240p60, custom_pio1_cfg);
 
 static const uint16_t screenWidth = 320;
 static const uint16_t screenHeight = 240;
 static lv_disp_draw_buf_t draw_buf;
 static lv_color_t buf1[screenWidth * screenHeight / 10];
+
+// Stub implementations for UI variables (need extern "C" for C linkage)
+extern "C" {
+const char *get_var_version() { return "1.0.0"; }
+void set_var_version(const char *value) {}
+double get_var_chamber_current() { return 25.0; }
+void set_var_chamber_current(double value) {}
+double get_var_chamber_set() { return 30.0; }
+void set_var_chamber_set(double value) {}
+const char *get_var_setpoint_ready() { return "Ready"; }
+void set_var_setpoint_ready(const char *value) {}
+}
 
 // LVGL display flush callback
 void my_disp_flush(lv_disp_drv_t *disp, const lv_area_t *area,
@@ -22,16 +43,45 @@ void my_disp_flush(lv_disp_drv_t *disp, const lv_area_t *area,
 }
 
 void setup() {
-  // Serial Configuration (USB emulator)
   Serial.begin(115200);
+  delay(1000);
 
-  while (!display.begin()) {
-    Serial.println("Waiting for screen..");
-    delay(1000);
+  // Add delay to let framework finish claiming resources
+  Serial.println("Waiting for framework to stabilize...");
+  delay(2000);
+
+  Serial.println("Initializing display...");
+
+  if (!display.begin()) {
+    // Use an infinite loop and LED or something to show error
+    pinMode(LED_BUILTIN, OUTPUT);
+    while (1) {
+      digitalWrite(LED_BUILTIN, HIGH);
+      delay(500);
+      digitalWrite(LED_BUILTIN, LOW);
+      delay(500);
+    }
   }
 
+  Serial.println("Display initialized!");
+
   display.setRotation(0); // Takes effect on next drawing command
-  display.fillScreen(0x0000);
+
+  // Draw some test shapes to verify display works
+  display.fillScreen(0x001F);                 // Blue background
+  display.fillRect(50, 50, 220, 140, 0xF800); // Red rectangle
+  display.fillCircle(160, 120, 40, 0x07E0);   // Green circle
+  display.setTextSize(2);
+  display.setTextColor(0xFFFF); // White text
+  display.setCursor(60, 200);
+  display.println("PIO1 Works!");
+
+  delay(2000);                // Show test patterns for 2 seconds
+  display.fillScreen(0x0000); // Black screen
+  display.setTextSize(1);
+  display.setCursor(80, 100);
+  display.setTextColor(0xFFFF);
+  display.println("LVGL Starting...");
 
   // Initialize LVGL
   lv_init();
@@ -49,16 +99,18 @@ void setup() {
   lv_disp_drv_register(&disp_drv);
 
   Serial.println("LVGL Ready!");
+
+  // Initialize UI
+  ui_init();
+  Serial.println("UI Initialized!");
 }
 
 void loop() {
-  // Run timer
+  // Run LVGL timer
   lv_timer_handler();
-  delay(5);
 
-  // delay(1000);
-  // Serial.println("Waiting...");
-  // display.fillScreen(0x0000);
-  // delay(1000);
-  // display.fillScreen(0xffff);
+  // Run UI tick
+  ui_tick();
+
+  delay(5);
 }
