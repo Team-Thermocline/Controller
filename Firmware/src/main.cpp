@@ -1,54 +1,44 @@
 // Core
 #include <Arduino.h>
+#include <string.h>
 
 #include "ui.h"
 #include <PicoDVI.h>
 #include <Wire.h>
 #include <lvgl.h>
 
-// Custom config using PIO1 instead of PIO0 to avoid conflict
-static const struct dvi_serialiser_cfg custom_pio1_cfg = {
+// CrowPanel uses pins 8,10,12,14 - same as picodvi_dvi_cfg
+// First try with PIO1 (to avoid claim conflict)
+static const struct dvi_serialiser_cfg crowpanel_cfg = {
     .pio = pio1,
     .sm_tmds = {0, 1, 2},
     .pins_tmds = {10, 12, 14},
     .pins_clk = 8,
     .invert_diffpairs = true};
-
-DVIGFX16 display(DVI_RES_320x240p60, custom_pio1_cfg);
+DVIGFX16 display(DVI_RES_320x240p60, crowpanel_cfg);
 
 static const uint16_t screenWidth = 320;
 static const uint16_t screenHeight = 240;
 static lv_disp_draw_buf_t draw_buf;
-static lv_color_t buf1[screenWidth * screenHeight / 10];
-
-// Stub implementations for UI variables (need extern "C" for C linkage)
-extern "C" {
-const char *get_var_version() { return "1.0.0"; }
-void set_var_version(const char *value) {}
-double get_var_chamber_current() { return 25.0; }
-void set_var_chamber_current(double value) {}
-double get_var_chamber_set() { return 30.0; }
-void set_var_chamber_set(double value) {}
-const char *get_var_setpoint_ready() { return "Ready"; }
-void set_var_setpoint_ready(const char *value) {}
-}
+static lv_color_t buf1[screenWidth * screenHeight / 4];
 
 // LVGL display flush callback
 void my_disp_flush(lv_disp_drv_t *disp, const lv_area_t *area,
                    lv_color_t *color_p) {
   uint32_t w = (area->x2 - area->x1 + 1);
   uint32_t h = (area->y2 - area->y1 + 1);
-  display.drawRGBBitmap(area->x1, area->y1, (uint16_t *)&color_p->full, w, h);
+
+  display.drawRGBBitmap(area->x1, area->y1, (uint16_t *)color_p, w, h);
   lv_disp_flush_ready(disp);
 }
 
 void setup() {
   Serial.begin(115200);
-  delay(1000);
+  delay(100);
 
-  // Add delay to let framework finish claiming resources
-  Serial.println("Waiting for framework to stabilize...");
-  delay(2000);
+  // Enable backlight on GPIO 24 (active LOW on CrowPanel)
+  pinMode(24, OUTPUT);
+  digitalWrite(24, LOW);
 
   Serial.println("Initializing display...");
 
@@ -87,7 +77,7 @@ void setup() {
   lv_init();
 
   // Initialize display buffer
-  lv_disp_draw_buf_init(&draw_buf, buf1, NULL, screenWidth * screenHeight / 10);
+  lv_disp_draw_buf_init(&draw_buf, buf1, NULL, screenWidth * screenHeight / 4);
 
   // Initialize and register display driver
   static lv_disp_drv_t disp_drv;
@@ -101,8 +91,9 @@ void setup() {
   Serial.println("LVGL Ready!");
 
   // Initialize UI
+  Serial.println("Initializing UI...");
   ui_init();
-  Serial.println("UI Initialized!");
+  Serial.println("UI initialized!");
 }
 
 void loop() {
@@ -112,5 +103,5 @@ void loop() {
   // Run UI tick
   ui_tick();
 
-  delay(5);
+  delay(50); // Reduce update rate - gives DVI more time between updates
 }
