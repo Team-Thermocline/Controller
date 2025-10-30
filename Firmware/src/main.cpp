@@ -27,8 +27,7 @@ void my_disp_flush(lv_disp_drv_t *disp, const lv_area_t *area,
                    lv_color_t *color_p) {
   uint32_t w = (area->x2 - area->x1 + 1);
   uint32_t h = (area->y2 - area->y1 + 1);
-
-  display.drawRGBBitmap(area->x1, area->y1, (uint16_t *)color_p, w, h);
+  display.drawRGBBitmap(area->x1, area->y1, (uint16_t *)&color_p->full, w, h);
   lv_disp_flush_ready(disp);
 }
 
@@ -99,9 +98,5 @@ void setup() {
 void loop() {
   // Run LVGL timer
   lv_timer_handler();
-
-  // Run UI tick
-  ui_tick();
-
-  delay(50); // Reduce update rate - gives DVI more time between updates
+  delay(10);
 }
