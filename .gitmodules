@@ -1,3 +1,6 @@
 [submodule "Hardware/Interconnect-Board/Libraries/kenwoodfox-kicad-libraries"]
 	path = Hardware/Interconnect-Board/Libraries/kenwoodfox-kicad-libraries
 	url = https://github.com/KenwoodFox/kenwoodfox-kicad-libraries.git
+[submodule "Hardware/Interconnect-Board/Libraries/thermocline-kicad-libraries"]
+	path = Hardware/Interconnect-Board/Libraries/thermocline-kicad-libraries
+	url = https://github.com/Team-Thermocline/thermocline-kicad-libraries.git
