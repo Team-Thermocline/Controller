@@ -1,3 +1,6 @@
 [submodule "Hardware/Interconnect-Board/Libraries/kenwoodfox-kicad-libraries"]
 	path = Hardware/Interconnect-Board/Libraries/kenwoodfox-kicad-libraries
 	url = https://github.com/KenwoodFox/kenwoodfox-kicad-libraries.git
+[submodule "Hardware/Main-Board/libraries/KiCad-RP-Pico"]
+	path = Hardware/Main-Board/libraries/KiCad-RP-Pico
+	url = https://github.com/sol/KiCad-RP-Pico.git
