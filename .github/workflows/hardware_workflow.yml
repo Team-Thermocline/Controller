@@ -59,12 +59,21 @@ jobs:
         with:
           name: Board-Hardware
 
-      - name: Upload KiCAD Artifacts
-        uses: edunad/actions-image@v2.1.0
-        with:
-          path: "*-3D_top.png"
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          title: "PCB"
+      - name: Find 3D Top View
+        id: find_image
+        run: |
+          IMAGE_PATH=$(ls *-3D_top.png | head -1)
+          echo "image_path=$IMAGE_PATH" >> $GITHUB_OUTPUT
+          
+      - name: Post to Discord
+        if: steps.find_image.outputs.image_path != ''
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          curl -H "Content-Type: multipart/form-data" \
+            -F "payload_json={\"content\":\"**PCB Preview for PR #${{ github.event.pull_request.number }}**\n\`${{ github.event.pull_request.title }}\`\n<${{ github.event.pull_request.html_url }}>\"}" \
+            -F "file=@${{ steps.find_image.outputs.image_path }}" \
+            $DISCORD_WEBHOOK
 
   publish:
     # Only run on tags
