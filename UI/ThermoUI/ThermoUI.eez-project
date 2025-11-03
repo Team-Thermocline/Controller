@@ -11,8 +11,8 @@
       "extensions": [],
       "imports": [],
       "flowSupport": false,
-      "displayWidth": 320,
-      "displayHeight": 240,
+      "displayWidth": 800,
+      "displayHeight": 480,
       "displayBorderRadius": 0,
       "colorFormat": "BGR",
       "resourceFiles": [],
@@ -138,8 +138,8 @@
             {
               "objID": "6b272cb8-48b4-467f-c130-a1edc1f930b7",
               "type": "LVGLLabelWidget",
-              "left": 29,
-              "top": 65,
+              "left": 269,
+              "top": 232,
               "width": 262,
               "height": 16,
               "customInputs": [],
@@ -175,8 +175,8 @@
             {
               "objID": "ad22ff7b-f29e-4314-830a-8d8e1ffe8378",
               "type": "LVGLImageWidget",
-              "left": 116,
-              "top": 89,
+              "left": 355,
+              "top": 263,
               "width": 90,
               "height": 103,
               "customInputs": [],
@@ -237,8 +237,8 @@
       "name": "Main",
       "left": 0,
       "top": 0,
-      "width": 320,
-      "height": 240,
+      "width": 800,
+      "height": 480,
       "createAtStart": true,
       "deleteOnScreenUnload": false
     }
