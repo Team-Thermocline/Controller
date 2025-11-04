@@ -1,5 +1,4 @@
 #include <Adafruit_GFX.h>
-#include <DFRobot_DHT20.h>
 #include <LovyanGFX.hpp>
 #include <PCA9557.h>
 #include <SPI.h>
@@ -7,8 +6,25 @@
 #include <lgfx/v1/platforms/esp32s3/Panel_RGB.hpp>
 #include <lvgl.h>
 
-// #include "touch.h"
-#include "ui.h"
+// Define TOUCH_GT911 before including touch.h
+#define TOUCH_GT911
+#define TOUCH_GT911_SCL 20
+#define TOUCH_GT911_SDA 19
+#define TOUCH_GT911_INT -1
+#define TOUCH_GT911_RST -1
+#define TOUCH_GT911_ROTATION ROTATION_NORMAL
+#define TOUCH_MAP_X1 800
+#define TOUCH_MAP_X2 0
+#define TOUCH_MAP_Y1 480
+#define TOUCH_MAP_Y2 0
+
+// Define touch object here to avoid crash during global initialization
+#include <TAMC_GT911.h>
+#include <Wire.h>
+
+TAMC_GT911 ts(TOUCH_GT911_SDA, TOUCH_GT911_SCL, TOUCH_GT911_INT,
+              TOUCH_GT911_RST, max(TOUCH_MAP_X1, TOUCH_MAP_X2),
+              max(TOUCH_MAP_Y1, TOUCH_MAP_Y2));
 
 class LGFX : public lgfx::LGFX_Device {
 public:
@@ -79,12 +95,12 @@ public:
 
 LGFX lcd;
 
+#include "touch.h"
+#include "ui.h"
+
 // UI
 #define TFT_BL 2
-int led;
-DFRobot_DHT20 dht20;
 SPIClass &spi = SPI;
-#include "touch.h"
 
 /* Change to your screen resolution */
 static uint32_t screenWidth;
@@ -97,16 +113,30 @@ static lv_disp_drv_t disp_drv;
 /* Display flushing */
 void my_disp_flush(lv_disp_drv_t *disp, const lv_area_t *area,
                    lv_color_t *color_p) {
+  static int flush_count = 0;
+  flush_count++;
+  if (flush_count <= 5 || flush_count % 100 == 0) {
+    Serial.print("[FLUSH] Flush #");
+    Serial.print(flush_count);
+    Serial.print(" - Area: (");
+    Serial.print(area->x1);
+    Serial.print(",");
+    Serial.print(area->y1);
+    Serial.print(") to (");
+    Serial.print(area->x2);
+    Serial.print(",");
+    Serial.print(area->y2);
+    Serial.print(") - Color ptr: ");
+    Serial.println((uint32_t)color_p, HEX);
+  }
 
   uint32_t w = (area->x2 - area->x1 + 1);
   uint32_t h = (area->y2 - area->y1 + 1);
 
-  // lcd.fillScreen(TFT_WHITE);
 #if (LV_COLOR_16_SWAP != 0)
-  lcd.pushImageDMA(area->x1, area->y1, w, h, (lgfx::rgb565_t *)&color_p->full);
+  lcd.pushImageDMA(area->x1, area->y1, w, h, (lgfx::rgb565_t *)color_p);
 #else
-  lcd.pushImageDMA(area->x1, area->y1, w, h,
-                   (lgfx::rgb565_t *)&color_p->full); //
+  lcd.pushImageDMA(area->x1, area->y1, w, h, (lgfx::rgb565_t *)color_p);
 #endif
 
   lv_disp_flush_ready(disp);
@@ -134,16 +164,22 @@ void my_touchpad_read(lv_indev_drv_t *indev_driver, lv_indev_data_t *data) {
 }
 
 // PCA9557 Out;
+
+// C-compatible wrapper functions for Serial debugging
+extern "C" {
+void Serial_print(const char *str) { Serial.print(str); }
+void Serial_println(const char *str) { Serial.println(str); }
+void Serial_print_hex(uint32_t val) { Serial.print(val, HEX); }
+void Serial_println_hex(uint32_t val) { Serial.println(val, HEX); }
+void Serial_print_int(int val) { Serial.print(val); }
+void Serial_println_int(int val) { Serial.println(val); }
+}
+
 void setup() {
 
   Serial.begin(9600);
-
-  // IO口引脚
-  pinMode(38, OUTPUT);
-  digitalWrite(38, LOW);
-
-  Wire.begin(19, 20);
-  dht20.begin();
+  delay(1000); // Wait for Serial to be ready
+  Serial.println("\n\n[MAIN] ===== Firmware Starting =====\n");
   // Out.reset();
   // Out.setMode(IO_OUTPUT);  //设置为输出模式
 
@@ -191,10 +227,13 @@ void setup() {
   //  EEPROM.end();
 
   // Init Display
+  Serial.println("[MAIN] Initializing display...");
   lcd.begin();
+  Serial.println("[MAIN] Display initialized");
   lcd.fillScreen(TFT_BLACK);
   lcd.setTextSize(2);
   delay(200);
+  Serial.println("[MAIN] Display cleared");
 
   //    lcd.fillScreen(TFT_RED);
   //    delay(1000);
@@ -204,18 +243,28 @@ void setup() {
   //    delay(1000);
   //    lcd.fillScreen(TFT_BLACK);
   //    delay(1000);
+  Serial.println("[MAIN] Initializing LVGL...");
   lv_init();
+  Serial.println("[MAIN] LVGL initialized");
 
   // Init touch device
+  Serial.println("[MAIN] Initializing touch...");
   touch_init();
+  Serial.println("[MAIN] Touch initialized");
 
   screenWidth = lcd.width();
   screenHeight = lcd.height();
+  Serial.print("[MAIN] Screen size: ");
+  Serial.print(screenWidth);
+  Serial.print("x");
+  Serial.println(screenHeight);
 
+  Serial.println("[MAIN] Initializing LVGL display buffer...");
   lv_disp_draw_buf_init(&draw_buf, disp_draw_buf, NULL,
                         screenWidth * screenHeight / 15); // 4
 
   /* Initialize the display */
+  Serial.println("[MAIN] Initializing LVGL display driver...");
   lv_disp_drv_init(&disp_drv);
   /* Change the following line to your display resolution */
   disp_drv.hor_res = screenWidth;
@@ -223,13 +272,16 @@ void setup() {
   disp_drv.flush_cb = my_disp_flush;
   disp_drv.draw_buf = &draw_buf;
   lv_disp_drv_register(&disp_drv);
+  Serial.println("[MAIN] Display driver registered");
 
   /* Initialize the (dummy) input device driver */
+  Serial.println("[MAIN] Initializing input device driver...");
   static lv_indev_drv_t indev_drv;
   lv_indev_drv_init(&indev_drv);
   indev_drv.type = LV_INDEV_TYPE_POINTER;
   indev_drv.read_cb = my_touchpad_read;
   lv_indev_drv_register(&indev_drv);
+  Serial.println("[MAIN] Input device driver registered");
 #ifdef TFT_BL
 
   // digitalWrite(TFT_BL, HIGH);
@@ -246,25 +298,23 @@ void setup() {
   digitalWrite(TFT_BL, HIGH);
 #endif
 
+  Serial.println("[MAIN] About to call ui_init()");
   ui_init(); // 开机UI界面
+  Serial.println("[MAIN] ui_init() completed");
 
+  // Force initial render
+  Serial.println("[MAIN] Calling lv_timer_handler()");
   lv_timer_handler();
+  delay(100);
+  lv_timer_handler();
+  delay(100);
+  lv_timer_handler();
+  Serial.println("[MAIN] Initial render complete");
 }
 
 void loop() {
-
-  char DHT_buffer[6];
-  int a = (int)dht20.getTemperature();
-  int b = (int)dht20.getHumidity();
-  snprintf(DHT_buffer, sizeof(DHT_buffer), "%d", a);
-  lv_label_set_text(ui_Label1, DHT_buffer);
-  snprintf(DHT_buffer, sizeof(DHT_buffer), "%d", b);
-  lv_label_set_text(ui_Label2, DHT_buffer);
-
-  if (led == 1)
-    digitalWrite(38, HIGH);
-  if (led == 0)
-    digitalWrite(38, LOW);
+  // Update UI
+  ui_tick();
   lv_timer_handler(); /* let the GUI do its work */
   delay(10);
 }
