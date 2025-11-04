@@ -95,6 +95,7 @@ public:
 
 LGFX lcd;
 
+#include "screens.h" // Need this to access objects.main directly
 #include "touch.h"
 #include "ui.h"
 
@@ -115,7 +116,7 @@ void my_disp_flush(lv_disp_drv_t *disp, const lv_area_t *area,
                    lv_color_t *color_p) {
   static int flush_count = 0;
   flush_count++;
-  if (flush_count <= 5 || flush_count % 100 == 0) {
+  if (flush_count <= 10 || flush_count % 50 == 0) {
     Serial.print("[FLUSH] Flush #");
     Serial.print(flush_count);
     Serial.print(" - Area: (");
@@ -126,8 +127,17 @@ void my_disp_flush(lv_disp_drv_t *disp, const lv_area_t *area,
     Serial.print(area->x2);
     Serial.print(",");
     Serial.print(area->y2);
-    Serial.print(") - Color ptr: ");
-    Serial.println((uint32_t)color_p, HEX);
+    Serial.print(") - Size: ");
+    Serial.print((area->x2 - area->x1 + 1));
+    Serial.print("x");
+    Serial.print((area->y2 - area->y1 + 1));
+    // Sample first pixel color to see what we're rendering
+    if (color_p) {
+      uint16_t first_pixel = color_p[0].full;
+      Serial.print(" - First pixel: 0x");
+      Serial.print(first_pixel, HEX);
+    }
+    Serial.println();
   }
 
   uint32_t w = (area->x2 - area->x1 + 1);
@@ -302,14 +312,66 @@ void setup() {
   ui_init(); // 开机UI界面
   Serial.println("[MAIN] ui_init() completed");
 
-  // Force initial render
-  Serial.println("[MAIN] Calling lv_timer_handler()");
-  lv_timer_handler();
-  delay(100);
-  lv_timer_handler();
-  delay(100);
-  lv_timer_handler();
-  Serial.println("[MAIN] Initial render complete");
+  // Post-UI initialization fix: Ensure all screen children render on top
+  // The issue: ui_init() calls loadScreen() which uses lv_scr_load_anim()
+  // The animation can cause a white screen overlay. We fix this by:
+  // 1. Getting the screen directly from objects.main
+  // 2. Reloading it immediately without animation
+  // 3. Ensuring all children are visible and on top
+  Serial.println("[MAIN] Applying post-init rendering fix...");
+
+  // Get the main screen object directly (bypasses animation)
+  extern objects_t objects;
+  lv_obj_t *main_screen = objects.main;
+
+  if (main_screen) {
+    Serial.print("[MAIN] Main screen object: 0x");
+    Serial.println((uint32_t)main_screen, HEX);
+
+    // Load screen immediately without animation (replaces the animated load)
+    lv_scr_load(main_screen);
+    Serial.println("[MAIN] Screen reloaded directly (no animation)");
+
+    // Process LVGL to ensure screen is active
+    lv_timer_handler();
+    delay(50);
+
+    // Move all children to foreground to ensure they render above background
+    uint32_t child_cnt = lv_obj_get_child_cnt(main_screen);
+    Serial.print("[MAIN] Found ");
+    Serial.print(child_cnt);
+    Serial.println(" children on main screen");
+
+    for (uint32_t i = 0; i < child_cnt; i++) {
+      lv_obj_t *child = lv_obj_get_child(main_screen, i);
+      if (child) {
+        Serial.print("[MAIN] Moving child #");
+        Serial.print(i);
+        Serial.print(" to foreground: 0x");
+        Serial.println((uint32_t)child, HEX);
+        lv_obj_move_foreground(child);
+        lv_obj_invalidate(child);
+      }
+    }
+
+    // Invalidate entire screen to force redraw
+    lv_obj_invalidate(main_screen);
+    Serial.println("[MAIN] Screen invalidated");
+
+    // Force immediate refresh
+    lv_refr_now(lv_disp_get_default());
+    Serial.println("[MAIN] Immediate refresh triggered");
+  } else {
+    Serial.println("[MAIN] ERROR: Main screen object is NULL!");
+  }
+
+  // Force multiple renders to ensure everything is displayed
+  Serial.println("[MAIN] Forcing multiple renders...");
+  for (int i = 0; i < 5; i++) {
+    lv_timer_handler();
+    delay(50);
+  }
+  Serial.println("[MAIN] Post-init fix applied");
 }
 
 void loop() {
