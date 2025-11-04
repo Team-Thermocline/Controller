@@ -650,5 +650,8 @@
     ]
   ],
   "text_variables": {
+    "FULL_REVISION": "v1.0-pre-6-g9e564b7",
+    "ISSUE": "2025-11-04",
+    "REVISION": "9e564b7"
   }
 }
