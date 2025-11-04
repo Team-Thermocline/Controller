@@ -7,6 +7,7 @@
 extern "C" {
 #endif
 
+extern void action_clicked(lv_event_t * e);
 
 
 #ifdef __cplusplus

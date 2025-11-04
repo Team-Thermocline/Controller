@@ -18,13 +18,7 @@
 #define TOUCH_MAP_Y1 480
 #define TOUCH_MAP_Y2 0
 
-// Define touch object here to avoid crash during global initialization
-#include <TAMC_GT911.h>
-#include <Wire.h>
-
-TAMC_GT911 ts(TOUCH_GT911_SDA, TOUCH_GT911_SCL, TOUCH_GT911_INT,
-              TOUCH_GT911_RST, max(TOUCH_MAP_X1, TOUCH_MAP_X2),
-              max(TOUCH_MAP_Y1, TOUCH_MAP_Y2));
+// Touch object will be defined in touch.h after lcd is defined
 
 class LGFX : public lgfx::LGFX_Device {
 public:
@@ -95,8 +89,11 @@ public:
 
 LGFX lcd;
 
-#include "screens.h" // Need this to access objects.main directly
+// Include touch.h after lcd is defined (touch.h needs to reference lcd)
 #include "touch.h"
+
+// UI includes
+#include "screens.h" // Need this to access objects.main directly
 #include "ui.h"
 
 // UI
@@ -114,31 +111,7 @@ static lv_disp_drv_t disp_drv;
 /* Display flushing */
 void my_disp_flush(lv_disp_drv_t *disp, const lv_area_t *area,
                    lv_color_t *color_p) {
-  static int flush_count = 0;
-  flush_count++;
-  if (flush_count <= 10 || flush_count % 50 == 0) {
-    Serial.print("[FLUSH] Flush #");
-    Serial.print(flush_count);
-    Serial.print(" - Area: (");
-    Serial.print(area->x1);
-    Serial.print(",");
-    Serial.print(area->y1);
-    Serial.print(") to (");
-    Serial.print(area->x2);
-    Serial.print(",");
-    Serial.print(area->y2);
-    Serial.print(") - Size: ");
-    Serial.print((area->x2 - area->x1 + 1));
-    Serial.print("x");
-    Serial.print((area->y2 - area->y1 + 1));
-    // Sample first pixel color to see what we're rendering
-    if (color_p) {
-      uint16_t first_pixel = color_p[0].full;
-      Serial.print(" - First pixel: 0x");
-      Serial.print(first_pixel, HEX);
-    }
-    Serial.println();
-  }
+  // Removed debug output for faster rendering
 
   uint32_t w = (area->x2 - area->x1 + 1);
   uint32_t h = (area->y2 - area->y1 + 1);
@@ -153,22 +126,51 @@ void my_disp_flush(lv_disp_drv_t *disp, const lv_area_t *area,
 }
 
 void my_touchpad_read(lv_indev_drv_t *indev_driver, lv_indev_data_t *data) {
+  static unsigned long last_touch_debug = 0;
+  static unsigned long call_count = 0;
+  unsigned long now = millis();
+
+  call_count++;
+  // Print every 100 calls to confirm callback is being invoked
+  if (call_count % 100 == 0) {
+    Serial.print("[TOUCH] Callback called #");
+    Serial.println(call_count);
+  }
+
   if (touch_has_signal()) {
+    if (call_count % 100 == 0) {
+      Serial.println("[TOUCH] touch_has_signal() returned true");
+    }
+
     if (touch_touched()) {
       data->state = LV_INDEV_STATE_PR;
 
       /*Set the coordinates*/
       data->point.x = touch_last_x;
       data->point.y = touch_last_y;
-      Serial.print("Data x ");
-      Serial.println(data->point.x);
-      Serial.print("Data y ");
-      Serial.println(data->point.y);
+
+      // Debug output (rate limited to avoid spam)
+      if (now - last_touch_debug > 100) {
+        Serial.print("[TOUCH] TOUCHED - x: ");
+        Serial.print(data->point.x);
+        Serial.print(", y: ");
+        Serial.println(data->point.y);
+        last_touch_debug = now;
+      }
     } else if (touch_released()) {
+      data->state = LV_INDEV_STATE_REL;
+      Serial.println("[TOUCH] RELEASED");
+    } else {
       data->state = LV_INDEV_STATE_REL;
     }
   } else {
     data->state = LV_INDEV_STATE_REL;
+    // Only print once in a while to avoid spam
+    static unsigned long last_no_signal = 0;
+    if (now - last_no_signal > 5000) {
+      Serial.println("[TOUCH] No signal (this is normal when not touching)");
+      last_no_signal = now;
+    }
   }
   delay(15);
 }
@@ -188,8 +190,8 @@ void Serial_println_int(int val) { Serial.println(val); }
 void setup() {
 
   Serial.begin(9600);
-  delay(1000); // Wait for Serial to be ready
-  Serial.println("\n\n[MAIN] ===== Firmware Starting =====\n");
+  delay(500); // Wait for Serial to be ready
+  Serial.println("[MAIN] Firmware Starting");
   // Out.reset();
   // Out.setMode(IO_OUTPUT);  //设置为输出模式
 
@@ -237,12 +239,10 @@ void setup() {
   //  EEPROM.end();
 
   // Init Display
-  Serial.println("[MAIN] Initializing display...");
   lcd.begin();
-  Serial.println("[MAIN] Display initialized");
   lcd.fillScreen(TFT_BLACK);
   lcd.setTextSize(2);
-  delay(200);
+  delay(50);
   Serial.println("[MAIN] Display cleared");
 
   //    lcd.fillScreen(TFT_RED);
@@ -253,45 +253,31 @@ void setup() {
   //    delay(1000);
   //    lcd.fillScreen(TFT_BLACK);
   //    delay(1000);
-  Serial.println("[MAIN] Initializing LVGL...");
   lv_init();
-  Serial.println("[MAIN] LVGL initialized");
 
-  // Init touch device
-  Serial.println("[MAIN] Initializing touch...");
+  // Init touch device (touch_init() will call Wire.begin())
   touch_init();
-  Serial.println("[MAIN] Touch initialized");
 
   screenWidth = lcd.width();
   screenHeight = lcd.height();
-  Serial.print("[MAIN] Screen size: ");
-  Serial.print(screenWidth);
-  Serial.print("x");
-  Serial.println(screenHeight);
 
-  Serial.println("[MAIN] Initializing LVGL display buffer...");
   lv_disp_draw_buf_init(&draw_buf, disp_draw_buf, NULL,
-                        screenWidth * screenHeight / 15); // 4
+                        screenWidth * screenHeight / 15);
 
   /* Initialize the display */
-  Serial.println("[MAIN] Initializing LVGL display driver...");
   lv_disp_drv_init(&disp_drv);
-  /* Change the following line to your display resolution */
   disp_drv.hor_res = screenWidth;
   disp_drv.ver_res = screenHeight;
   disp_drv.flush_cb = my_disp_flush;
   disp_drv.draw_buf = &draw_buf;
   lv_disp_drv_register(&disp_drv);
-  Serial.println("[MAIN] Display driver registered");
 
-  /* Initialize the (dummy) input device driver */
-  Serial.println("[MAIN] Initializing input device driver...");
+  /* Initialize the input device driver */
   static lv_indev_drv_t indev_drv;
   lv_indev_drv_init(&indev_drv);
   indev_drv.type = LV_INDEV_TYPE_POINTER;
   indev_drv.read_cb = my_touchpad_read;
   lv_indev_drv_register(&indev_drv);
-  Serial.println("[MAIN] Input device driver registered");
 #ifdef TFT_BL
 
   // digitalWrite(TFT_BL, HIGH);
@@ -308,9 +294,7 @@ void setup() {
   digitalWrite(TFT_BL, HIGH);
 #endif
 
-  Serial.println("[MAIN] About to call ui_init()");
   ui_init(); // 开机UI界面
-  Serial.println("[MAIN] ui_init() completed");
 
   // Post-UI initialization fix: Ensure all screen children render on top
   // The issue: ui_init() calls loadScreen() which uses lv_scr_load_anim()
@@ -318,37 +302,21 @@ void setup() {
   // 1. Getting the screen directly from objects.main
   // 2. Reloading it immediately without animation
   // 3. Ensuring all children are visible and on top
-  Serial.println("[MAIN] Applying post-init rendering fix...");
-
-  // Get the main screen object directly (bypasses animation)
   extern objects_t objects;
   lv_obj_t *main_screen = objects.main;
 
   if (main_screen) {
-    Serial.print("[MAIN] Main screen object: 0x");
-    Serial.println((uint32_t)main_screen, HEX);
-
     // Load screen immediately without animation (replaces the animated load)
     lv_scr_load(main_screen);
-    Serial.println("[MAIN] Screen reloaded directly (no animation)");
 
     // Process LVGL to ensure screen is active
     lv_timer_handler();
-    delay(50);
 
     // Move all children to foreground to ensure they render above background
     uint32_t child_cnt = lv_obj_get_child_cnt(main_screen);
-    Serial.print("[MAIN] Found ");
-    Serial.print(child_cnt);
-    Serial.println(" children on main screen");
-
     for (uint32_t i = 0; i < child_cnt; i++) {
       lv_obj_t *child = lv_obj_get_child(main_screen, i);
       if (child) {
-        Serial.print("[MAIN] Moving child #");
-        Serial.print(i);
-        Serial.print(" to foreground: 0x");
-        Serial.println((uint32_t)child, HEX);
         lv_obj_move_foreground(child);
         lv_obj_invalidate(child);
       }
@@ -356,22 +324,16 @@ void setup() {
 
     // Invalidate entire screen to force redraw
     lv_obj_invalidate(main_screen);
-    Serial.println("[MAIN] Screen invalidated");
 
     // Force immediate refresh
     lv_refr_now(lv_disp_get_default());
-    Serial.println("[MAIN] Immediate refresh triggered");
-  } else {
-    Serial.println("[MAIN] ERROR: Main screen object is NULL!");
   }
 
-  // Force multiple renders to ensure everything is displayed
-  Serial.println("[MAIN] Forcing multiple renders...");
-  for (int i = 0; i < 5; i++) {
+  // Force initial render
+  for (int i = 0; i < 3; i++) {
     lv_timer_handler();
-    delay(50);
+    delay(10);
   }
-  Serial.println("[MAIN] Post-init fix applied");
 }
 
 void loop() {

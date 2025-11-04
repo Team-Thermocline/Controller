@@ -54,9 +54,9 @@ bool touch_touched_flag = true, touch_released_flag = true;
 #include <TAMC_GT911.h>
 #include <Wire.h>
 
-// Declare as extern and initialize in setup() to avoid crash during global
-// initialization
-extern TAMC_GT911 ts;
+TAMC_GT911 ts = TAMC_GT911(TOUCH_GT911_SDA, TOUCH_GT911_SCL, TOUCH_GT911_INT,
+                           TOUCH_GT911_RST, max(TOUCH_MAP_X1, TOUCH_MAP_X2),
+                           max(TOUCH_MAP_Y1, TOUCH_MAP_Y2));
 
 #elif defined(TOUCH_XPT2046)
 #include <SPI.h>
@@ -113,9 +113,14 @@ void touch_init() {
   ts.registerTouchHandler(touch);
 
 #elif defined(TOUCH_GT911)
+  Serial.println("[TOUCH] Initializing GT911...");
+  // Wire.begin() - will handle duplicate calls gracefully
   Wire.begin(TOUCH_GT911_SDA, TOUCH_GT911_SCL);
+  Serial.println("[TOUCH] Wire.begin() completed");
   ts.begin();
+  Serial.println("[TOUCH] ts.begin() completed");
   ts.setRotation(TOUCH_GT911_ROTATION);
+  Serial.println("[TOUCH] GT911 initialization complete");
 
 #elif defined(TOUCH_XPT2046)
   SPI.begin(TOUCH_XPT2046_SCK, TOUCH_XPT2046_MISO, TOUCH_XPT2046_MOSI,
@@ -153,6 +158,25 @@ bool touch_touched() {
 
 #elif defined(TOUCH_GT911)
   ts.read();
+  // Print debug info every call to see what's happening
+  static unsigned long read_count = 0;
+  read_count++;
+  if (read_count % 50 == 0 || ts.isTouched > 0) {
+    Serial.print("[TOUCH] ts.read() #");
+    Serial.print(read_count);
+    Serial.print(" - isTouched: ");
+    Serial.print(ts.isTouched);
+    if (ts.isTouched > 0) {
+      Serial.print(", points: ");
+      Serial.print(ts.isTouched);
+      Serial.print(", raw x: ");
+      Serial.print(ts.points[0].x);
+      Serial.print(", raw y: ");
+      Serial.println(ts.points[0].y);
+    } else {
+      Serial.println(" (not touched)");
+    }
+  }
   if (ts.isTouched) {
 #if defined(TOUCH_SWAP_XY)
     touch_last_x =
