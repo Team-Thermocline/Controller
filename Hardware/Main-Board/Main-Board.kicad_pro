@@ -635,6 +635,18 @@
     [
       "9edb6f85-3e37-42c8-a1d1-5c2eb41eb353",
       "Root"
+    ],
+    [
+      "deda2255-9a1d-4c4b-b8a3-23ecc8a0890b",
+      "Thermocouple Driver"
+    ],
+    [
+      "9ad4274c-a3cf-429a-84ee-9fa9dd23d602",
+      "Thermocouple Driver1"
+    ],
+    [
+      "0682befe-b03d-4eef-b3f4-e121102c58a0",
+      "Thermocouple Driver2"
     ]
   ],
   "text_variables": {}
