@@ -118,12 +118,12 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "Relay:SANYOU_SRD_Form_B"
+		(symbol "Relay:SANYOU_SRD_Form_C"
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
 			(property "Reference" "K"
-				(at 8.89 3.81 0)
+				(at 11.43 3.81 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -131,8 +131,8 @@
 					(justify left)
 				)
 			)
-			(property "Value" "SANYOU_SRD_Form_B"
-				(at 8.89 1.27 0)
+			(property "Value" "SANYOU_SRD_Form_C"
+				(at 11.43 1.27 0)
 				(effects
 					(font
 						(size 1.27 1.27)
@@ -140,12 +140,13 @@
 					(justify left)
 				)
 			)
-			(property "Footprint" "Relay_THT:Relay_SPST_SANYOU_SRD_Series_Form_B"
-				(at 33.02 -1.27 0)
+			(property "Footprint" "Relay_THT:Relay_SPDT_SANYOU_SRD_Series_Form_C"
+				(at 11.43 -1.27 0)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
+					(justify left)
 					(hide yes)
 				)
 			)
@@ -158,7 +159,7 @@
 					(hide yes)
 				)
 			)
-			(property "Description" "Sanyo SRD relay, Single Pole Miniature Power Relay, Opening Contact"
+			(property "Description" "Sanyo SRD relay, Single Pole Miniature Power Relay,"
 				(at 0 0 0)
 				(effects
 					(font
@@ -167,7 +168,7 @@
 					(hide yes)
 				)
 			)
-			(property "ki_keywords" "Single Pole Relay SPST"
+			(property "ki_keywords" "Single Pole Relay SPDT"
 				(at 0 0 0)
 				(effects
 					(font
@@ -176,7 +177,7 @@
 					(hide yes)
 				)
 			)
-			(property "ki_fp_filters" "Relay*SPST*SANYOU*SRD*Series*Form*B*"
+			(property "ki_fp_filters" "Relay*SPDT*SANYOU*SRD*Series*Form*C*"
 				(at 0 0 0)
 				(effects
 					(font
@@ -185,10 +186,24 @@
 					(hide yes)
 				)
 			)
-			(symbol "SANYOU_SRD_Form_B_0_1"
+			(symbol "SANYOU_SRD_Form_C_0_0"
+				(polyline
+					(pts
+						(xy 7.62 5.08) (xy 7.62 2.54) (xy 6.985 3.175) (xy 7.62 3.81)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "SANYOU_SRD_Form_C_0_1"
 				(rectangle
 					(start -10.16 5.08)
-					(end 7.62 -5.08)
+					(end 10.16 -5.08)
 					(stroke
 						(width 0.254)
 						(type default)
@@ -306,19 +321,7 @@
 				)
 				(polyline
 					(pts
-						(xy 5.08 3.81) (xy 4.445 3.175) (xy 5.08 2.54) (xy 5.08 5.08)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type outline)
-					)
-				)
-				(polyline
-					(pts
-						(xy 5.08 -2.54) (xy 4.064 3.81)
+						(xy 5.08 -2.54) (xy 3.175 3.81)
 					)
 					(stroke
 						(width 0.508)
@@ -341,7 +344,19 @@
 					)
 				)
 			)
-			(symbol "SANYOU_SRD_Form_B_1_1"
+			(symbol "SANYOU_SRD_Form_C_1_1"
+				(polyline
+					(pts
+						(xy 2.54 3.81) (xy 3.175 3.175) (xy 2.54 2.54) (xy 2.54 5.08)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
 				(pin passive line
 					(at -5.08 7.62 270)
 					(length 2.54)
@@ -379,7 +394,7 @@
 					)
 				)
 				(pin passive line
-					(at 5.08 7.62 270)
+					(at 2.54 7.62 270)
 					(length 2.54)
 					(name "~"
 						(effects
@@ -407,6 +422,24 @@
 						)
 					)
 					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 7.62 7.62 270)
+					(length 2.54)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -849,6 +882,20 @@
 			(embedded_fonts no)
 		)
 	)
+	(no_connect
+		(at 157.48 82.55)
+		(uuid "e0f5dac4-4f03-40f6-8323-9210723208b1")
+	)
+	(wire
+		(pts
+			(xy 157.48 82.55) (xy 157.48 88.9)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1df02d8b-e4bf-4af3-ba50-7c4e8b60c1e0")
+	)
 	(wire
 		(pts
 			(xy 137.16 113.03) (xy 142.24 113.03)
@@ -861,7 +908,7 @@
 	)
 	(wire
 		(pts
-			(xy 160.02 88.9) (xy 160.02 82.55)
+			(xy 162.56 88.9) (xy 162.56 82.55)
 		)
 		(stroke
 			(width 0)
@@ -891,7 +938,7 @@
 	)
 	(wire
 		(pts
-			(xy 160.02 82.55) (xy 173.99 82.55)
+			(xy 162.56 82.55) (xy 173.99 82.55)
 		)
 		(stroke
 			(width 0)
@@ -949,82 +996,6 @@
 			(justify right)
 		)
 		(uuid "50a69f3a-2ea2-4ee2-8d7f-f2c7d850c378")
-	)
-	(symbol
-		(lib_id "Relay:SANYOU_SRD_Form_B")
-		(at 154.94 96.52 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "00b50eb4-4202-4751-a87b-7355f099a5a8")
-		(property "Reference" "K1"
-			(at 163.83 95.2499 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "SANYOU_SRD_Form_B"
-			(at 163.83 97.7899 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Relay_THT:Relay_SPST_SANYOU_SRD_Series_Form_B"
-			(at 187.96 97.79 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "http://www.sanyourelay.ca/public/products/pdf/SRD.pdf"
-			(at 154.94 96.52 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Sanyo SRD relay, Single Pole Miniature Power Relay, Opening Contact"
-			(at 154.94 96.52 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "4"
-			(uuid "1ff58767-dd90-4590-944e-2ca382bd7f8f")
-		)
-		(pin "2"
-			(uuid "8dace889-98f6-460f-88a7-eb999517fae7")
-		)
-		(pin "5"
-			(uuid "15975702-8411-4ef8-8277-9fa8ced08cb9")
-		)
-		(pin "1"
-			(uuid "537bdf61-f552-4c4c-82f4-29dd395f5910")
-		)
-		(instances
-			(project "Main-Board"
-				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/77a35e86-caa6-4e6d-bbef-068e3f149509"
-					(reference "K1")
-					(unit 1)
-				)
-			)
-		)
 	)
 	(symbol
 		(lib_id "Connector_Generic:Conn_01x01")
@@ -1085,6 +1056,12 @@
 			(uuid "13f47583-4f2b-48d6-b8c4-d0d20380573d")
 		)
 		(instances
+			(project "ac_switch"
+				(path "/83a6501d-283f-443d-a1fa-be66340bb080"
+					(reference "J?")
+					(unit 1)
+				)
+			)
 			(project "Main-Board"
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/77a35e86-caa6-4e6d-bbef-068e3f149509"
 					(reference "J5")
@@ -1152,6 +1129,12 @@
 			(uuid "7adbb49c-6538-44a1-a165-0b65ee4ba086")
 		)
 		(instances
+			(project "ac_switch"
+				(path "/83a6501d-283f-443d-a1fa-be66340bb080"
+					(reference "J?")
+					(unit 1)
+				)
+			)
 			(project "Main-Board"
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/77a35e86-caa6-4e6d-bbef-068e3f149509"
 					(reference "J4")
@@ -1218,6 +1201,12 @@
 			(uuid "61830d2b-8cfa-435d-bc94-1cd7bbfe2149")
 		)
 		(instances
+			(project "ac_switch"
+				(path "/83a6501d-283f-443d-a1fa-be66340bb080"
+					(reference "#PWR?")
+					(unit 1)
+				)
+			)
 			(project "Main-Board"
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/77a35e86-caa6-4e6d-bbef-068e3f149509"
 					(reference "#PWR02")
@@ -1294,6 +1283,12 @@
 			(uuid "fb7e2916-a494-4e83-a56a-d86fd09fca02")
 		)
 		(instances
+			(project "ac_switch"
+				(path "/83a6501d-283f-443d-a1fa-be66340bb080"
+					(reference "Q?")
+					(unit 1)
+				)
+			)
 			(project "Main-Board"
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/77a35e86-caa6-4e6d-bbef-068e3f149509"
 					(reference "Q1")
@@ -1360,6 +1355,12 @@
 			(uuid "f59e71ea-7b58-4072-8797-f72e965f74fc")
 		)
 		(instances
+			(project "ac_switch"
+				(path "/83a6501d-283f-443d-a1fa-be66340bb080"
+					(reference "#PWR?")
+					(unit 1)
+				)
+			)
 			(project "Main-Board"
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/77a35e86-caa6-4e6d-bbef-068e3f149509"
 					(reference "#PWR05")
@@ -1368,4 +1369,96 @@
 			)
 		)
 	)
+	(symbol
+		(lib_id "Relay:SANYOU_SRD_Form_C")
+		(at 154.94 96.52 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "e60541ba-9533-497b-a791-01d6b8f136d1")
+		(property "Reference" "K1"
+			(at 166.37 95.2499 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "SANYOU_SRD_Form_C"
+			(at 166.37 97.7899 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Relay_THT:Relay_SPDT_SANYOU_SRD_Series_Form_C"
+			(at 166.37 97.79 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "http://www.sanyourelay.ca/public/products/pdf/SRD.pdf"
+			(at 154.94 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Sanyo SRD relay, Single Pole Miniature Power Relay,"
+			(at 154.94 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "3"
+			(uuid "105ecf07-f545-4d43-ae46-fc0254c3fafc")
+		)
+		(pin "1"
+			(uuid "662a29d7-d193-461e-a4ee-25b27a7ae7f0")
+		)
+		(pin "2"
+			(uuid "b2799332-ff01-43ff-9d86-291373d8875a")
+		)
+		(pin "5"
+			(uuid "d291740a-ec9a-433e-8420-8fec96710198")
+		)
+		(pin "4"
+			(uuid "6e5c6d47-6415-494f-99f6-b3f68a212f94")
+		)
+		(instances
+			(project ""
+				(path "/83a6501d-283f-443d-a1fa-be66340bb080"
+					(reference "K1")
+					(unit 1)
+				)
+			)
+			(project "Main-Board"
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/77a35e86-caa6-4e6d-bbef-068e3f149509"
+					(reference "K1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+	(embedded_fonts no)
 )
