@@ -13,3 +13,6 @@
 [submodule "Hardware/Main-Board/libraries/kenwoodfox-kicad-libraries"]
 	path = Hardware/Main-Board/libraries/kenwoodfox-kicad-libraries
 	url = https://github.com/KenwoodFox/kenwoodfox-kicad-libraries
+[submodule "Hardware/Main-Board/libraries/faston-kicad-library"]
+	path = Hardware/Main-Board/libraries/faston-kicad-library
+	url = https://github.com/KenwoodFox/faston-kicad-library.git
