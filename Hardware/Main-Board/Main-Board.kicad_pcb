@@ -1588,7 +1588,7 @@
 			(remove_unused_layers no)
 			(net 67 "/AC_UNFUSED")
 			(pintype "passive")
-			(uuid "a571dd12-499c-4ba2-b736-75efd8b6a3ab")
+			(uuid "476bb5a1-5709-4df2-b2a0-6be0054a7a98")
 		)
 		(pad "2" thru_hole circle
 			(at 15.9 0 270)
@@ -1608,7 +1608,7 @@
 			(remove_unused_layers no)
 			(net 63 "/AC_L")
 			(pintype "passive")
-			(uuid "d466b603-4d6a-4441-a977-73df7be06719")
+			(uuid "fb85b44c-943b-4f06-b7a4-ee781020b121")
 		)
 		(embedded_fonts no)
 		(model "${KIPRJMOD}/libraries/thermocline-kicad-libraries/3d/Fusibile 5X20.STEP"
@@ -4472,9 +4472,9 @@
 			(uuid "6797b90f-de0b-4a7e-860e-2442b12066ea")
 		)
 		(embedded_fonts no)
-		(model "${KIPRJMOD}/libraries/faston-kicad-library/3d/TE63823-63823.step"
+		(model "${KIPRJMOD}/libraries/faston-kicad-library/3d/c-63823-1-ab-3d.stp"
 			(offset
-				(xyz 0 0 0)
+				(xyz 0 0 8.5)
 			)
 			(scale
 				(xyz 1 1 1)
@@ -16952,9 +16952,9 @@
 			(uuid "f5985fe9-2fca-4566-b0cd-4dd24c006131")
 		)
 		(embedded_fonts no)
-		(model "${KIPRJMOD}/libraries/faston-kicad-library/3d/TE63823-63823.step"
+		(model "${KIPRJMOD}/libraries/faston-kicad-library/3d/c-63823-1-ab-3d.stp"
 			(offset
-				(xyz 0 0 0)
+				(xyz 0 0 8.5)
 			)
 			(scale
 				(xyz 1 1 1)
@@ -18029,9 +18029,9 @@
 			(uuid "6e1f52e2-e304-4c01-b223-f6d8804c6c51")
 		)
 		(embedded_fonts no)
-		(model "${KIPRJMOD}/libraries/faston-kicad-library/3d/TE63823-63823.step"
+		(model "${KIPRJMOD}/libraries/faston-kicad-library/3d/c-63823-1-ab-3d.stp"
 			(offset
-				(xyz 0 0 0)
+				(xyz 0 0 8.5)
 			)
 			(scale
 				(xyz 1 1 1)
@@ -19059,9 +19059,9 @@
 			(uuid "bf62a6ec-77fc-435d-ba4e-026086db70f0")
 		)
 		(embedded_fonts no)
-		(model "${KIPRJMOD}/libraries/faston-kicad-library/3d/TE63823-63823.step"
+		(model "${KIPRJMOD}/libraries/faston-kicad-library/3d/c-63823-1-ab-3d.stp"
 			(offset
-				(xyz 0 0 0)
+				(xyz 0 0 8.5)
 			)
 			(scale
 				(xyz 1 1 1)
