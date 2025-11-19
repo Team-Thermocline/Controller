@@ -2480,6 +2480,16 @@
 	)
 	(wire
 		(pts
+			(xy 264.16 146.05) (xy 267.97 146.05)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "899156a6-038b-49f8-b814-6f26fb7f634d")
+	)
+	(wire
+		(pts
 			(xy 226.06 151.13) (xy 223.52 151.13)
 		)
 		(stroke
@@ -2570,7 +2580,7 @@
 	)
 	(wire
 		(pts
-			(xy 247.65 146.05) (xy 260.35 146.05)
+			(xy 247.65 146.05) (xy 256.54 146.05)
 		)
 		(stroke
 			(width 0)
@@ -3160,7 +3170,7 @@
 	)
 	(symbol
 		(lib_id "Device:LED")
-		(at 264.16 146.05 180)
+		(at 260.35 146.05 180)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -3169,15 +3179,15 @@
 		(fields_autoplaced yes)
 		(uuid "6e8fd723-8f9e-4a16-9347-0a0b36001e0e")
 		(property "Reference" "D1"
-			(at 265.7475 152.4 0)
+			(at 261.9375 138.43 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Value" "LED"
-			(at 265.7475 149.86 0)
+		(property "Value" "PWR"
+			(at 261.9375 140.97 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3185,7 +3195,7 @@
 			)
 		)
 		(property "Footprint" "LED_THT:LED_D3.0mm"
-			(at 264.16 146.05 0)
+			(at 260.35 146.05 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3194,7 +3204,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 264.16 146.05 0)
+			(at 260.35 146.05 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3203,7 +3213,7 @@
 			)
 		)
 		(property "Description" "Light emitting diode"
-			(at 264.16 146.05 0)
+			(at 260.35 146.05 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3212,7 +3222,7 @@
 			)
 		)
 		(property "Sim.Pins" "1=K 2=A"
-			(at 264.16 146.05 0)
+			(at 260.35 146.05 0)
 			(effects
 				(font
 					(size 1.27 1.27)
