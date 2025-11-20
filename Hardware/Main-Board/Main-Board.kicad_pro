@@ -670,6 +670,18 @@
     [
       "0a3f1c56-3b1b-46d6-8b68-5ab3bc06dc47",
       "Thermocouple Driver3"
+    ],
+    [
+      "c3e7d40a-c6bb-4448-a1ab-024312db52e9",
+      "AC Load1"
+    ],
+    [
+      "eb3bd697-8b92-4dbb-b284-ee24031d3e18",
+      "AC Load2"
+    ],
+    [
+      "19a61a3a-8fa1-436d-bd7d-2a5bbbba9ead",
+      "AC Load3"
     ]
   ],
   "text_variables": {}

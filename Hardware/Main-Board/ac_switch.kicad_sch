@@ -5,119 +5,6 @@
 	(uuid "83a6501d-283f-443d-a1fa-be66340bb080")
 	(paper "A4")
 	(lib_symbols
-		(symbol "Connector_Generic:Conn_01x01"
-			(pin_names
-				(offset 1.016)
-				(hide yes)
-			)
-			(exclude_from_sim no)
-			(in_bom yes)
-			(on_board yes)
-			(property "Reference" "J"
-				(at 0 2.54 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Value" "Conn_01x01"
-				(at 0 -2.54 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" "~"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Description" "Generic connector, single row, 01x01, script generated (kicad-library-utils/schlib/autogen/connector/)"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_keywords" "connector"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "ki_fp_filters" "Connector*:*_1x??_*"
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(symbol "Conn_01x01_1_1"
-				(rectangle
-					(start -1.27 1.27)
-					(end 1.27 -1.27)
-					(stroke
-						(width 0.254)
-						(type default)
-					)
-					(fill
-						(type background)
-					)
-				)
-				(rectangle
-					(start -1.27 0.127)
-					(end 0 -0.127)
-					(stroke
-						(width 0.1524)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(pin passive line
-					(at -5.08 0 0)
-					(length 3.81)
-					(name "Pin_1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-					(number "1"
-						(effects
-							(font
-								(size 1.27 1.27)
-							)
-						)
-					)
-				)
-			)
-			(embedded_fonts no)
-		)
 		(symbol "Device:LED"
 			(pin_numbers
 				(hide yes)
@@ -1357,15 +1244,38 @@
 			(embedded_fonts no)
 		)
 	)
-	(text "(5 volts) / (15 milliamperes) ≈ 330 Ω"
+	(text "Might be anecdotal\nbut flyback is here\njust to prevent\nus kicking the\npnp every time we\ncycle off"
 		(exclude_from_sim no)
-		(at 100.33 88.9 0)
+		(at 140.97 93.98 0)
+		(effects
+			(font
+				(size 0.762 0.762)
+			)
+			(justify right bottom)
+		)
+		(uuid "5b56ee4b-9fe5-42a9-90a5-d062fb87feb8")
+	)
+	(text "(5 V) / (15 mA) ≈ 330 Ω"
+		(exclude_from_sim no)
+		(at 119.38 88.9 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
+			(justify right)
 		)
 		(uuid "a7c9cfb0-c1e3-48d2-841b-5d9d367c9e67")
+	)
+	(text "Unpop on forms A and B\nof this footprint.\nNot used here either.\nWould accept form B if\nsupply changes."
+		(exclude_from_sim no)
+		(at 157.48 80.01 0)
+		(effects
+			(font
+				(size 0.762 0.762)
+			)
+			(justify left bottom)
+		)
+		(uuid "da67084a-b952-4923-a94b-8c519aaf6fee")
 	)
 	(junction
 		(at 149.86 109.22)
@@ -1635,25 +1545,27 @@
 		)
 		(uuid "dd0c7afa-eee5-4c29-9b76-3efc4a6127c2")
 	)
-	(label "AC_LINE"
-		(at 175.26 111.76 180)
+	(hierarchical_label "AC_LINE"
+		(shape input)
+		(at 175.26 111.76 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify right bottom)
+			(justify left)
 		)
-		(uuid "7b6cae59-75b1-4d0c-b332-c49aeb6b9422")
+		(uuid "3fb6d452-a1ed-4930-9ace-9a9593ed33ed")
 	)
-	(label "AC_LOAD"
-		(at 173.99 82.55 180)
+	(hierarchical_label "AC_LOAD"
+		(shape output)
+		(at 175.26 82.55 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
-			(justify right bottom)
+			(justify left)
 		)
-		(uuid "c0e4d8c8-49b0-498e-8f02-c3a15dce5615")
+		(uuid "4b3e051d-c394-4638-b06d-c039fe03542b")
 	)
 	(hierarchical_label "EN"
 		(shape input)
@@ -1731,15 +1643,27 @@
 			)
 		)
 		(pin "1"
-			(uuid "8e2aec59-681f-448a-a6e6-8bfd0a7cbc3a")
+			(uuid "cc3f75eb-3e49-4e1b-a7a9-087401d2be0f")
 		)
 		(pin "2"
-			(uuid "e603a7a1-f212-4872-99d5-0eb7b699082a")
+			(uuid "b648586c-46a6-4a32-975b-c71947e91b2e")
 		)
 		(instances
 			(project "Main-Board"
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/19a61a3a-8fa1-436d-bd7d-2a5bbbba9ead"
+					(reference "D8")
+					(unit 1)
+				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/77a35e86-caa6-4e6d-bbef-068e3f149509"
 					(reference "D2")
+					(unit 1)
+				)
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/c3e7d40a-c6bb-4448-a1ab-024312db52e9"
+					(reference "D4")
+					(unit 1)
+				)
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/eb3bd697-8b92-4dbb-b284-ee24031d3e18"
+					(reference "D6")
 					(unit 1)
 				)
 			)
@@ -1801,15 +1725,27 @@
 			)
 		)
 		(pin "2"
-			(uuid "400bc4cc-7054-4a6b-9b9f-0718c0a79338")
+			(uuid "86b5f9cd-c285-484f-93ea-1d7764d663b8")
 		)
 		(pin "1"
-			(uuid "88f393f1-23da-479d-af97-66180db3cace")
+			(uuid "1797220a-479f-47ad-ada2-48aa70dc04e8")
 		)
 		(instances
-			(project ""
+			(project "Main-Board"
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/19a61a3a-8fa1-436d-bd7d-2a5bbbba9ead"
+					(reference "R32")
+					(unit 1)
+				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/77a35e86-caa6-4e6d-bbef-068e3f149509"
 					(reference "R17")
+					(unit 1)
+				)
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/c3e7d40a-c6bb-4448-a1ab-024312db52e9"
+					(reference "R26")
+					(unit 1)
+				)
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/eb3bd697-8b92-4dbb-b284-ee24031d3e18"
+					(reference "R29")
 					(unit 1)
 				)
 			)
@@ -1869,88 +1805,27 @@
 			)
 		)
 		(pin "2"
-			(uuid "826c5858-42ea-4a59-8f65-6cea00e76553")
+			(uuid "b9e487b2-c073-4bed-ae52-e1ab77e2998a")
 		)
 		(pin "1"
-			(uuid "a76c3b29-0b62-452b-b1b2-eaa0091e3ee8")
+			(uuid "84ec6f55-8369-4033-b438-8e03d361204f")
 		)
 		(instances
 			(project "Main-Board"
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/19a61a3a-8fa1-436d-bd7d-2a5bbbba9ead"
+					(reference "R30")
+					(unit 1)
+				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/77a35e86-caa6-4e6d-bbef-068e3f149509"
 					(reference "R14")
 					(unit 1)
 				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector_Generic:Conn_01x01")
-		(at 180.34 82.55 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "6a091154-8e69-42f9-9c85-0a78f3a5626c")
-		(property "Reference" "J4"
-			(at 182.88 81.2799 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "Blade"
-			(at 182.88 83.8199 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Faston:Faston 63823"
-			(at 180.34 82.55 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 180.34 82.55 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Generic connector, single row, 01x01, script generated (kicad-library-utils/schlib/autogen/connector/)"
-			(at 180.34 82.55 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "7adbb49c-6538-44a1-a165-0b65ee4ba086")
-		)
-		(instances
-			(project "ac_switch"
-				(path "/83a6501d-283f-443d-a1fa-be66340bb080"
-					(reference "J?")
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/c3e7d40a-c6bb-4448-a1ab-024312db52e9"
+					(reference "R24")
 					(unit 1)
 				)
-			)
-			(project "Main-Board"
-				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/77a35e86-caa6-4e6d-bbef-068e3f149509"
-					(reference "J4")
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/eb3bd697-8b92-4dbb-b284-ee24031d3e18"
+					(reference "R27")
 					(unit 1)
 				)
 			)
@@ -2011,18 +1886,24 @@
 			)
 		)
 		(pin "1"
-			(uuid "61830d2b-8cfa-435d-bc94-1cd7bbfe2149")
+			(uuid "3ae97076-12c4-4681-8cda-eb91501aca80")
 		)
 		(instances
-			(project "ac_switch"
-				(path "/83a6501d-283f-443d-a1fa-be66340bb080"
-					(reference "#PWR?")
+			(project "Main-Board"
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/19a61a3a-8fa1-436d-bd7d-2a5bbbba9ead"
+					(reference "#PWR069")
 					(unit 1)
 				)
-			)
-			(project "Main-Board"
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/77a35e86-caa6-4e6d-bbef-068e3f149509"
 					(reference "#PWR02")
+					(unit 1)
+				)
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/c3e7d40a-c6bb-4448-a1ab-024312db52e9"
+					(reference "#PWR061")
+					(unit 1)
+				)
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/eb3bd697-8b92-4dbb-b284-ee24031d3e18"
+					(reference "#PWR065")
 					(unit 1)
 				)
 			)
@@ -2087,24 +1968,30 @@
 			)
 		)
 		(pin "3"
-			(uuid "657e45b6-324b-47f0-9d00-7edd6db83bf5")
+			(uuid "7bc2b8ca-5936-484e-99c6-76c23f33db7f")
 		)
 		(pin "1"
-			(uuid "552e7865-bf34-4774-8e6b-4755cf64867e")
+			(uuid "f781d67b-b01f-4de4-8348-e5d3fdf937db")
 		)
 		(pin "2"
-			(uuid "fb7e2916-a494-4e83-a56a-d86fd09fca02")
+			(uuid "2c735354-f137-417a-9226-1a61aef341a1")
 		)
 		(instances
-			(project "ac_switch"
-				(path "/83a6501d-283f-443d-a1fa-be66340bb080"
-					(reference "Q?")
+			(project "Main-Board"
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/19a61a3a-8fa1-436d-bd7d-2a5bbbba9ead"
+					(reference "Q4")
 					(unit 1)
 				)
-			)
-			(project "Main-Board"
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/77a35e86-caa6-4e6d-bbef-068e3f149509"
 					(reference "Q1")
+					(unit 1)
+				)
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/c3e7d40a-c6bb-4448-a1ab-024312db52e9"
+					(reference "Q2")
+					(unit 1)
+				)
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/eb3bd697-8b92-4dbb-b284-ee24031d3e18"
+					(reference "Q3")
 					(unit 1)
 				)
 			)
@@ -2164,12 +2051,24 @@
 			)
 		)
 		(pin "1"
-			(uuid "1da4cc02-4ddd-4e10-b198-8b9651e75244")
+			(uuid "5b72e2a6-789e-467d-a85a-8e51bbfec25d")
 		)
 		(instances
 			(project "Main-Board"
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/19a61a3a-8fa1-436d-bd7d-2a5bbbba9ead"
+					(reference "#PWR067")
+					(unit 1)
+				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/77a35e86-caa6-4e6d-bbef-068e3f149509"
 					(reference "#PWR014")
+					(unit 1)
+				)
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/c3e7d40a-c6bb-4448-a1ab-024312db52e9"
+					(reference "#PWR059")
+					(unit 1)
+				)
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/eb3bd697-8b92-4dbb-b284-ee24031d3e18"
+					(reference "#PWR063")
 					(unit 1)
 				)
 			)
@@ -2230,12 +2129,24 @@
 			)
 		)
 		(pin "1"
-			(uuid "02b6b56d-ce92-4a50-9ede-52692c015b2e")
+			(uuid "44ac1bc1-734b-460f-910b-ac627201c5f8")
 		)
 		(instances
 			(project "Main-Board"
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/19a61a3a-8fa1-436d-bd7d-2a5bbbba9ead"
+					(reference "#PWR068")
+					(unit 1)
+				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/77a35e86-caa6-4e6d-bbef-068e3f149509"
 					(reference "#PWR09")
+					(unit 1)
+				)
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/c3e7d40a-c6bb-4448-a1ab-024312db52e9"
+					(reference "#PWR060")
+					(unit 1)
+				)
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/eb3bd697-8b92-4dbb-b284-ee24031d3e18"
+					(reference "#PWR064")
 					(unit 1)
 				)
 			)
@@ -2314,15 +2225,27 @@
 			)
 		)
 		(pin "2"
-			(uuid "0f8b67b0-c0b0-4013-833f-4fdb1861b2af")
+			(uuid "512982d1-eb53-431b-b1e6-8cebc8e9c023")
 		)
 		(pin "1"
-			(uuid "04b85b8f-0d86-456b-841b-53aa96e8ade1")
+			(uuid "b59c99ed-d8af-42b0-b210-5a811e870f6c")
 		)
 		(instances
-			(project ""
+			(project "Main-Board"
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/19a61a3a-8fa1-436d-bd7d-2a5bbbba9ead"
+					(reference "D9")
+					(unit 1)
+				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/77a35e86-caa6-4e6d-bbef-068e3f149509"
 					(reference "D3")
+					(unit 1)
+				)
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/c3e7d40a-c6bb-4448-a1ab-024312db52e9"
+					(reference "D5")
+					(unit 1)
+				)
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/eb3bd697-8b92-4dbb-b284-ee24031d3e18"
+					(reference "D7")
 					(unit 1)
 				)
 			)
@@ -2384,15 +2307,27 @@
 			)
 		)
 		(pin "2"
-			(uuid "e3545b95-0f37-40c9-aad4-be0b56f823d8")
+			(uuid "b109f131-2373-47b9-8383-f46e6281a382")
 		)
 		(pin "1"
-			(uuid "224c7ce3-d3cd-4b65-9cc7-3393d12dd5b8")
+			(uuid "28042add-bc88-4159-95dc-1b7afe351dba")
 		)
 		(instances
 			(project "Main-Board"
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/19a61a3a-8fa1-436d-bd7d-2a5bbbba9ead"
+					(reference "R31")
+					(unit 1)
+				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/77a35e86-caa6-4e6d-bbef-068e3f149509"
 					(reference "R15")
+					(unit 1)
+				)
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/c3e7d40a-c6bb-4448-a1ab-024312db52e9"
+					(reference "R25")
+					(unit 1)
+				)
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/eb3bd697-8b92-4dbb-b284-ee24031d3e18"
+					(reference "R28")
 					(unit 1)
 				)
 			)
@@ -2452,18 +2387,24 @@
 			)
 		)
 		(pin "1"
-			(uuid "f59e71ea-7b58-4072-8797-f72e965f74fc")
+			(uuid "a0aef7c2-b70c-475f-9284-17a51c44fd3f")
 		)
 		(instances
-			(project "ac_switch"
-				(path "/83a6501d-283f-443d-a1fa-be66340bb080"
-					(reference "#PWR?")
+			(project "Main-Board"
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/19a61a3a-8fa1-436d-bd7d-2a5bbbba9ead"
+					(reference "#PWR070")
 					(unit 1)
 				)
-			)
-			(project "Main-Board"
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/77a35e86-caa6-4e6d-bbef-068e3f149509"
 					(reference "#PWR05")
+					(unit 1)
+				)
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/c3e7d40a-c6bb-4448-a1ab-024312db52e9"
+					(reference "#PWR062")
+					(unit 1)
+				)
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/eb3bd697-8b92-4dbb-b284-ee24031d3e18"
+					(reference "#PWR066")
 					(unit 1)
 				)
 			)
@@ -2526,97 +2467,36 @@
 			)
 		)
 		(pin "3"
-			(uuid "105ecf07-f545-4d43-ae46-fc0254c3fafc")
+			(uuid "3f3981c0-5550-4858-8f90-d696f66caa67")
 		)
 		(pin "1"
-			(uuid "662a29d7-d193-461e-a4ee-25b27a7ae7f0")
+			(uuid "52c7b3e2-9c82-43a3-88f7-b052403e7824")
 		)
 		(pin "2"
-			(uuid "b2799332-ff01-43ff-9d86-291373d8875a")
+			(uuid "061e9277-6fe7-4c7a-82c6-fee07b9d8a8e")
 		)
 		(pin "5"
-			(uuid "d291740a-ec9a-433e-8420-8fec96710198")
+			(uuid "975f6e6a-d8ee-482f-b118-f9fd3816e823")
 		)
 		(pin "4"
-			(uuid "6e5c6d47-6415-494f-99f6-b3f68a212f94")
+			(uuid "4bd33b3d-72c6-42e4-9485-11d20bf55cd7")
 		)
 		(instances
-			(project ""
-				(path "/83a6501d-283f-443d-a1fa-be66340bb080"
-					(reference "K1")
+			(project "Main-Board"
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/19a61a3a-8fa1-436d-bd7d-2a5bbbba9ead"
+					(reference "K4")
 					(unit 1)
 				)
-			)
-			(project "Main-Board"
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/77a35e86-caa6-4e6d-bbef-068e3f149509"
 					(reference "K1")
 					(unit 1)
 				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Connector_Generic:Conn_01x01")
-		(at 180.34 111.76 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "fcb7aa54-ab0e-43db-afb2-aaa17ef87c3c")
-		(property "Reference" "J5"
-			(at 182.88 110.4899 0)
-			(effects
-				(font
-					(size 1.27 1.27)
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/c3e7d40a-c6bb-4448-a1ab-024312db52e9"
+					(reference "K2")
+					(unit 1)
 				)
-				(justify left)
-			)
-		)
-		(property "Value" "Blade"
-			(at 182.88 113.0299 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Faston:Faston 63823"
-			(at 180.34 111.76 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 180.34 111.76 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Generic connector, single row, 01x01, script generated (kicad-library-utils/schlib/autogen/connector/)"
-			(at 180.34 111.76 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "cab68e29-ddad-49ef-98d1-35cc946f5adc")
-		)
-		(instances
-			(project "Main-Board"
-				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/77a35e86-caa6-4e6d-bbef-068e3f149509"
-					(reference "J5")
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/eb3bd697-8b92-4dbb-b284-ee24031d3e18"
+					(reference "K3")
 					(unit 1)
 				)
 			)
