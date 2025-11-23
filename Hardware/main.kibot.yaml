@@ -50,7 +50,7 @@ outputs:
       rotate_z: 9
       rotate_x: 1
       rotate_y: 1
-      zoom: 2
+      zoom: -4
       wait_render: 20
       width: 800
 
