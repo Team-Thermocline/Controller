@@ -5,6 +5,251 @@
 	(uuid "06a61321-f25c-4d2d-80ef-e7ea973e652a")
 	(paper "A4")
 	(lib_symbols
+		(symbol "Connector:Conn_01x04_Pin"
+			(pin_names
+				(offset 1.016)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "J"
+				(at 0 5.08 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "Conn_01x04_Pin"
+				(at 0 -7.62 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Generic connector, single row, 01x04, script generated"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_locked" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "connector"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "Connector*:*_1x??_*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "Conn_01x04_Pin_1_1"
+				(rectangle
+					(start 0.8636 2.667)
+					(end 0 2.413)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(rectangle
+					(start 0.8636 0.127)
+					(end 0 -0.127)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(rectangle
+					(start 0.8636 -2.413)
+					(end 0 -2.667)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(rectangle
+					(start 0.8636 -4.953)
+					(end 0 -5.207)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.27 2.54) (xy 0.8636 2.54)
+					)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.27 0) (xy 0.8636 0)
+					)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.27 -2.54) (xy 0.8636 -2.54)
+					)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.27 -5.08) (xy 0.8636 -5.08)
+					)
+					(stroke
+						(width 0.1524)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(pin passive line
+					(at 5.08 2.54 180)
+					(length 3.81)
+					(name "Pin_1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 5.08 0 180)
+					(length 3.81)
+					(name "Pin_2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 5.08 -2.54 180)
+					(length 3.81)
+					(name "Pin_3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 5.08 -5.08 180)
+					(length 3.81)
+					(name "Pin_4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "Connector_Generic:Conn_01x02"
 			(pin_names
 				(offset 1.016)
@@ -1197,6 +1442,17 @@
 		)
 		(uuid "32bc74bc-cf8d-4d49-9e67-72b6d0cc847b")
 	)
+	(text "2.54 breakout\nfor dev board\n(DNP)"
+		(exclude_from_sim no)
+		(at 193.04 74.93 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left top)
+		)
+		(uuid "33770408-b244-430c-bc2c-1475b400c4ab")
+	)
 	(text "Chip has internal\nbreak sensing\nbut needs this pulldown\notherwise it just dosn't\nknow."
 		(exclude_from_sim no)
 		(at 100.33 146.05 0)
@@ -1231,6 +1487,12 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "6d661495-d4e0-48bf-9f77-4d3d1aa9f92a")
+	)
+	(junction
+		(at 218.44 73.66)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "7054dc6e-77b5-4e9b-83f4-f21369796f4a")
 	)
 	(junction
 		(at 149.86 120.65)
@@ -1278,6 +1540,16 @@
 	)
 	(wire
 		(pts
+			(xy 218.44 68.58) (xy 218.44 73.66)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "253a839c-f82c-45c4-b736-ebd15e0e00dc")
+	)
+	(wire
+		(pts
 			(xy 160.02 100.33) (xy 167.64 100.33)
 		)
 		(stroke
@@ -1295,6 +1567,16 @@
 			(type default)
 		)
 		(uuid "2ae89e7b-05d7-4088-90d7-2b54040f6714")
+	)
+	(wire
+		(pts
+			(xy 193.04 71.12) (xy 200.66 71.12)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2afef79c-7703-4918-a345-8c19b1049d18")
 	)
 	(wire
 		(pts
@@ -1368,6 +1650,26 @@
 	)
 	(wire
 		(pts
+			(xy 218.44 63.5) (xy 218.44 66.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "53e9b5e7-ca9d-4f33-b77f-3209a6915ba5")
+	)
+	(wire
+		(pts
+			(xy 193.04 73.66) (xy 218.44 73.66)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "55582a17-4958-417f-84d0-af73b8df807f")
+	)
+	(wire
+		(pts
 			(xy 110.49 118.11) (xy 111.76 118.11)
 		)
 		(stroke
@@ -1418,6 +1720,16 @@
 	)
 	(wire
 		(pts
+			(xy 218.44 76.2) (xy 218.44 73.66)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6761b1ff-bbeb-45fc-ac23-d9a218f1b244")
+	)
+	(wire
+		(pts
 			(xy 119.38 118.11) (xy 116.84 118.11)
 		)
 		(stroke
@@ -1445,6 +1757,16 @@
 			(type default)
 		)
 		(uuid "725f51ac-058f-4ddd-b365-3407454b4b1b")
+	)
+	(wire
+		(pts
+			(xy 193.04 68.58) (xy 218.44 68.58)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "792a3d84-9078-4781-be01-4856d6986862")
 	)
 	(wire
 		(pts
@@ -1618,6 +1940,16 @@
 	)
 	(wire
 		(pts
+			(xy 218.44 66.04) (xy 193.04 66.04)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d9eb54b2-e4b7-48eb-828a-e7a5391cb58f")
+	)
+	(wire
+		(pts
 			(xy 144.78 107.95) (xy 144.78 114.3)
 		)
 		(stroke
@@ -1666,6 +1998,17 @@
 			(justify left)
 		)
 		(uuid "a534fa5c-cb0f-4936-959e-8e31b980c7fa")
+	)
+	(hierarchical_label "T_OUT"
+		(shape output)
+		(at 200.66 71.12 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "e1783827-686a-4042-9b8e-34f14e362ec6")
 	)
 	(symbol
 		(lib_id "power:GND")
@@ -1725,6 +2068,12 @@
 			(uuid "9a067bdb-65fd-495d-8484-d2500db63d6b")
 		)
 		(instances
+			(project "ThermoDriver"
+				(path "/06a61321-f25c-4d2d-80ef-e7ea973e652a"
+					(reference "#PWR?")
+					(unit 1)
+				)
+			)
 			(project "Main-Board"
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/0682befe-b03d-4eef-b3f4-e121102c58a0"
 					(reference "#PWR0402")
@@ -1803,6 +2152,12 @@
 			(uuid "5526d39a-15b8-4223-b521-0facf695af76")
 		)
 		(instances
+			(project "ThermoDriver"
+				(path "/06a61321-f25c-4d2d-80ef-e7ea973e652a"
+					(reference "#PWR?")
+					(unit 1)
+				)
+			)
 			(project "Main-Board"
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/0682befe-b03d-4eef-b3f4-e121102c58a0"
 					(reference "#PWR0408")
@@ -1881,6 +2236,12 @@
 			(uuid "ec328fc0-6435-44dd-9042-d4eb4c233ff2")
 		)
 		(instances
+			(project "ThermoDriver"
+				(path "/06a61321-f25c-4d2d-80ef-e7ea973e652a"
+					(reference "#PWR?")
+					(unit 1)
+				)
+			)
 			(project "Main-Board"
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/0682befe-b03d-4eef-b3f4-e121102c58a0"
 					(reference "#PWR0406")
@@ -1959,6 +2320,12 @@
 			(uuid "0cfee4a8-658b-410a-b8b7-526fb10659d0")
 		)
 		(instances
+			(project "ThermoDriver"
+				(path "/06a61321-f25c-4d2d-80ef-e7ea973e652a"
+					(reference "#PWR?")
+					(unit 1)
+				)
+			)
 			(project "Main-Board"
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/0682befe-b03d-4eef-b3f4-e121102c58a0"
 					(reference "#PWR0409")
@@ -2038,6 +2405,12 @@
 			(uuid "ab55ca06-0c23-4d30-9342-eb4e97df07cf")
 		)
 		(instances
+			(project "ThermoDriver"
+				(path "/06a61321-f25c-4d2d-80ef-e7ea973e652a"
+					(reference "C?")
+					(unit 1)
+				)
+			)
 			(project "Main-Board"
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/0682befe-b03d-4eef-b3f4-e121102c58a0"
 					(reference "C402")
@@ -2116,6 +2489,12 @@
 			(uuid "d50fb5b4-37d3-483e-bfc9-49d33b47d525")
 		)
 		(instances
+			(project "ThermoDriver"
+				(path "/06a61321-f25c-4d2d-80ef-e7ea973e652a"
+					(reference "#PWR?")
+					(unit 1)
+				)
+			)
 			(project "Main-Board"
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/0682befe-b03d-4eef-b3f4-e121102c58a0"
 					(reference "#PWR0404")
@@ -2196,6 +2575,12 @@
 			(uuid "72a4a72f-f29c-4cfc-b156-b3083bd21afc")
 		)
 		(instances
+			(project "ThermoDriver"
+				(path "/06a61321-f25c-4d2d-80ef-e7ea973e652a"
+					(reference "J?")
+					(unit 1)
+				)
+			)
 			(project "Main-Board"
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/0682befe-b03d-4eef-b3f4-e121102c58a0"
 					(reference "J401")
@@ -2276,6 +2661,12 @@
 			(uuid "786e155e-66b9-444b-ba52-ded13a7d5808")
 		)
 		(instances
+			(project "ThermoDriver"
+				(path "/06a61321-f25c-4d2d-80ef-e7ea973e652a"
+					(reference "C?")
+					(unit 1)
+				)
+			)
 			(project "Main-Board"
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/0682befe-b03d-4eef-b3f4-e121102c58a0"
 					(reference "C403")
@@ -2354,6 +2745,12 @@
 			(uuid "1ba73e55-9cf0-48f1-95be-2073aedc4692")
 		)
 		(instances
+			(project "ThermoDriver"
+				(path "/06a61321-f25c-4d2d-80ef-e7ea973e652a"
+					(reference "#PWR?")
+					(unit 1)
+				)
+			)
 			(project "Main-Board"
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/0682befe-b03d-4eef-b3f4-e121102c58a0"
 					(reference "#PWR0407")
@@ -2369,6 +2766,90 @@
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/deda2255-9a1d-4c4b-b8a3-23ecc8a0890b"
 					(reference "#PWR0207")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3.3V")
+		(at 218.44 63.5 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "86d53c71-8621-4172-a63f-76e2765d31bf")
+		(property "Reference" "#PWR0124"
+			(at 218.44 67.31 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3.3V"
+			(at 218.44 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 218.44 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 218.44 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
+			(at 218.44 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "c36d11c7-4c92-47bf-a8cc-0bf046f06965")
+		)
+		(instances
+			(project "ThermoDriver"
+				(path "/06a61321-f25c-4d2d-80ef-e7ea973e652a"
+					(reference "#PWR02")
+					(unit 1)
+				)
+			)
+			(project "Main-Board"
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/0682befe-b03d-4eef-b3f4-e121102c58a0"
+					(reference "#PWR0129")
+					(unit 1)
+				)
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/0a3f1c56-3b1b-46d6-8b68-5ab3bc06dc47"
+					(reference "#PWR0131")
+					(unit 1)
+				)
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/9ad4274c-a3cf-429a-84ee-9fa9dd23d602"
+					(reference "#PWR0127")
+					(unit 1)
+				)
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/deda2255-9a1d-4c4b-b8a3-23ecc8a0890b"
+					(reference "#PWR0124")
 					(unit 1)
 				)
 			)
@@ -2434,6 +2915,12 @@
 			(uuid "18e3b6c9-e20e-48a4-ada9-4d3a5952a600")
 		)
 		(instances
+			(project "ThermoDriver"
+				(path "/06a61321-f25c-4d2d-80ef-e7ea973e652a"
+					(reference "C?")
+					(unit 1)
+				)
+			)
 			(project "Main-Board"
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/0682befe-b03d-4eef-b3f4-e121102c58a0"
 					(reference "C401")
@@ -2541,6 +3028,12 @@
 			(uuid "3e45be94-d77a-4591-8750-8cf9e2d893b3")
 		)
 		(instances
+			(project "ThermoDriver"
+				(path "/06a61321-f25c-4d2d-80ef-e7ea973e652a"
+					(reference "U?")
+					(unit 1)
+				)
+			)
 			(project "Main-Board"
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/0682befe-b03d-4eef-b3f4-e121102c58a0"
 					(reference "U401")
@@ -2622,6 +3115,12 @@
 			(uuid "b134a320-ebc4-4248-8b9b-7b135af0e9ba")
 		)
 		(instances
+			(project "ThermoDriver"
+				(path "/06a61321-f25c-4d2d-80ef-e7ea973e652a"
+					(reference "R?")
+					(unit 1)
+				)
+			)
 			(project "Main-Board"
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/0682befe-b03d-4eef-b3f4-e121102c58a0"
 					(reference "R404")
@@ -2700,6 +3199,12 @@
 			(uuid "7369caa7-8ecc-43b7-a8ac-e69bf376a2e1")
 		)
 		(instances
+			(project "ThermoDriver"
+				(path "/06a61321-f25c-4d2d-80ef-e7ea973e652a"
+					(reference "#PWR?")
+					(unit 1)
+				)
+			)
 			(project "Main-Board"
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/0682befe-b03d-4eef-b3f4-e121102c58a0"
 					(reference "#PWR0405")
@@ -2781,6 +3286,12 @@
 			(uuid "11713d83-b334-427f-81a8-5b1a8b8f14ad")
 		)
 		(instances
+			(project "ThermoDriver"
+				(path "/06a61321-f25c-4d2d-80ef-e7ea973e652a"
+					(reference "R?")
+					(unit 1)
+				)
+			)
 			(project "Main-Board"
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/0682befe-b03d-4eef-b3f4-e121102c58a0"
 					(reference "R402")
@@ -2796,6 +3307,90 @@
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/deda2255-9a1d-4c4b-b8a3-23ecc8a0890b"
 					(reference "R202")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 218.44 76.2 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "b7ddb047-faeb-434d-8a16-7da7783c5114")
+		(property "Reference" "#PWR0125"
+			(at 218.44 82.55 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 218.44 81.28 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 218.44 76.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 218.44 76.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 218.44 76.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "048984c3-67dc-404a-967a-feff300e191b")
+		)
+		(instances
+			(project "ThermoDriver"
+				(path "/06a61321-f25c-4d2d-80ef-e7ea973e652a"
+					(reference "#PWR01")
+					(unit 1)
+				)
+			)
+			(project "Main-Board"
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/0682befe-b03d-4eef-b3f4-e121102c58a0"
+					(reference "#PWR0130")
+					(unit 1)
+				)
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/0a3f1c56-3b1b-46d6-8b68-5ab3bc06dc47"
+					(reference "#PWR0132")
+					(unit 1)
+				)
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/9ad4274c-a3cf-429a-84ee-9fa9dd23d602"
+					(reference "#PWR0128")
+					(unit 1)
+				)
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/deda2255-9a1d-4c4b-b8a3-23ecc8a0890b"
+					(reference "#PWR0125")
 					(unit 1)
 				)
 			)
@@ -2877,6 +3472,12 @@
 			(uuid "b5c0a03e-2104-4194-9a59-b5b6d6ebf7b1")
 		)
 		(instances
+			(project "ThermoDriver"
+				(path "/06a61321-f25c-4d2d-80ef-e7ea973e652a"
+					(reference "U?")
+					(unit 1)
+				)
+			)
 			(project "Main-Board"
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/0682befe-b03d-4eef-b3f4-e121102c58a0"
 					(reference "U402")
@@ -2958,6 +3559,12 @@
 			(uuid "1141f215-1277-4e9d-b0b7-6e9ddb7b847c")
 		)
 		(instances
+			(project "ThermoDriver"
+				(path "/06a61321-f25c-4d2d-80ef-e7ea973e652a"
+					(reference "R?")
+					(unit 1)
+				)
+			)
 			(project "Main-Board"
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/0682befe-b03d-4eef-b3f4-e121102c58a0"
 					(reference "R401")
@@ -3040,6 +3647,12 @@
 			(uuid "d0cca348-1829-4b4d-9c00-5f7481673afc")
 		)
 		(instances
+			(project "ThermoDriver"
+				(path "/06a61321-f25c-4d2d-80ef-e7ea973e652a"
+					(reference "C?")
+					(unit 1)
+				)
+			)
 			(project "Main-Board"
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/0682befe-b03d-4eef-b3f4-e121102c58a0"
 					(reference "C404")
@@ -3118,6 +3731,12 @@
 			(uuid "bd67f4bb-5b1c-493e-9eea-4e33b4947542")
 		)
 		(instances
+			(project "ThermoDriver"
+				(path "/06a61321-f25c-4d2d-80ef-e7ea973e652a"
+					(reference "#PWR?")
+					(unit 1)
+				)
+			)
 			(project "Main-Board"
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/0682befe-b03d-4eef-b3f4-e121102c58a0"
 					(reference "#PWR0403")
@@ -3199,6 +3818,12 @@
 			(uuid "e9e03904-4674-4c10-aebd-cea15b4d80a8")
 		)
 		(instances
+			(project "ThermoDriver"
+				(path "/06a61321-f25c-4d2d-80ef-e7ea973e652a"
+					(reference "R?")
+					(unit 1)
+				)
+			)
 			(project "Main-Board"
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/0682befe-b03d-4eef-b3f4-e121102c58a0"
 					(reference "R403")
@@ -3214,6 +3839,98 @@
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/deda2255-9a1d-4c4b-b8a3-23ecc8a0890b"
 					(reference "R203")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:Conn_01x04_Pin")
+		(at 187.96 68.58 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "f20de457-a118-4e1c-9b6a-c677099016ce")
+		(property "Reference" "J1"
+			(at 188.595 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "DNP"
+			(at 188.595 63.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical"
+			(at 187.96 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 187.96 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Generic connector, single row, 01x04, script generated"
+			(at 187.96 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "73801f97-ab9c-4e47-ad7f-b78345e998cf")
+		)
+		(pin "1"
+			(uuid "2f6c4113-c51c-4d46-a7fa-4b9dcb831d39")
+		)
+		(pin "3"
+			(uuid "5a82a53f-47a9-42f0-bfc6-aed9b11208b2")
+		)
+		(pin "4"
+			(uuid "f43c47b2-587a-4918-bc6b-dc1695347ff1")
+		)
+		(instances
+			(project ""
+				(path "/06a61321-f25c-4d2d-80ef-e7ea973e652a"
+					(reference "J1")
+					(unit 1)
+				)
+			)
+			(project "Main-Board"
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/0682befe-b03d-4eef-b3f4-e121102c58a0"
+					(reference "J3")
+					(unit 1)
+				)
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/0a3f1c56-3b1b-46d6-8b68-5ab3bc06dc47"
+					(reference "J4")
+					(unit 1)
+				)
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/9ad4274c-a3cf-429a-84ee-9fa9dd23d602"
+					(reference "J2")
+					(unit 1)
+				)
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/deda2255-9a1d-4c4b-b8a3-23ecc8a0890b"
+					(reference "J1")
 					(unit 1)
 				)
 			)
@@ -3277,6 +3994,12 @@
 			(uuid "7660c025-d3fe-4f70-963c-4750ffe88d79")
 		)
 		(instances
+			(project "ThermoDriver"
+				(path "/06a61321-f25c-4d2d-80ef-e7ea973e652a"
+					(reference "#PWR?")
+					(unit 1)
+				)
+			)
 			(project "Main-Board"
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/0682befe-b03d-4eef-b3f4-e121102c58a0"
 					(reference "#PWR0401")
@@ -3297,4 +4020,10 @@
 			)
 		)
 	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+	(embedded_fonts no)
 )
