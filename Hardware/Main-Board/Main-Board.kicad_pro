@@ -123,7 +123,7 @@
       },
       "rules": {
         "max_error": 0.005,
-        "min_clearance": 0.5,
+        "min_clearance": 0.3,
         "min_connection": 0.0,
         "min_copper_edge_clearance": 0.5,
         "min_groove_width": 0.0,
@@ -188,7 +188,10 @@
       ],
       "track_widths": [
         0.0,
-        8.0
+        0.8,
+        1.025,
+        1.5,
+        2.0
       ],
       "tuning_pattern_settings": {
         "diff_pair_defaults": {
@@ -220,6 +223,10 @@
         {
           "diameter": 0.0,
           "drill": 0.0
+        },
+        {
+          "diameter": 1.5,
+          "drill": 1.0
         }
       ],
       "zones_allow_external_fillets": false
@@ -483,7 +490,7 @@
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "priority": 2147483647,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.2,
+        "track_width": 0.4,
         "via_diameter": 0.6,
         "via_drill": 0.3,
         "wire_width": 6
@@ -682,6 +689,14 @@
     [
       "19a61a3a-8fa1-436d-bd7d-2a5bbbba9ead",
       "AC Load3"
+    ],
+    [
+      "dfd58836-d62e-4b07-8992-5980d54d2aad",
+      "EXT SSR"
+    ],
+    [
+      "f90dd058-130c-414b-82e7-3126e686be65",
+      "EXT SSR1"
     ]
   ],
   "text_variables": {}
