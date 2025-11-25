@@ -596,14 +596,44 @@
           "label": "Datasheet",
           "name": "Datasheet",
           "show": true
+        },
+        {
+          "group_by": false,
+          "label": "Sim.Device",
+          "name": "Sim.Device",
+          "show": false
+        },
+        {
+          "group_by": false,
+          "label": "Sim.Pins",
+          "name": "Sim.Pins",
+          "show": false
+        },
+        {
+          "group_by": false,
+          "label": "LCSC",
+          "name": "LCSC",
+          "show": true
+        },
+        {
+          "group_by": false,
+          "label": "Description",
+          "name": "Description",
+          "show": false
+        },
+        {
+          "group_by": false,
+          "label": "#",
+          "name": "${ITEM_NUMBER}",
+          "show": false
         }
       ],
       "filter_string": "",
       "group_symbols": true,
       "include_excluded_from_bom": true,
-      "name": "Default Editing",
+      "name": "",
       "sort_asc": true,
-      "sort_field": "Reference"
+      "sort_field": "Footprint"
     },
     "connection_grid_size": 50.0,
     "drawing": {
@@ -697,6 +727,22 @@
     [
       "f90dd058-130c-414b-82e7-3126e686be65",
       "EXT SSR1"
+    ],
+    [
+      "e3c470e4-9b31-41d8-820e-2ab7efcd4e22",
+      "Current Sensor"
+    ],
+    [
+      "bd92d361-765b-452f-971b-0a58b0651b73",
+      "Current Sensor1"
+    ],
+    [
+      "79d891a4-f89e-4d0e-b573-820315325bac",
+      "Current Sensor2"
+    ],
+    [
+      "4d2bd27d-8ac2-4067-b305-f70bba583845",
+      "Current Sensor3"
     ]
   ],
   "text_variables": {}

@@ -4,6 +4,13 @@
 	(generator_version "9.0")
 	(uuid "06a61321-f25c-4d2d-80ef-e7ea973e652a")
 	(paper "A4")
+	(title_block
+		(title "Controller Board")
+		(date "${ISSUE}")
+		(rev "${FULL_REVISION}")
+		(company "Team Thermocline")
+		(comment 1 "SNHU Capstone 2025-2026")
+	)
 	(lib_symbols
 		(symbol "Connector:Conn_01x04_Pin"
 			(pin_names
