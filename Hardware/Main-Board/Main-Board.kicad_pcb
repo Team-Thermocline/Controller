@@ -4626,15 +4626,15 @@
 			(uuid "92f4f516-871a-494d-a2bd-7df06b3ba32b")
 		)
 		(embedded_fonts no)
-		(model "${KICAD9_3DMODEL_DIR}/Transformer_THT.3dshapes/Transformer_Zeming_ZMCT103C.step"
+		(model "${KIPRJMOD}/libraries/thermocline-kicad-libraries/3d/zmct103c.stp"
 			(offset
-				(xyz 0 0 0)
+				(xyz 6 0 10)
 			)
 			(scale
 				(xyz 1 1 1)
 			)
 			(rotate
-				(xyz 0 0 0)
+				(xyz -0 -0 -90)
 			)
 		)
 	)
@@ -21839,15 +21839,15 @@
 			(uuid "c5ca49af-6b64-4fcf-90c4-1f1cd598e612")
 		)
 		(embedded_fonts no)
-		(model "${KICAD9_3DMODEL_DIR}/Transformer_THT.3dshapes/Transformer_Zeming_ZMCT103C.step"
+		(model "${KIPRJMOD}/libraries/thermocline-kicad-libraries/3d/zmct103c.stp"
 			(offset
-				(xyz 0 0 0)
+				(xyz 6 0 10)
 			)
 			(scale
 				(xyz 1 1 1)
 			)
 			(rotate
-				(xyz 0 0 0)
+				(xyz -0 -0 -90)
 			)
 		)
 	)
@@ -25636,15 +25636,15 @@
 			(uuid "68a8b9d0-08fb-4c93-8853-64bb9a4df8bf")
 		)
 		(embedded_fonts no)
-		(model "${KICAD9_3DMODEL_DIR}/Transformer_THT.3dshapes/Transformer_Zeming_ZMCT103C.step"
+		(model "${KIPRJMOD}/libraries/thermocline-kicad-libraries/3d/zmct103c.stp"
 			(offset
-				(xyz 0 0 0)
+				(xyz 6 0 10)
 			)
 			(scale
 				(xyz 1 1 1)
 			)
 			(rotate
-				(xyz 0 0 0)
+				(xyz -0 -0 -90)
 			)
 		)
 	)
@@ -30380,15 +30380,15 @@
 			(uuid "9c7871ce-0fb2-4b39-85e7-2ed4589d28c4")
 		)
 		(embedded_fonts no)
-		(model "${KICAD9_3DMODEL_DIR}/Transformer_THT.3dshapes/Transformer_Zeming_ZMCT103C.step"
+		(model "${KIPRJMOD}/libraries/thermocline-kicad-libraries/3d/zmct103c.stp"
 			(offset
-				(xyz 0 0 0)
+				(xyz 6 0.5 10)
 			)
 			(scale
 				(xyz 1 1 1)
 			)
 			(rotate
-				(xyz 0 0 0)
+				(xyz -0 -0 -90)
 			)
 		)
 	)
