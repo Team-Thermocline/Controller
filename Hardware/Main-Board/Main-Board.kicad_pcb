@@ -231,10 +231,10 @@
 	(net 88 "Net-(J1101-Pin_1)")
 	(net 89 "Net-(JP101-B)")
 	(net 90 "Net-(JP102-B)")
-	(net 91 "unconnected-(K501-Pad4)")
-	(net 92 "unconnected-(K701-Pad4)")
-	(net 93 "unconnected-(K801-Pad4)")
-	(net 94 "unconnected-(K901-Pad4)")
+	(net 91 "/AC Load3/AC_AUX")
+	(net 92 "/AC Load2/AC_AUX")
+	(net 93 "/AC Load/AC_AUX")
+	(net 94 "/AC Load1/AC_AUX")
 	(net 95 "Net-(Q501-B)")
 	(net 96 "Net-(Q701-B)")
 	(net 97 "Net-(Q801-B)")
@@ -4821,6 +4821,154 @@
 			)
 		)
 	)
+	(footprint "Faston:Faston 63823"
+		(layer "F.Cu")
+		(uuid "2c16a075-d7ab-4170-9fbf-b5b8d3c5d92f")
+		(at -29.96 66)
+		(descr "Part 63823-1 ")
+		(tags "TAB, FASTON, P.C.BOARD, BLADE")
+		(property "Reference" "J115"
+			(at 2.54 2.54 0)
+			(unlocked yes)
+			(layer "F.SilkS")
+			(uuid "fc672140-17e6-414b-8f66-73205690670e")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.1)
+				)
+			)
+		)
+		(property "Value" "LOAD_4_AUX"
+			(at 0 1 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "1f9758c9-b159-4db3-80ed-5a8546e54e93")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "2eefacf0-2695-4a0a-9104-41bf0c309f58")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" "Generic connector, single row, 01x01, script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "6d5c922b-5f88-4ffd-b086-910bc0cdd5ed")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "LCSC" "C532213"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(uuid "f901de9e-11f8-4e5b-a5a4-b6db27a5831c")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property ki_fp_filters "Connector*:*_1x??_*")
+		(path "/f84d9962-b399-4ecc-9d36-5db1da837342")
+		(sheetname "/")
+		(sheetfile "Main-Board.kicad_sch")
+		(attr through_hole)
+		(fp_text user "${REFERENCE}"
+			(at 0 2.5 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(uuid "d54b2680-afda-41df-a1f5-ad9e36d79d3e")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(pad "1" thru_hole roundrect
+			(at -2.54 0)
+			(size 6 3)
+			(drill 1.32
+				(offset 1 0)
+			)
+			(layers "*.Cu" "*.Mask")
+			(remove_unused_layers no)
+			(roundrect_rratio 0.2857142857)
+			(net 91 "/AC Load3/AC_AUX")
+			(pinfunction "Pin_1")
+			(pintype "passive")
+			(teardrops
+				(best_length_ratio 0.5)
+				(max_length 1)
+				(best_width_ratio 1)
+				(max_width 2)
+				(curved_edges no)
+				(filter_ratio 0.9)
+				(enabled yes)
+				(allow_two_segments yes)
+				(prefer_zone_connections yes)
+			)
+			(uuid "394e08c4-8dbf-4be7-835b-668fbe28e90c")
+		)
+		(pad "1" thru_hole roundrect
+			(at 2.54 0 180)
+			(size 6 3)
+			(drill 1.32
+				(offset 1 0)
+			)
+			(layers "*.Cu" "*.Mask")
+			(remove_unused_layers no)
+			(roundrect_rratio 0.2857142857)
+			(net 91 "/AC Load3/AC_AUX")
+			(pinfunction "Pin_1")
+			(pintype "passive")
+			(teardrops
+				(best_length_ratio 0.5)
+				(max_length 1)
+				(best_width_ratio 1)
+				(max_width 2)
+				(curved_edges no)
+				(filter_ratio 0.9)
+				(enabled yes)
+				(allow_two_segments yes)
+				(prefer_zone_connections yes)
+			)
+			(uuid "b84c8c6d-e926-4419-aecf-567ff3b835da")
+		)
+		(embedded_fonts no)
+		(model "${KIPRJMOD}/libraries/faston-kicad-library/3d/c-63823-1-ab-3d.stp"
+			(offset
+				(xyz 0 0 8.5)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz -0 -0 -0)
+			)
+		)
+	)
 	(footprint "Capacitor_SMD:C_0805_2012Metric"
 		(layer "F.Cu")
 		(uuid "2ce5d847-715e-49bc-89a0-d412dee18df5")
@@ -6230,7 +6378,7 @@
 				)
 			)
 		)
-		(property "Value" "LOAD_0"
+		(property "Value" "LOAD_1"
 			(at 0 1 0)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -7890,8 +8038,8 @@
 			(drill 1.3)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
-			(net 93 "unconnected-(K801-Pad4)")
-			(pintype "passive+no_connect")
+			(net 92 "/AC Load2/AC_AUX")
+			(pintype "passive")
 			(uuid "c7f9a4da-a0c7-4b26-b0da-443194e4e73c")
 		)
 		(pad "5" thru_hole circle
@@ -14379,7 +14527,7 @@
 			(drill 1.3)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
-			(net 92 "unconnected-(K701-Pad4)")
+			(net 94 "/AC Load1/AC_AUX")
 			(pintype "passive+no_connect")
 			(uuid "84e3843f-2964-4e3f-9c30-6b2466f67deb")
 		)
@@ -14623,7 +14771,7 @@
 				)
 			)
 		)
-		(property "Value" "LOAD_1"
+		(property "Value" "LOAD_2"
 			(at 0 1 0)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -23758,6 +23906,154 @@
 			)
 		)
 	)
+	(footprint "Faston:Faston 63823"
+		(layer "F.Cu")
+		(uuid "93cc0e7d-8e5c-4110-94b8-3faf6de95a0d")
+		(at -29.96 70)
+		(descr "Part 63823-1 ")
+		(tags "TAB, FASTON, P.C.BOARD, BLADE")
+		(property "Reference" "J116"
+			(at 2.54 2.54 0)
+			(unlocked yes)
+			(layer "F.SilkS")
+			(uuid "5c7f7a39-6d08-4f48-9a13-a67a6f1b707e")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.1)
+				)
+			)
+		)
+		(property "Value" "LOAD_3_AUX"
+			(at 0 1 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "2914a6a0-c0e3-4bb4-8418-f8e9bb355c28")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "99bfc48f-6e63-49c4-b11e-5fe07c498442")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" "Generic connector, single row, 01x01, script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "9455294a-5a34-4043-8975-c81b5f3febdf")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "LCSC" "C532213"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(uuid "ad3fdd50-8860-496c-be3b-062fc9a8a735")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property ki_fp_filters "Connector*:*_1x??_*")
+		(path "/9594a52c-cca8-4119-82cb-369207968cee")
+		(sheetname "/")
+		(sheetfile "Main-Board.kicad_sch")
+		(attr through_hole)
+		(fp_text user "${REFERENCE}"
+			(at 0 2.5 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(uuid "5979846b-2819-4cea-bb24-15a36d4dc413")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(pad "1" thru_hole roundrect
+			(at -2.54 0)
+			(size 6 3)
+			(drill 1.32
+				(offset 1 0)
+			)
+			(layers "*.Cu" "*.Mask")
+			(remove_unused_layers no)
+			(roundrect_rratio 0.2857142857)
+			(net 92 "/AC Load2/AC_AUX")
+			(pinfunction "Pin_1")
+			(pintype "passive")
+			(teardrops
+				(best_length_ratio 0.5)
+				(max_length 1)
+				(best_width_ratio 1)
+				(max_width 2)
+				(curved_edges no)
+				(filter_ratio 0.9)
+				(enabled yes)
+				(allow_two_segments yes)
+				(prefer_zone_connections yes)
+			)
+			(uuid "07de3afe-a975-4350-9d6e-d2bc26233334")
+		)
+		(pad "1" thru_hole roundrect
+			(at 2.54 0 180)
+			(size 6 3)
+			(drill 1.32
+				(offset 1 0)
+			)
+			(layers "*.Cu" "*.Mask")
+			(remove_unused_layers no)
+			(roundrect_rratio 0.2857142857)
+			(net 92 "/AC Load2/AC_AUX")
+			(pinfunction "Pin_1")
+			(pintype "passive")
+			(teardrops
+				(best_length_ratio 0.5)
+				(max_length 1)
+				(best_width_ratio 1)
+				(max_width 2)
+				(curved_edges no)
+				(filter_ratio 0.9)
+				(enabled yes)
+				(allow_two_segments yes)
+				(prefer_zone_connections yes)
+			)
+			(uuid "4d6754f2-f2aa-45f5-b475-00729daaa8e7")
+		)
+		(embedded_fonts no)
+		(model "${KIPRJMOD}/libraries/faston-kicad-library/3d/c-63823-1-ab-3d.stp"
+			(offset
+				(xyz 0 0 8.5)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz -0 -0 -0)
+			)
+		)
+	)
 	(footprint "Package_TO_SOT_THT:TO-92_Inline"
 		(layer "F.Cu")
 		(uuid "96373d6e-b5c8-45a5-8251-84c50c84e63b")
@@ -30822,8 +31118,8 @@
 			(drill 1.3)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
-			(net 94 "unconnected-(K901-Pad4)")
-			(pintype "passive+no_connect")
+			(net 91 "/AC Load3/AC_AUX")
+			(pintype "passive")
 			(uuid "cabc36d3-b16d-4bda-8e27-4a94a21ddbb5")
 		)
 		(pad "5" thru_hole circle
@@ -30867,7 +31163,7 @@
 				)
 			)
 		)
-		(property "Value" "LOAD_2"
+		(property "Value" "LOAD_3"
 			(at 0 1 0)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -38159,7 +38455,7 @@
 				)
 			)
 		)
-		(property "Value" "LOAD_3"
+		(property "Value" "LOAD_4"
 			(at 0 1 0)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -44911,7 +45207,7 @@
 			(drill 1.3)
 			(layers "*.Cu" "*.Mask")
 			(remove_unused_layers no)
-			(net 91 "unconnected-(K501-Pad4)")
+			(net 93 "/AC Load/AC_AUX")
 			(pintype "passive+no_connect")
 			(uuid "c9cc46b3-cab5-47f9-83e0-1f305b74133d")
 		)

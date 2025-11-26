@@ -1666,17 +1666,6 @@
 		)
 		(uuid "a7c9cfb0-c1e3-48d2-841b-5d9d367c9e67")
 	)
-	(text "Unpop on forms A and B\nof this footprint.\nNot used here either.\nWould accept form B if\nsupply changes."
-		(exclude_from_sim no)
-		(at 157.48 80.01 0)
-		(effects
-			(font
-				(size 0.762 0.762)
-			)
-			(justify left bottom)
-		)
-		(uuid "da67084a-b952-4923-a94b-8c519aaf6fee")
-	)
 	(junction
 		(at 139.7 116.84)
 		(diameter 0)
@@ -1719,10 +1708,6 @@
 		(color 0 0 0 0)
 		(uuid "e022b66a-cee3-46cf-9f53-586aa0492248")
 	)
-	(no_connect
-		(at 157.48 82.55)
-		(uuid "e0f5dac4-4f03-40f6-8323-9210723208b1")
-	)
 	(wire
 		(pts
 			(xy 142.24 100.33) (xy 142.24 105.41)
@@ -1745,7 +1730,7 @@
 	)
 	(wire
 		(pts
-			(xy 157.48 82.55) (xy 157.48 88.9)
+			(xy 157.48 73.66) (xy 157.48 88.9)
 		)
 		(stroke
 			(width 0)
@@ -1935,6 +1920,16 @@
 	)
 	(wire
 		(pts
+			(xy 200.66 73.66) (xy 157.48 73.66)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b36ef727-15c4-4fdc-8534-a59ddd2d2f8d")
+	)
+	(wire
+		(pts
 			(xy 162.56 82.55) (xy 184.15 82.55)
 		)
 		(stroke
@@ -2065,6 +2060,17 @@
 			(justify right)
 		)
 		(uuid "50a69f3a-2ea2-4ee2-8d7f-f2c7d850c378")
+	)
+	(hierarchical_label "AC_AUX"
+		(shape output)
+		(at 200.66 73.66 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "e58d710f-f549-4eb9-aab4-9d0ed033b1d8")
 	)
 	(symbol
 		(lib_id "Device:C")

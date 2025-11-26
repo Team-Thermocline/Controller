@@ -5417,7 +5417,7 @@
 	)
 	(text "Be considerate\nthat if/when\nmultiple loads\nare switched at once.\nThis bus bears\nthe full load"
 		(exclude_from_sim no)
-		(at 48.26 185.42 0)
+		(at 53.34 185.42 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -5473,16 +5473,16 @@
 		(uuid "1028cfa1-4c39-460e-98d6-4cd768ff5b9c")
 	)
 	(junction
-		(at 48.26 184.15)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "578eb05a-2ca0-4451-9826-e03154158e9f")
-	)
-	(junction
 		(at 233.68 146.05)
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "5d400aca-e52a-4095-a5e6-864672093ee2")
+	)
+	(junction
+		(at 53.34 184.15)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "6adbe2eb-8aae-4935-82ff-0b9db7b256c8")
 	)
 	(junction
 		(at 161.29 176.53)
@@ -5491,10 +5491,10 @@
 		(uuid "70caf461-a532-4c9e-9303-0f18ca0b8f62")
 	)
 	(junction
-		(at 48.26 151.13)
+		(at 53.34 167.64)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "8bf42855-7f4a-4784-bbf2-6f0baebc361b")
+		(uuid "7d09dedd-e9ea-42d4-8260-6d48042f1c19")
 	)
 	(junction
 		(at 212.09 45.72)
@@ -5515,10 +5515,10 @@
 		(uuid "b0b2a868-4c2b-4d5a-bd6b-0b55916f47cf")
 	)
 	(junction
-		(at 48.26 167.64)
+		(at 53.34 151.13)
 		(diameter 0)
 		(color 0 0 0 0)
-		(uuid "ba80bd3e-9c0b-40e7-b8e3-c9fdf6c93b58")
+		(uuid "d8e9bd0a-ac36-4b3a-9961-9b51e37951c3")
 	)
 	(no_connect
 		(at 207.01 46.99)
@@ -5541,6 +5541,10 @@
 		(uuid "5166b841-bb38-44ed-bca7-9ab5d3109121")
 	)
 	(no_connect
+		(at 55.88 163.83)
+		(uuid "55c6abac-2d53-409a-bab9-8cd7fb0e81e7")
+	)
+	(no_connect
 		(at 184.15 80.01)
 		(uuid "70e034ef-0453-47f2-a450-a85f764130d4")
 	)
@@ -5555,6 +5559,10 @@
 	(no_connect
 		(at 184.15 82.55)
 		(uuid "ae4011cd-a7f4-4deb-ba86-028c1c30880a")
+	)
+	(no_connect
+		(at 55.88 180.34)
+		(uuid "b3c3ac70-fbd3-493d-8b3d-e82ab33fcaac")
 	)
 	(no_connect
 		(at 184.15 74.93)
@@ -5740,7 +5748,7 @@
 	)
 	(wire
 		(pts
-			(xy 81.28 148.59) (xy 97.79 148.59)
+			(xy 86.36 147.32) (xy 102.87 147.32)
 		)
 		(stroke
 			(width 0)
@@ -5820,7 +5828,7 @@
 	)
 	(wire
 		(pts
-			(xy 48.26 151.13) (xy 53.34 151.13)
+			(xy 53.34 151.13) (xy 58.42 151.13)
 		)
 		(stroke
 			(width 0)
@@ -5870,7 +5878,7 @@
 	)
 	(wire
 		(pts
-			(xy 27.94 134.62) (xy 33.02 134.62)
+			(xy 33.02 134.62) (xy 38.1 134.62)
 		)
 		(stroke
 			(width 0)
@@ -5897,16 +5905,6 @@
 			(type default)
 		)
 		(uuid "1de47f7a-9538-480f-a0b9-49270b715f96")
-	)
-	(wire
-		(pts
-			(xy 48.26 151.13) (xy 48.26 167.64)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "1e81de04-8c82-4802-9d34-ae7e8c387ee3")
 	)
 	(wire
 		(pts
@@ -5940,7 +5938,7 @@
 	)
 	(wire
 		(pts
-			(xy 27.94 146.05) (xy 53.34 146.05)
+			(xy 33.02 144.78) (xy 58.42 144.78)
 		)
 		(stroke
 			(width 0)
@@ -5960,7 +5958,7 @@
 	)
 	(wire
 		(pts
-			(xy 81.28 181.61) (xy 97.79 181.61)
+			(xy 86.36 180.34) (xy 102.87 180.34)
 		)
 		(stroke
 			(width 0)
@@ -6010,7 +6008,7 @@
 	)
 	(wire
 		(pts
-			(xy 118.11 143.51) (xy 130.81 143.51)
+			(xy 123.19 142.24) (xy 135.89 142.24)
 		)
 		(stroke
 			(width 0)
@@ -6070,13 +6068,23 @@
 	)
 	(wire
 		(pts
-			(xy 39.37 184.15) (xy 48.26 184.15)
+			(xy 44.45 184.15) (xy 53.34 184.15)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "348b240f-aabb-4fd2-8511-7a67235f9723")
+	)
+	(wire
+		(pts
+			(xy 33.02 130.81) (xy 58.42 130.81)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3594b7c9-1e27-4fc3-bc2d-13c319f3b51b")
 	)
 	(wire
 		(pts
@@ -6170,7 +6178,7 @@
 	)
 	(wire
 		(pts
-			(xy 27.94 151.13) (xy 33.02 151.13)
+			(xy 33.02 151.13) (xy 38.1 151.13)
 		)
 		(stroke
 			(width 0)
@@ -6218,6 +6226,16 @@
 		)
 		(uuid "4e76c3f0-95fc-48ec-8177-70d5ca77347d")
 	)
+	(wire
+		(pts
+			(xy 53.34 151.13) (xy 53.34 167.64)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4e8ed19d-4100-4614-b7eb-010729cf812c")
+	)
 	(bus
 		(pts
 			(xy 87.63 46.99) (xy 87.63 60.96)
@@ -6227,6 +6245,16 @@
 			(type default)
 		)
 		(uuid "4ede755c-a694-408c-b695-033fc955f91b")
+	)
+	(wire
+		(pts
+			(xy 33.02 147.32) (xy 58.42 147.32)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "514e6972-5cb8-4c8e-83c4-551b4d6086e6")
 	)
 	(wire
 		(pts
@@ -6250,7 +6278,7 @@
 	)
 	(wire
 		(pts
-			(xy 118.11 130.81) (xy 130.81 130.81)
+			(xy 123.19 129.54) (xy 135.89 129.54)
 		)
 		(stroke
 			(width 0)
@@ -6330,16 +6358,6 @@
 	)
 	(wire
 		(pts
-			(xy 48.26 167.64) (xy 48.26 184.15)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "634540f8-e04d-4d8d-b060-0a413ce4b315")
-	)
-	(wire
-		(pts
 			(xy 161.29 165.1) (xy 161.29 176.53)
 		)
 		(stroke
@@ -6357,6 +6375,16 @@
 			(type default)
 		)
 		(uuid "650e34a5-af01-4fb3-b9ca-1102a24a2a23")
+	)
+	(wire
+		(pts
+			(xy 55.88 163.83) (xy 58.42 163.83)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "654a51b1-89d5-4429-8901-06d2d7f0ff36")
 	)
 	(wire
 		(pts
@@ -6380,7 +6408,7 @@
 	)
 	(wire
 		(pts
-			(xy 27.94 162.56) (xy 53.34 162.56)
+			(xy 33.02 161.29) (xy 58.42 161.29)
 		)
 		(stroke
 			(width 0)
@@ -6480,7 +6508,7 @@
 	)
 	(wire
 		(pts
-			(xy 48.26 134.62) (xy 53.34 134.62)
+			(xy 53.34 134.62) (xy 58.42 134.62)
 		)
 		(stroke
 			(width 0)
@@ -6520,7 +6548,7 @@
 	)
 	(wire
 		(pts
-			(xy 81.28 165.1) (xy 97.79 165.1)
+			(xy 86.36 163.83) (xy 102.87 163.83)
 		)
 		(stroke
 			(width 0)
@@ -6540,7 +6568,7 @@
 	)
 	(wire
 		(pts
-			(xy 27.94 129.54) (xy 53.34 129.54)
+			(xy 33.02 128.27) (xy 58.42 128.27)
 		)
 		(stroke
 			(width 0)
@@ -6660,16 +6688,6 @@
 	)
 	(wire
 		(pts
-			(xy 48.26 134.62) (xy 48.26 151.13)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "8cf30e90-0831-484f-b3c3-2f0e1028754c")
-	)
-	(wire
-		(pts
 			(xy 193.04 142.24) (xy 193.04 146.05)
 		)
 		(stroke
@@ -6690,7 +6708,7 @@
 	)
 	(wire
 		(pts
-			(xy 48.26 184.15) (xy 53.34 184.15)
+			(xy 53.34 184.15) (xy 58.42 184.15)
 		)
 		(stroke
 			(width 0)
@@ -6710,7 +6728,7 @@
 	)
 	(wire
 		(pts
-			(xy 27.94 184.15) (xy 33.02 184.15)
+			(xy 33.02 184.15) (xy 38.1 184.15)
 		)
 		(stroke
 			(width 0)
@@ -6730,7 +6748,17 @@
 	)
 	(wire
 		(pts
-			(xy 48.26 167.64) (xy 53.34 167.64)
+			(xy 53.34 167.64) (xy 53.34 184.15)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9e1c820a-1c61-41be-be14-c52ea3a9db04")
+	)
+	(wire
+		(pts
+			(xy 53.34 167.64) (xy 58.42 167.64)
 		)
 		(stroke
 			(width 0)
@@ -6747,6 +6775,16 @@
 			(type default)
 		)
 		(uuid "a939c0e8-5498-45dd-9c2d-3694b622e4cb")
+	)
+	(wire
+		(pts
+			(xy 53.34 134.62) (xy 53.34 151.13)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "aa2c3145-c3ec-4a4c-8ebb-6fb58e831421")
 	)
 	(wire
 		(pts
@@ -6830,7 +6868,7 @@
 	)
 	(wire
 		(pts
-			(xy 81.28 132.08) (xy 97.79 132.08)
+			(xy 86.36 130.81) (xy 102.87 130.81)
 		)
 		(stroke
 			(width 0)
@@ -6950,7 +6988,7 @@
 	)
 	(wire
 		(pts
-			(xy 27.94 167.64) (xy 33.02 167.64)
+			(xy 33.02 167.64) (xy 38.1 167.64)
 		)
 		(stroke
 			(width 0)
@@ -7160,6 +7198,16 @@
 	)
 	(wire
 		(pts
+			(xy 55.88 180.34) (xy 58.42 180.34)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "efec5972-b4ae-4123-a566-fe4193382daf")
+	)
+	(wire
+		(pts
 			(xy 111.76 29.21) (xy 111.76 27.94)
 		)
 		(stroke
@@ -7190,7 +7238,7 @@
 	)
 	(wire
 		(pts
-			(xy 27.94 179.07) (xy 53.34 179.07)
+			(xy 33.02 177.8) (xy 58.42 177.8)
 		)
 		(stroke
 			(width 0)
@@ -7379,7 +7427,7 @@
 		(uuid "2795608a-0d58-4ef6-b50c-1466b591c44d")
 	)
 	(label "AC_N"
-		(at 33.02 151.13 180)
+		(at 38.1 151.13 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -7409,7 +7457,7 @@
 		(uuid "3bee8410-7b35-40e9-a1c7-d3a0c16caa4c")
 	)
 	(label "AC_N"
-		(at 33.02 167.64 180)
+		(at 38.1 167.64 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -7469,7 +7517,7 @@
 		(uuid "4dc9cc98-d39b-41a3-9b8e-3f2c0aa3d17b")
 	)
 	(label "EN_LOAD_4"
-		(at 97.79 132.08 180)
+		(at 102.87 130.81 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -7519,7 +7567,7 @@
 		(uuid "5c3856c0-61b1-48cf-a96a-5086e338e72c")
 	)
 	(label "EN_LOAD_6"
-		(at 130.81 130.81 180)
+		(at 135.89 129.54 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -7569,7 +7617,7 @@
 		(uuid "77202ea7-c5e2-44e3-9da3-3d80e4e2b5ad")
 	)
 	(label "EN_LOAD_3"
-		(at 97.79 148.59 180)
+		(at 102.87 147.32 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -7639,7 +7687,7 @@
 		(uuid "8be2a085-2464-41fe-b484-0bacd1e2e020")
 	)
 	(label "EN_LOAD_2"
-		(at 97.79 165.1 180)
+		(at 102.87 163.83 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -7659,7 +7707,7 @@
 		(uuid "99b7b9ee-59c7-4fa5-a682-d02613ec4ee3")
 	)
 	(label "EN_LOAD_5"
-		(at 130.81 143.51 180)
+		(at 135.89 142.24 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -7749,7 +7797,7 @@
 		(uuid "b515921f-e7e8-49c4-9d1f-68dfcffc5d1d")
 	)
 	(label "EN_LOAD_1"
-		(at 97.79 181.61 180)
+		(at 102.87 180.34 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -7809,7 +7857,7 @@
 		(uuid "d54db1f8-82f4-4e53-94e7-12f8f0242307")
 	)
 	(label "AC_L"
-		(at 39.37 184.15 0)
+		(at 44.45 184.15 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -7849,7 +7897,7 @@
 		(uuid "e19a5da9-fc90-48e8-b718-262680ebfb40")
 	)
 	(label "AC_N"
-		(at 33.02 184.15 180)
+		(at 38.1 184.15 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -7859,7 +7907,7 @@
 		(uuid "e7ff911e-2aa3-4a31-8cd3-0ec0e02db012")
 	)
 	(label "AC_N"
-		(at 33.02 134.62 180)
+		(at 38.1 134.62 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -8116,7 +8164,7 @@
 	)
 	(symbol
 		(lib_id "Connector_Generic:Conn_01x01")
-		(at 22.86 134.62 180)
+		(at 27.94 134.62 180)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -8124,23 +8172,25 @@
 		(dnp no)
 		(uuid "08b206e8-dee6-4996-bee7-a775991ea182")
 		(property "Reference" "J102"
-			(at 17.78 133.35 0)
+			(at 22.86 133.35 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(hide yes)
 			)
 		)
 		(property "Value" "AC_N"
-			(at 17.78 135.89 0)
+			(at 26.67 134.62 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
 		(property "Footprint" "Faston:Faston 63823"
-			(at 22.86 134.62 0)
+			(at 27.94 134.62 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8149,7 +8199,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 22.86 134.62 0)
+			(at 27.94 134.62 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8158,7 +8208,7 @@
 			)
 		)
 		(property "Description" "Generic connector, single row, 01x01, script generated (kicad-library-utils/schlib/autogen/connector/)"
-			(at 22.86 134.62 0)
+			(at 27.94 134.62 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8167,7 +8217,7 @@
 			)
 		)
 		(property "LCSC" "C532213"
-			(at 22.86 134.62 0)
+			(at 27.94 134.62 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8189,7 +8239,7 @@
 	)
 	(symbol
 		(lib_id "Connector_Generic:Conn_01x01")
-		(at 22.86 167.64 180)
+		(at 27.94 167.64 180)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -8197,23 +8247,25 @@
 		(dnp no)
 		(uuid "09fb851d-faed-4bc2-9d29-784d912790a7")
 		(property "Reference" "J106"
-			(at 17.78 166.37 0)
+			(at 22.86 166.37 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(hide yes)
 			)
 		)
 		(property "Value" "AC_N"
-			(at 17.78 168.91 0)
+			(at 26.67 167.64 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
 		(property "Footprint" "Faston:Faston 63823"
-			(at 22.86 167.64 0)
+			(at 27.94 167.64 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8222,7 +8274,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 22.86 167.64 0)
+			(at 27.94 167.64 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8231,7 +8283,7 @@
 			)
 		)
 		(property "Description" "Generic connector, single row, 01x01, script generated (kicad-library-utils/schlib/autogen/connector/)"
-			(at 22.86 167.64 0)
+			(at 27.94 167.64 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8240,7 +8292,7 @@
 			)
 		)
 		(property "LCSC" "C532213"
-			(at 22.86 167.64 0)
+			(at 27.94 167.64 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9856,7 +9908,7 @@
 	)
 	(symbol
 		(lib_id "Connector_Generic:Conn_01x01")
-		(at 22.86 184.15 180)
+		(at 27.94 184.15 180)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -9864,23 +9916,25 @@
 		(dnp no)
 		(uuid "622a778c-734e-4e7c-84ae-00dd4bd174be")
 		(property "Reference" "J108"
-			(at 17.78 182.88 0)
+			(at 22.86 182.88 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(hide yes)
 			)
 		)
 		(property "Value" "AC_N"
-			(at 17.78 185.42 0)
+			(at 26.67 184.15 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
 		(property "Footprint" "Faston:Faston 63823"
-			(at 22.86 184.15 0)
+			(at 27.94 184.15 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9889,7 +9943,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 22.86 184.15 0)
+			(at 27.94 184.15 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9898,7 +9952,7 @@
 			)
 		)
 		(property "Description" "Generic connector, single row, 01x01, script generated (kicad-library-utils/schlib/autogen/connector/)"
-			(at 22.86 184.15 0)
+			(at 27.94 184.15 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9907,7 +9961,7 @@
 			)
 		)
 		(property "LCSC" "C532213"
-			(at 22.86 184.15 0)
+			(at 27.94 184.15 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10070,7 +10124,7 @@
 	)
 	(symbol
 		(lib_id "Connector_Generic:Conn_01x01")
-		(at 22.86 179.07 180)
+		(at 27.94 177.8 180)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -10078,23 +10132,25 @@
 		(dnp no)
 		(uuid "6a091154-8e69-42f9-9c85-0a78f3a5626c")
 		(property "Reference" "J107"
-			(at 17.78 177.8 0)
+			(at 22.86 176.53 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(hide yes)
 			)
 		)
-		(property "Value" "LOAD_0"
-			(at 17.78 180.34 0)
+		(property "Value" "LOAD_1"
+			(at 26.67 177.8 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
 		(property "Footprint" "Faston:Faston 63823"
-			(at 22.86 179.07 0)
+			(at 27.94 177.8 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10103,7 +10159,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 22.86 179.07 0)
+			(at 27.94 177.8 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10112,7 +10168,7 @@
 			)
 		)
 		(property "Description" "Generic connector, single row, 01x01, script generated (kicad-library-utils/schlib/autogen/connector/)"
-			(at 22.86 179.07 0)
+			(at 27.94 177.8 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10121,7 +10177,7 @@
 			)
 		)
 		(property "LCSC" "C532213"
-			(at 22.86 179.07 0)
+			(at 27.94 177.8 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10353,7 +10409,7 @@
 	)
 	(symbol
 		(lib_id "Connector_Generic:Conn_01x01")
-		(at 22.86 146.05 180)
+		(at 27.94 144.78 180)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -10361,23 +10417,25 @@
 		(dnp no)
 		(uuid "760b296f-6984-4ea0-9dc3-202ec85034af")
 		(property "Reference" "J103"
-			(at 17.78 144.78 0)
+			(at 22.86 143.51 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(hide yes)
 			)
 		)
-		(property "Value" "LOAD_2"
-			(at 17.78 147.32 0)
+		(property "Value" "LOAD_3"
+			(at 26.67 144.78 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
 		(property "Footprint" "Faston:Faston 63823"
-			(at 22.86 146.05 0)
+			(at 27.94 144.78 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10386,7 +10444,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 22.86 146.05 0)
+			(at 27.94 144.78 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10395,7 +10453,7 @@
 			)
 		)
 		(property "Description" "Generic connector, single row, 01x01, script generated (kicad-library-utils/schlib/autogen/connector/)"
-			(at 22.86 146.05 0)
+			(at 27.94 144.78 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10404,7 +10462,7 @@
 			)
 		)
 		(property "LCSC" "C532213"
-			(at 22.86 146.05 0)
+			(at 27.94 144.78 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11049,6 +11107,81 @@
 		)
 	)
 	(symbol
+		(lib_id "Connector_Generic:Conn_01x01")
+		(at 27.94 147.32 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "9594a52c-cca8-4119-82cb-369207968cee")
+		(property "Reference" "J116"
+			(at 22.86 146.05 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "LOAD_3_AUX"
+			(at 26.67 147.32 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Faston:Faston 63823"
+			(at 27.94 147.32 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 27.94 147.32 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Generic connector, single row, 01x01, script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(at 27.94 147.32 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C532213"
+			(at 27.94 147.32 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "df1c1bb7-8f93-4a12-9dc2-6485e0e43c58")
+		)
+		(instances
+			(project "Main-Board"
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353"
+					(reference "J116")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:R_Small")
 		(at 156.21 176.53 90)
 		(unit 1)
@@ -11252,7 +11385,7 @@
 	)
 	(symbol
 		(lib_id "Connector_Generic:Conn_01x01")
-		(at 22.86 162.56 180)
+		(at 27.94 161.29 180)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -11260,23 +11393,25 @@
 		(dnp no)
 		(uuid "a501aeb9-0a42-4044-9ca4-013f1d8e34b2")
 		(property "Reference" "J105"
-			(at 17.78 161.29 0)
+			(at 22.86 160.02 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(hide yes)
 			)
 		)
-		(property "Value" "LOAD_1"
-			(at 17.78 163.83 0)
+		(property "Value" "LOAD_2"
+			(at 26.67 161.29 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
 		(property "Footprint" "Faston:Faston 63823"
-			(at 22.86 162.56 0)
+			(at 27.94 161.29 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11285,7 +11420,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 22.86 162.56 0)
+			(at 27.94 161.29 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11294,7 +11429,7 @@
 			)
 		)
 		(property "Description" "Generic connector, single row, 01x01, script generated (kicad-library-utils/schlib/autogen/connector/)"
-			(at 22.86 162.56 0)
+			(at 27.94 161.29 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11303,7 +11438,7 @@
 			)
 		)
 		(property "LCSC" "C532213"
-			(at 22.86 162.56 0)
+			(at 27.94 161.29 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11850,7 +11985,7 @@
 	)
 	(symbol
 		(lib_id "Connector_Generic:Conn_01x01")
-		(at 22.86 151.13 180)
+		(at 27.94 151.13 180)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -11858,23 +11993,25 @@
 		(dnp no)
 		(uuid "cd8f2513-1050-4b0f-9a3e-99033582361a")
 		(property "Reference" "J104"
-			(at 17.78 149.86 0)
+			(at 22.86 149.86 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(hide yes)
 			)
 		)
 		(property "Value" "AC_N"
-			(at 17.78 152.4 0)
+			(at 26.67 151.13 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
 		(property "Footprint" "Faston:Faston 63823"
-			(at 22.86 151.13 0)
+			(at 27.94 151.13 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11883,7 +12020,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 22.86 151.13 0)
+			(at 27.94 151.13 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11892,7 +12029,7 @@
 			)
 		)
 		(property "Description" "Generic connector, single row, 01x01, script generated (kicad-library-utils/schlib/autogen/connector/)"
-			(at 22.86 151.13 0)
+			(at 27.94 151.13 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -11901,7 +12038,7 @@
 			)
 		)
 		(property "LCSC" "C532213"
-			(at 22.86 151.13 0)
+			(at 27.94 151.13 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12601,7 +12738,7 @@
 	)
 	(symbol
 		(lib_id "Connector_Generic:Conn_01x01")
-		(at 22.86 129.54 180)
+		(at 27.94 128.27 180)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -12609,23 +12746,25 @@
 		(dnp no)
 		(uuid "f46abc78-75ed-48cf-96dd-c3f9429c2e18")
 		(property "Reference" "J101"
-			(at 17.78 128.27 0)
+			(at 22.86 127 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(hide yes)
 			)
 		)
-		(property "Value" "LOAD_3"
-			(at 17.78 130.81 0)
+		(property "Value" "LOAD_4"
+			(at 26.67 128.27 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
+				(justify left)
 			)
 		)
 		(property "Footprint" "Faston:Faston 63823"
-			(at 22.86 129.54 0)
+			(at 27.94 128.27 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12634,7 +12773,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 22.86 129.54 0)
+			(at 27.94 128.27 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12643,7 +12782,7 @@
 			)
 		)
 		(property "Description" "Generic connector, single row, 01x01, script generated (kicad-library-utils/schlib/autogen/connector/)"
-			(at 22.86 129.54 0)
+			(at 27.94 128.27 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12652,7 +12791,7 @@
 			)
 		)
 		(property "LCSC" "C532213"
-			(at 22.86 129.54 0)
+			(at 27.94 128.27 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12667,6 +12806,81 @@
 			(project "Main-Board"
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353"
 					(reference "J101")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector_Generic:Conn_01x01")
+		(at 27.94 130.81 180)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "f84d9962-b399-4ecc-9d36-5db1da837342")
+		(property "Reference" "J115"
+			(at 22.86 129.54 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "LOAD_4_AUX"
+			(at 26.67 130.81 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Faston:Faston 63823"
+			(at 27.94 130.81 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 27.94 130.81 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Generic connector, single row, 01x01, script generated (kicad-library-utils/schlib/autogen/connector/)"
+			(at 27.94 130.81 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C532213"
+			(at 27.94 130.81 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "81272ce6-c685-47c4-bdbe-2ec3b9c3223b")
+		)
+		(instances
+			(project "Main-Board"
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353"
+					(reference "J115")
 					(unit 1)
 				)
 			)
@@ -12777,7 +12991,7 @@
 		)
 	)
 	(sheet
-		(at 53.34 127)
+		(at 58.42 125.73)
 		(size 27.94 10.16)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -12793,7 +13007,7 @@
 		)
 		(uuid "19a61a3a-8fa1-436d-bd7d-2a5bbbba9ead")
 		(property "Sheetname" "AC Load3"
-			(at 53.34 126.2884 0)
+			(at 58.42 125.0184 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12802,7 +13016,7 @@
 			)
 		)
 		(property "Sheetfile" "ac_switch.kicad_sch"
-			(at 53.34 137.7446 0)
+			(at 58.42 136.4746 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12811,7 +13025,7 @@
 			)
 		)
 		(pin "EN" input
-			(at 81.28 132.08 0)
+			(at 86.36 130.81 0)
 			(uuid "ed121b75-a202-414b-9666-8947221c4b83")
 			(effects
 				(font
@@ -12821,7 +13035,7 @@
 			)
 		)
 		(pin "AC_LINE" input
-			(at 53.34 134.62 180)
+			(at 58.42 134.62 180)
 			(uuid "01693e4a-2216-4db6-b935-688d3d55bfb9")
 			(effects
 				(font
@@ -12831,8 +13045,18 @@
 			)
 		)
 		(pin "AC_LOAD" output
-			(at 53.34 129.54 180)
+			(at 58.42 128.27 180)
 			(uuid "acdd2296-4923-43a3-b4b9-c3924ce3599f")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "AC_AUX" output
+			(at 58.42 130.81 180)
+			(uuid "4382310a-8065-4ad7-8172-f86d05b71739")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12900,7 +13124,7 @@
 		)
 	)
 	(sheet
-		(at 53.34 176.53)
+		(at 58.42 175.26)
 		(size 27.94 10.16)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -12916,7 +13140,7 @@
 		)
 		(uuid "77a35e86-caa6-4e6d-bbef-068e3f149509")
 		(property "Sheetname" "AC Load"
-			(at 53.34 175.8184 0)
+			(at 58.42 174.5484 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12925,7 +13149,7 @@
 			)
 		)
 		(property "Sheetfile" "ac_switch.kicad_sch"
-			(at 53.34 187.2746 0)
+			(at 58.42 186.0046 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -12934,7 +13158,7 @@
 			)
 		)
 		(pin "EN" input
-			(at 81.28 181.61 0)
+			(at 86.36 180.34 0)
 			(uuid "b1441e91-93cd-46da-94d9-4b80a3d5a9d8")
 			(effects
 				(font
@@ -12944,7 +13168,7 @@
 			)
 		)
 		(pin "AC_LINE" input
-			(at 53.34 184.15 180)
+			(at 58.42 184.15 180)
 			(uuid "99cf5229-adf9-4cf1-bd1b-ceab7e2c26a7")
 			(effects
 				(font
@@ -12954,8 +13178,18 @@
 			)
 		)
 		(pin "AC_LOAD" output
-			(at 53.34 179.07 180)
+			(at 58.42 177.8 180)
 			(uuid "3f6b0a7d-76f3-4a91-ae1e-a63c6fafa8a8")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "AC_AUX" output
+			(at 58.42 180.34 180)
+			(uuid "d088d620-af01-4b87-b59b-053b28d66f08")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13127,7 +13361,7 @@
 		)
 	)
 	(sheet
-		(at 53.34 160.02)
+		(at 58.42 158.75)
 		(size 27.94 10.16)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -13143,7 +13377,7 @@
 		)
 		(uuid "c3e7d40a-c6bb-4448-a1ab-024312db52e9")
 		(property "Sheetname" "AC Load1"
-			(at 53.34 159.3084 0)
+			(at 58.42 158.0384 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13152,7 +13386,7 @@
 			)
 		)
 		(property "Sheetfile" "ac_switch.kicad_sch"
-			(at 53.34 170.7646 0)
+			(at 58.42 169.4946 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13161,7 +13395,7 @@
 			)
 		)
 		(pin "EN" input
-			(at 81.28 165.1 0)
+			(at 86.36 163.83 0)
 			(uuid "4d98bbd8-94ce-42ca-bf65-9534809108ba")
 			(effects
 				(font
@@ -13171,7 +13405,7 @@
 			)
 		)
 		(pin "AC_LINE" input
-			(at 53.34 167.64 180)
+			(at 58.42 167.64 180)
 			(uuid "84e79c70-04f4-40a9-bdf5-16fc0f4a6d67")
 			(effects
 				(font
@@ -13181,8 +13415,18 @@
 			)
 		)
 		(pin "AC_LOAD" output
-			(at 53.34 162.56 180)
+			(at 58.42 161.29 180)
 			(uuid "440d6e19-31ff-492c-9db5-cb859aaf7c62")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "AC_AUX" output
+			(at 58.42 163.83 180)
+			(uuid "5d1108b2-6e70-4c8d-81cc-efd4748cadf3")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13251,7 +13495,7 @@
 		)
 	)
 	(sheet
-		(at 104.14 127)
+		(at 109.22 125.73)
 		(size 13.97 7.62)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -13267,7 +13511,7 @@
 		)
 		(uuid "dfd58836-d62e-4b07-8992-5980d54d2aad")
 		(property "Sheetname" "EXT SSR"
-			(at 104.14 126.2884 0)
+			(at 109.22 125.0184 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13276,7 +13520,7 @@
 			)
 		)
 		(property "Sheetfile" "extSSR.kicad_sch"
-			(at 104.14 135.2046 0)
+			(at 109.22 133.9346 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13285,7 +13529,7 @@
 			)
 		)
 		(pin "EN" input
-			(at 118.11 130.81 0)
+			(at 123.19 129.54 0)
 			(uuid "05381f88-ca1b-4191-8df3-aba1b7ff270a")
 			(effects
 				(font
@@ -13355,7 +13599,7 @@
 		)
 	)
 	(sheet
-		(at 53.34 143.51)
+		(at 58.42 142.24)
 		(size 27.94 10.16)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -13371,7 +13615,7 @@
 		)
 		(uuid "eb3bd697-8b92-4dbb-b284-ee24031d3e18")
 		(property "Sheetname" "AC Load2"
-			(at 53.34 142.7984 0)
+			(at 58.42 141.5284 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13380,7 +13624,7 @@
 			)
 		)
 		(property "Sheetfile" "ac_switch.kicad_sch"
-			(at 53.34 154.2546 0)
+			(at 58.42 152.9846 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13389,7 +13633,7 @@
 			)
 		)
 		(pin "EN" input
-			(at 81.28 148.59 0)
+			(at 86.36 147.32 0)
 			(uuid "efff9f57-3236-4a53-822c-910627d5de31")
 			(effects
 				(font
@@ -13399,7 +13643,7 @@
 			)
 		)
 		(pin "AC_LINE" input
-			(at 53.34 151.13 180)
+			(at 58.42 151.13 180)
 			(uuid "5f39b6c4-afeb-408a-b8e2-4791b446c2ad")
 			(effects
 				(font
@@ -13409,8 +13653,18 @@
 			)
 		)
 		(pin "AC_LOAD" output
-			(at 53.34 146.05 180)
+			(at 58.42 144.78 180)
 			(uuid "700b92b9-03a8-41ae-abb7-3b5a60a47664")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "AC_AUX" output
+			(at 58.42 147.32 180)
+			(uuid "aa5f4735-79e4-49d7-b8b9-adf76d50dfd3")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13427,7 +13681,7 @@
 		)
 	)
 	(sheet
-		(at 104.14 139.7)
+		(at 109.22 138.43)
 		(size 13.97 7.62)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -13443,7 +13697,7 @@
 		)
 		(uuid "f90dd058-130c-414b-82e7-3126e686be65")
 		(property "Sheetname" "EXT SSR1"
-			(at 104.14 138.9884 0)
+			(at 109.22 137.7184 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13452,7 +13706,7 @@
 			)
 		)
 		(property "Sheetfile" "extSSR.kicad_sch"
-			(at 104.14 147.9046 0)
+			(at 109.22 146.6346 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -13461,7 +13715,7 @@
 			)
 		)
 		(pin "EN" input
-			(at 118.11 143.51 0)
+			(at 123.19 142.24 0)
 			(uuid "ce25b766-cf77-4f92-80ff-d1ef94ecc838")
 			(effects
 				(font
