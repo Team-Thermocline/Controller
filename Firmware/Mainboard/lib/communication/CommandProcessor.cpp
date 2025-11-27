@@ -120,6 +120,26 @@ static void processCommand(CommandProcessorParams *params, const Command &cmd) {
     JsonDocument replyData;
     replyData["status"] = "ok";
     replyData["uptime_ms"] = xTaskGetTickCount() * portTICK_PERIOD_MS;
+#ifdef REVISION
+    replyData["revision"] = REVISION;
+#else
+    replyData["revision"] = "Unknown";
+#endif
+#ifdef FWHOST
+    replyData["hostname"] = FWHOST;
+#else
+    replyData["hostname"] = "Unknown";
+#endif
+#ifdef USERNAME
+    replyData["builder"] = USERNAME;
+#else
+    replyData["builder"] = "Unknown";
+#endif
+#ifdef BUILD_DATE
+    replyData["build_date"] = BUILD_DATE;
+#else
+    replyData["build_date"] = "Unknown";
+#endif
     sendReply(serial, true, replyData.as<JsonObject>());
   } else {
     // Unknown command - send error
