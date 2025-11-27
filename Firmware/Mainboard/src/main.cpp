@@ -1,30 +1,54 @@
 #include "FreeRTOS.h"
+#include "pindefs.h"
+#include "queue.h"
 #include "task.h"
 #include <Arduino.h>
-#include <ArduinoJson.h>
+#include <CommTask.h>
+#include <Command.h>
+#include <CommandProcessor.h>
+#include <fault_led.h>
 
 static void blinkTask(void *pvParameters);
-static void commTask(void *pvParameters);
 
-static void sendHello();
-static void processSerialLine(const String &line, bool &handshakeComplete,
-                              bool &schemaError, TickType_t &lastDataTick,
-                              uint32_t &sequenceCounter);
-static void sendCommandAck(const char *payload);
-static void sendData(uint32_t sequenceCounter);
+// Command queue for processing incoming commands
+QueueHandle_t commandQueue = nullptr;
 
 void setup() {
   Serial.begin(115200);
   Serial.setTimeout(50);
   Serial.ignoreFlowControl(true);
 
-  pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(PIN_STAT, OUTPUT);
+
+  // Initialize fault LED
+  faultLedInit();
+
+  // Create command queue (can hold 10 commands)
+  commandQueue = xQueueCreate(10, sizeof(Command));
+  if (commandQueue == nullptr) {
+    // Failed to create queue - critical error, flash fault LED
+    faultLedFlash(100, 100, 0); // Flash forever (blocks)
+  }
 
   xTaskCreate(blinkTask, "blink", configMINIMAL_STACK_SIZE + 128, nullptr,
               tskIDLE_PRIORITY + 1, nullptr);
 
-  xTaskCreate(commTask, "comm", configMINIMAL_STACK_SIZE + 512, nullptr,
-              tskIDLE_PRIORITY + 2, nullptr);
+  // Create USB Serial comm task
+  static CommTaskParams usbSerialParams = {Interface::USB_SERIAL, &Serial,
+                                           commandQueue};
+  xTaskCreate(commTask, "comm_usb", configMINIMAL_STACK_SIZE + 512,
+              &usbSerialParams, tskIDLE_PRIORITY + 2, nullptr);
+
+  // Future: Create HMI Serial comm task (when Serial1 is configured)
+  // static CommTaskParams hmiSerialParams = {Interface::HMI_SERIAL, &Serial1};
+  // xTaskCreate(commTask, "comm_hmi", configMINIMAL_STACK_SIZE + 512,
+  //             &hmiSerialParams, tskIDLE_PRIORITY + 2, nullptr);
+
+  // Create command processor task
+  static CommandProcessorParams processorParams = {
+      commandQueue, &Serial, nullptr}; // HMI serial not configured yet
+  xTaskCreate(commandProcessorTask, "cmd_proc", configMINIMAL_STACK_SIZE + 512,
+              &processorParams, tskIDLE_PRIORITY + 3, nullptr);
 }
 
 void loop() {
@@ -36,115 +60,11 @@ static void blinkTask(void *pvParameters) {
   (void)pvParameters;
 
   for (;;) {
-    digitalWrite(LED_BUILTIN, HIGH);
+    digitalWrite(PIN_STAT, HIGH);
     vTaskDelay(pdMS_TO_TICKS(250));
-    digitalWrite(LED_BUILTIN, LOW);
+    digitalWrite(PIN_STAT, LOW);
     vTaskDelay(pdMS_TO_TICKS(250));
   }
-}
-
-static void commTask(void *pvParameters) {
-  (void)pvParameters;
-
-  TickType_t lastHelloTick = 0;
-  TickType_t lastDataTick = 0;
-  bool handshakeComplete = false;
-  bool schemaError = false;
-  uint32_t sequenceCounter = 1;
-
-  for (;;) {
-    TickType_t now = xTaskGetTickCount();
-
-    if (!handshakeComplete && !schemaError) {
-      if ((now - lastHelloTick) >= pdMS_TO_TICKS(2000)) {
-        sendHello();
-        lastHelloTick = now;
-      }
-    }
-
-    while (Serial.available() > 0) {
-      String line = Serial.readStringUntil('\n');
-      line.trim();
-      if (!line.isEmpty()) {
-        processSerialLine(line, handshakeComplete, schemaError, lastDataTick,
-                          sequenceCounter);
-      }
-    }
-
-    if (handshakeComplete && !schemaError) {
-      if ((now - lastDataTick) >= pdMS_TO_TICKS(2000)) {
-        sendData(sequenceCounter++);
-        lastDataTick = now;
-      }
-    }
-
-    vTaskDelay(pdMS_TO_TICKS(50));
-  }
-}
-
-static void sendHello() {
-  StaticJsonDocument<128> doc;
-  doc["type"] = "hello";
-  doc["fw"] = "1.0.0";
-  doc["schema"] = 1;
-  serializeJson(doc, Serial);
-  Serial.println();
-}
-
-static void processSerialLine(const String &line, bool &handshakeComplete,
-                              bool &schemaError, TickType_t &lastDataTick,
-                              uint32_t &sequenceCounter) {
-  StaticJsonDocument<256> doc;
-  DeserializationError err = deserializeJson(doc, line);
-  if (err) {
-    StaticJsonDocument<128> errorDoc;
-    errorDoc["type"] = "error";
-    errorDoc["message"] = "invalid_json";
-    errorDoc["detail"] = err.f_str();
-    serializeJson(errorDoc, Serial);
-    Serial.println();
-    return;
-  }
-
-  const char *type = doc["type"] | "";
-  if (strcmp(type, "hello_ack") == 0) {
-    const char *error = doc["error"] | nullptr;
-    if (error && strcmp(error, "unsupported_schema") == 0) {
-      schemaError = true;
-      handshakeComplete = false;
-
-      StaticJsonDocument<128> resp;
-      resp["type"] = "error";
-      resp["message"] = "unsupported schema";
-      serializeJson(resp, Serial);
-      Serial.println();
-    } else {
-      handshakeComplete = true;
-      schemaError = false;
-      lastDataTick = xTaskGetTickCount();
-      sequenceCounter = 1;
-    }
-  } else if (strcmp(type, "cmd") == 0) {
-    const char *payload = doc["data"] | "";
-    sendCommandAck(payload);
-  }
-}
-
-static void sendCommandAck(const char *payload) {
-  StaticJsonDocument<128> doc;
-  doc["type"] = "cmd_ack";
-  doc["data"] = payload ? payload : "";
-  serializeJson(doc, Serial);
-  Serial.println();
-}
-
-static void sendData(uint32_t sequenceCounter) {
-  StaticJsonDocument<128> doc;
-  doc["type"] = "data";
-  doc["seq"] = sequenceCounter;
-  doc["temp"] = 21.4;
-  serializeJson(doc, Serial);
-  Serial.println();
 }
 
 extern "C" {
