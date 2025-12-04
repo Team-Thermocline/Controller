@@ -13,6 +13,7 @@ static void sendReply(HardwareSerial *serial, bool success,
 static void sendErrorReply(HardwareSerial *serial, const char *message,
                            const char *detail = nullptr);
 static void processCommand(CommandProcessorParams *params, const Command &cmd);
+static void handleGetStatus(HardwareSerial *serial, const JsonObject &data);
 
 void commandProcessorTask(void *pvParameters) {
   CommandProcessorParams *params =
@@ -110,40 +111,56 @@ static void processCommand(CommandProcessorParams *params, const Command &cmd) {
 
   // Process command based on command name using switch-like pattern
   // Note: C++ doesn't support switch on strings, so we use if/else
+
+  // ************
+  // Ping command
+  // ************
   if (strcmp(cmd.command, "ping") == 0) {
     // Example: ping command - just respond with success
     JsonDocument replyData;
     replyData["message"] = "pong";
     sendReply(serial, true, replyData.as<JsonObject>());
+
+    // ******************
+    // Get status command
+    // ******************
   } else if (strcmp(cmd.command, "get_status") == 0) {
-    // Example: get_status command
-    JsonDocument replyData;
-    replyData["status"] = "ok";
-    replyData["uptime_ms"] = xTaskGetTickCount() * portTICK_PERIOD_MS;
-#ifdef REVISION
-    replyData["revision"] = REVISION;
-#else
-    replyData["revision"] = "Unknown";
-#endif
-#ifdef FWHOST
-    replyData["hostname"] = FWHOST;
-#else
-    replyData["hostname"] = "Unknown";
-#endif
-#ifdef USERNAME
-    replyData["builder"] = USERNAME;
-#else
-    replyData["builder"] = "Unknown";
-#endif
-#ifdef BUILD_DATE
-    replyData["build_date"] = BUILD_DATE;
-#else
-    replyData["build_date"] = "Unknown";
-#endif
-    sendReply(serial, true, replyData.as<JsonObject>());
+    handleGetStatus(serial, data);
+
+    // ***************
+    // Unknown command
+    // ***************
   } else {
-    // Unknown command - send error
     sendErrorReply(serial, "unknown_command",
                    "Command not recognized or not implemented");
   }
+}
+
+static void handleGetStatus(HardwareSerial *serial, const JsonObject &data) {
+  (void)data; // Unused for now, but available for future filtering options
+
+  JsonDocument replyData;
+  replyData["status"] = "ok";
+  replyData["uptime_ms"] = xTaskGetTickCount() * portTICK_PERIOD_MS;
+#ifdef REVISION
+  replyData["revision"] = REVISION;
+#else
+  replyData["revision"] = "Unknown";
+#endif
+#ifdef FWHOST
+  replyData["hostname"] = FWHOST;
+#else
+  replyData["hostname"] = "Unknown";
+#endif
+#ifdef USERNAME
+  replyData["builder"] = USERNAME;
+#else
+  replyData["builder"] = "Unknown";
+#endif
+#ifdef BUILD_DATE
+  replyData["build_date"] = BUILD_DATE;
+#else
+  replyData["build_date"] = "Unknown";
+#endif
+  sendReply(serial, true, replyData.as<JsonObject>());
 }
