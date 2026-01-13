@@ -31,14 +31,14 @@ jobs:
       - uses: INTI-CMNB/KiBot@v2_k9
         with:
           # Config file
-          config: Hardware/config.kibot.yaml
+          config: Hardware/main.kibot.yaml
           # Prefix for output in config file.
           dir: _hardwareOutput
 
           # Hardware Files
           #
-          schema: "Hardware/Interconnect-Board/Interconnect-Board.kicad_sch"
-          board: "Hardware/Interconnect-Board/Interconnect-Board.kicad_pcb"
+          schema: "Hardware/Main-Board/Main-Board.kicad_sch"
+          board: "Hardware/Main-Board/Main-Board.kicad_pcb"
           #
 
       - name: upload results
