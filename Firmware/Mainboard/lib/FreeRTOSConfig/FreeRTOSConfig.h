@@ -6,7 +6,9 @@
 
 #define configUSE_PREEMPTION 1
 #define configUSE_IDLE_HOOK 0
+#define configUSE_PASSIVE_IDLE_HOOK 1
 #define configUSE_TICK_HOOK 0
+#define configRUN_MULTIPLE_PRIORITIES 1
 #define configCPU_CLOCK_HZ (125000000UL)
 #define configTICK_RATE_HZ ((uint32_t)1000)
 #define configMAX_PRIORITIES 5
@@ -40,7 +42,11 @@
 
 #define configCHECK_FOR_STACK_OVERFLOW 2
 #define configUSE_MALLOC_FAILED_HOOK 1
-#define configUSE_TRACE_FACILITY 0
+#define configUSE_TRACE_FACILITY 1
+#define configUSE_STATS_FORMATTING_FUNCTIONS 1
+#define configUSE_TASK_PREEMPTION_DISABLE 1
+#define configNUMBER_OF_CORES 2
+#define configUSE_CORE_AFFINITY 1
 
 #define configPRIO_BITS 2
 #define configLIBRARY_LOWEST_INTERRUPT_PRIORITY 3
@@ -53,13 +59,25 @@
 
 #define configASSERT(x)                                                        \
   if ((x) == 0) {                                                              \
-    taskDISABLE_INTERRUPTS();                                                  \
+    __asm volatile("cpsid i");                                                 \
     for (;;) {                                                                 \
     }                                                                          \
   }
 
-#define vPortSVCHandler SVC_Handler
-#define xPortPendSVHandler PendSV_Handler
-#define xPortSysTickHandler SysTick_Handler
+// RP2040 SMP spinlock definitions (required for multi-core FreeRTOS)
+#ifndef configSMP_SPINLOCK_0
+#define configSMP_SPINLOCK_0    8  // PICO_SPINLOCK_ID_OS1
+#endif
+#ifndef configSMP_SPINLOCK_1
+#define configSMP_SPINLOCK_1    9  // PICO_SPINLOCK_ID_OS2
+#endif
+
+// Include API functions
+#ifndef INCLUDE_xQueueGetMutexHolder
+#define INCLUDE_xQueueGetMutexHolder 1
+#endif
+#ifndef INCLUDE_vTaskDelay
+#define INCLUDE_vTaskDelay 1
+#endif
 
 #endif /* FREERTOS_CONFIG_H */
