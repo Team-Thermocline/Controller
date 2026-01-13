@@ -14,17 +14,24 @@ static void blinkTask(void *pvParameters);
 QueueHandle_t commandQueue = nullptr;
 
 void setup() {
+  // USB Serial (for debugging/PC communication)
   Serial.begin(115200);
   Serial.setTimeout(50);
   Serial.ignoreFlowControl(true);
+
+  // HMI UART on pins 26 (TX) and 27 (RX)
+  Serial1.setTX(PIN_HMI_UART_TX);
+  Serial1.setRX(PIN_HMI_UART_RX);
+  Serial1.begin(115200);
+  Serial1.setTimeout(50);
 
   pinMode(PIN_STAT, OUTPUT);
 
   // Initialize fault LED
   faultLedInit();
 
-  // Create command queue (can hold 10 commands)
-  commandQueue = xQueueCreate(10, sizeof(Command));
+  // Create command queue (can hold 3 commands)
+  commandQueue = xQueueCreate(3, sizeof(Command));
   if (commandQueue == nullptr) {
     // Failed to create queue - critical error, flash fault LED
     faultLedFlash(100, 100, 0); // Flash forever (blocks)
@@ -36,19 +43,21 @@ void setup() {
   // Create USB Serial comm task
   static CommTaskParams usbSerialParams = {Interface::USB_SERIAL, &Serial,
                                            commandQueue};
-  xTaskCreate(commTask, "comm_usb", configMINIMAL_STACK_SIZE + 512,
+  xTaskCreate(commTask, "comm_usb", configMINIMAL_STACK_SIZE + 128,
               &usbSerialParams, tskIDLE_PRIORITY + 2, nullptr);
 
-  // Future: Create HMI Serial comm task (when Serial1 is configured)
-  // static CommTaskParams hmiSerialParams = {Interface::HMI_SERIAL, &Serial1};
-  // xTaskCreate(commTask, "comm_hmi", configMINIMAL_STACK_SIZE + 512,
-  //             &hmiSerialParams, tskIDLE_PRIORITY + 2, nullptr);
+  // Create HMI Serial comm task
+  static CommTaskParams hmiSerialParams = {Interface::HMI_SERIAL, &Serial1,
+                                           commandQueue};
+  xTaskCreate(commTask, "comm_hmi", configMINIMAL_STACK_SIZE + 128,
+              &hmiSerialParams, tskIDLE_PRIORITY + 2, nullptr);
 
   // Create command processor task
-  static CommandProcessorParams processorParams = {
-      commandQueue, &Serial, nullptr}; // HMI serial not configured yet
-  xTaskCreate(commandProcessorTask, "cmd_proc", configMINIMAL_STACK_SIZE + 512,
-              &processorParams, tskIDLE_PRIORITY + 3, nullptr);
+  // static CommandProcessorParams processorParams = {commandQueue, &Serial,
+  //                                                  &Serial1};
+  // xTaskCreate(commandProcessorTask, "cmd_proc", configMINIMAL_STACK_SIZE +
+  // 128,
+  //             &processorParams, tskIDLE_PRIORITY + 3, nullptr);
 }
 
 void loop() {

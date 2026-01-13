@@ -16,6 +16,9 @@ jobs:
   make_firmware:
     runs-on: ubuntu-latest
     name: Firmware Builder
+    strategy:
+      matrix:
+        project: [HMI, Mainboard]
 
     steps:
       - uses: actions/checkout@v4
@@ -43,7 +46,7 @@ jobs:
       - name: Run PlatformIO
         id: pio_build
         run: |
-          cd Firmware
+          cd Firmware/${{ matrix.project }}
           pio run 2>&1 | tee build_output.txt
           
       - name: Parse Memory Usage and Send to Discord
@@ -51,7 +54,7 @@ jobs:
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         run: |
-          cd Firmware
+          cd Firmware/${{ matrix.project }}
           
           # Get git version
           GIT_VERSION=$(git describe --tags --always --dirty 2>/dev/null || echo "unknown")
@@ -77,7 +80,7 @@ jobs:
             curl -H "Content-Type: application/json" \
               -d "{
                 \"embeds\": [{
-                  \"title\": \"New Firmware Build\",
+                  \"title\": \"New Firmware Build - ${{ matrix.project }}\",
                   \"description\": \"Firmware version **${GIT_VERSION}** built successfully!\",
                   \"color\": 3066993,
                   \"fields\": [
@@ -116,12 +119,16 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: Display_Binaries
-          path: Firmware/.pio/build/crowpanel_pico_hmi_43/*.uf2
+          name: ${{ matrix.project }}_Binaries
+          path: Firmware/${{ matrix.project }}/.pio/build/**/*.uf2
+          if-no-files-found: ignore
 
   delint:
     runs-on: ubuntu-latest
     name: Delinter
+    strategy:
+      matrix:
+        project: [HMI, Mainboard]
 
     steps:
       - uses: actions/checkout@v4
@@ -147,4 +154,4 @@ jobs:
           pip install --upgrade platformio
 
       - name: Run Delinter
-        run: cd Firmware && pio check
+        run: cd Firmware/${{ matrix.project }} && pio check
