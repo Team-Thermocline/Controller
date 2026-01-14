@@ -36132,7 +36132,7 @@
 				)
 			)
 		)
-		(property "LCSC#" ""
+		(property "LCSC#" "C579101"
 			(at 0 0 90)
 			(unlocked yes)
 			(layer "F.Fab")
