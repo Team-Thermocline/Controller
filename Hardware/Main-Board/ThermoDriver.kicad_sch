@@ -2405,6 +2405,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC" "C49678"
+			(at 106.68 115.57 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "dce3d7cf-6bde-4b96-9ea2-d4dda94185dd")
 		)
@@ -2575,6 +2584,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC" "C157931"
+			(at 83.82 139.7 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "f5c398c0-4c6b-4116-a33a-ff9615122494")
 		)
@@ -2654,6 +2672,15 @@
 		)
 		(property "Description" "Unpolarized capacitor, small symbol"
 			(at 114.3 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C1710"
+			(at 114.3 118.11 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2915,6 +2942,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC" "C1710"
+			(at 99.06 118.11 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "5b1ec16b-8a5d-4889-ba60-3e29b882c3cf")
 		)
@@ -3115,6 +3151,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC" "C95781"
+			(at 163.83 115.57 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "d25edacc-7235-493f-b94d-8d5d63891380")
 		)
@@ -3278,6 +3323,15 @@
 			)
 		)
 		(property "Description" "Resistor, small symbol"
+			(at 102.87 128.27 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C17408"
 			(at 102.87 128.27 0)
 			(effects
 				(font
@@ -3559,6 +3613,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC" "C4337252"
+			(at 95.25 146.05 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "8305a612-4924-48d8-a217-ca2c8ea1954e")
 		)
@@ -3639,6 +3702,15 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor, small symbol"
+			(at 156.21 78.74 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C49678"
 			(at 156.21 78.74 0)
 			(effects
 				(font
@@ -3810,6 +3882,15 @@
 			)
 		)
 		(property "Description" "Resistor, small symbol"
+			(at 110.49 128.27 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" "C17408"
 			(at 110.49 128.27 0)
 			(effects
 				(font
