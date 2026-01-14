@@ -1923,7 +1923,7 @@
 		)
 		(uuid "12a56d68-9df6-428b-8e4e-3279515af3ab")
 	)
-	(text "Might be anecdotal\nbut flyback is here\njust to prevent\nus kicking the\npnp every time we\ncycle off"
+	(text "Do not omit flyback\nprotection for NPN"
 		(exclude_from_sim no)
 		(at 140.97 93.98 0)
 		(effects
