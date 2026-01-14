@@ -6,11 +6,13 @@
 
 ![Banner](Static/Banner.png)
 
-This repo contains all the firmware and hardware for the EG-498-Temperature-Chamber-Team-Thermocline.
+This repo contains all the firmware and hardware for [Team Thermocline's](https://team-thermocline.github.io/) thermal chamber controller.
 
 If you're looking for the latest docs/builds, see our [Releases Page](https://github.com/Team-Thermocline/EG-498-Temperature-Chamber-Team-Thermocline/releases).
 
 # Getting Started
+
+## Clone This Repo
 
 First, clone this repo (and optionally checkout a branch)
 
@@ -19,7 +21,7 @@ git clone https://github.com/Team-Thermocline/EG-498-Temperature-Chamber-Team-Th
 cd EG-498-Temperature-Chamber-Team-Thermocline
 ```
 
-# Init Submodules
+### Init Submodules
 
 Some libraries and resources are included as submodules, run the following
 command to initialize them before opening the main sch
@@ -28,6 +30,16 @@ command to initialize them before opening the main sch
 
 ```shell
 git submodule update --init --recursive
+```
+
+## KiBot
+
+For automated DRC, ERC and other checks and automatic outputs, this project uses [kibot]()
+
+To run kibot locally, we reccomend using the docker version in a oneliner like this:
+
+```shell
+docker run --rm -v "$(pwd):/workspace" -v /tmp/kibot_output:/tmp/kibot_output -w /workspace ghcr.io/inti-cmnb/kicad9_auto_full:latest kibot -c Hardware/main.kibot.yaml -e Hardware/Main-Board/Main-Board.kicad_sch -b Hardware/Main-Board/Main-Board.kicad_pcb -d /tmp/kibot_output
 ```
 
 
