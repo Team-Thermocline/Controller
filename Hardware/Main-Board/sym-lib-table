@@ -3,4 +3,5 @@
   (lib (name "MCU_RaspberryPi_and_Boards")(type "KiCad")(uri "${KIPRJMOD}/libraries/KiCad-RP-Pico/RP-Pico Libraries/MCU_RaspberryPi_and_Boards.kicad_sym")(options "")(descr ""))
   (lib (name "KenwoodFox")(type "KiCad")(uri "${KIPRJMOD}/libraries/kenwoodfox-kicad-libraries/libraries/KenwoodFox.kicad_sym")(options "")(descr ""))
   (lib (name "thermocline-symbols")(type "KiCad")(uri "${KIPRJMOD}/libraries/thermocline-kicad-libraries/symbols/thermocline-symbols.kicad_sym")(options "")(descr ""))
+  (lib (name "snhu-logo")(type "KiCad")(uri "${KIPRJMOD}/libraries/thermocline-kicad-libraries/symbols/snhu-logo.kicad_sym")(options "")(descr ""))
 )
