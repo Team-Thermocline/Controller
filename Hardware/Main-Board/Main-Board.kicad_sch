@@ -10473,7 +10473,7 @@
 		(uuid "de9b3ae4-f886-4faf-b106-69a1eee778e7")
 	)
 	(label "CT0"
-		(at 84.7465 22.8288 180)
+		(at 84.7465 22.86 180)
 		(effects
 			(font
 				(size 1.27 1.27)
