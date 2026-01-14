@@ -1289,7 +1289,16 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C17477"
+		(property "LCSC" ""
+			(at 154.94 69.85 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC#" "C17477"
 			(at 154.94 69.85 0)
 			(effects
 				(font
@@ -1374,6 +1383,15 @@
 		)
 		(property "Sim.Pins" "1=K 2=A"
 			(at 135.89 80.01 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC#" ""
+			(at 135.89 80.01 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1525,7 +1543,16 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C17630"
+		(property "LCSC" ""
+			(at 135.89 69.85 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC#" "C17630"
 			(at 135.89 69.85 0)
 			(effects
 				(font
@@ -1676,6 +1703,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC#" ""
+			(at 137.16 97.79 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "a42dbcf4-8e74-4732-a000-a210ca307dbb")
 		)
@@ -1747,7 +1783,16 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C157931"
+		(property "LCSC" ""
+			(at 161.29 78.74 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC#" "C157931"
 			(at 161.29 78.74 0)
 			(effects
 				(font
@@ -1825,6 +1870,15 @@
 			)
 		)
 		(property "Description" "0.2A Ic, 40V Vce, Small Signal NPN Transistor, TO-92"
+			(at 143.51 97.79 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC#" ""
 			(at 143.51 97.79 0)
 			(effects
 				(font
