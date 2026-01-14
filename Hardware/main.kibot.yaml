@@ -23,7 +23,7 @@ filters:
     comment: "Only parts with JLC code"
     type: generic
     include_only:
-      - column: "LCSC"
+      - column: "LCSC#"
         regex: '^C\d+'
 
 variants:
@@ -38,9 +38,9 @@ outputs:
     comment: "Schematics and media for use in docs"
     type: svg_sch_print
 
-  - name: "3D Models"
-    comment: "3D Models"
-    type: export_3d
+  # - name: "3D Models"
+  #   comment: "3D Models"
+  #   type: export_3d
 
   - name: "3D Renders"
     comment: "3D Renders for docs!"
