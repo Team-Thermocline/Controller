@@ -2438,7 +2438,16 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C105759"
+		(property "LCSC" ""
+			(at 184.15 90.17 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC#" "C105759"
 			(at 184.15 90.17 0)
 			(effects
 				(font
@@ -2527,7 +2536,16 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C722171"
+		(property "LCSC" ""
+			(at 92.71 107.95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC#" "C722171"
 			(at 92.71 107.95 0)
 			(effects
 				(font
@@ -2627,6 +2645,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC#" ""
+			(at 121.92 99.06 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "cc3f75eb-3e49-4e1b-a7a9-087401d2be0f")
 		)
@@ -2664,7 +2691,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "45c983ea-1e93-4a6b-a8e1-2a6cf292bdb0")
-		(property "Reference" "R503"
+		(property "Reference" "R504"
 			(at 124.46 87.6299 0)
 			(effects
 				(font
@@ -2709,7 +2736,16 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C17630"
+		(property "LCSC" ""
+			(at 121.92 88.9 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC#" "C17630"
 			(at 121.92 88.9 0)
 			(effects
 				(font
@@ -2727,19 +2763,19 @@
 		(instances
 			(project "Main-Board"
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/19a61a3a-8fa1-436d-bd7d-2a5bbbba9ead"
-					(reference "R903")
+					(reference "R904")
 					(unit 1)
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/77a35e86-caa6-4e6d-bbef-068e3f149509"
-					(reference "R503")
+					(reference "R504")
 					(unit 1)
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/c3e7d40a-c6bb-4448-a1ab-024312db52e9"
-					(reference "R703")
+					(reference "R704")
 					(unit 1)
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/eb3bd697-8b92-4dbb-b284-ee24031d3e18"
-					(reference "R803")
+					(reference "R804")
 					(unit 1)
 				)
 			)
@@ -2755,7 +2791,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "609a8017-7096-4e37-b4e0-cb70aa9afedf")
-		(property "Reference" "R501"
+		(property "Reference" "R502"
 			(at 104.14 111.76 90)
 			(effects
 				(font
@@ -2798,7 +2834,16 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C95781"
+		(property "LCSC" ""
+			(at 104.14 116.84 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC#" "C95781"
 			(at 104.14 116.84 90)
 			(effects
 				(font
@@ -2816,19 +2861,19 @@
 		(instances
 			(project "Main-Board"
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/19a61a3a-8fa1-436d-bd7d-2a5bbbba9ead"
-					(reference "R901")
+					(reference "R902")
 					(unit 1)
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/77a35e86-caa6-4e6d-bbef-068e3f149509"
-					(reference "R501")
+					(reference "R502")
 					(unit 1)
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/c3e7d40a-c6bb-4448-a1ab-024312db52e9"
-					(reference "R701")
+					(reference "R702")
 					(unit 1)
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/eb3bd697-8b92-4dbb-b284-ee24031d3e18"
-					(reference "R801")
+					(reference "R802")
 					(unit 1)
 				)
 			)
@@ -2844,7 +2889,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "88c4557d-655e-476c-8fa5-a7062d461a49")
-		(property "Reference" "#PWR0503"
+		(property "Reference" "#PWR0504"
 			(at 149.86 87.63 0)
 			(effects
 				(font
@@ -2894,19 +2939,19 @@
 		(instances
 			(project "Main-Board"
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/19a61a3a-8fa1-436d-bd7d-2a5bbbba9ead"
-					(reference "#PWR0903")
+					(reference "#PWR0904")
 					(unit 1)
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/77a35e86-caa6-4e6d-bbef-068e3f149509"
-					(reference "#PWR0503")
+					(reference "#PWR0504")
 					(unit 1)
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/c3e7d40a-c6bb-4448-a1ab-024312db52e9"
-					(reference "#PWR0703")
+					(reference "#PWR0704")
 					(unit 1)
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/eb3bd697-8b92-4dbb-b284-ee24031d3e18"
-					(reference "#PWR0803")
+					(reference "#PWR0804")
 					(unit 1)
 				)
 			)
@@ -2970,6 +3015,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC#" ""
+			(at 147.32 116.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "3"
 			(uuid "7bc2b8ca-5936-484e-99c6-76c23f33db7f")
 		)
@@ -3010,7 +3064,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "95499f27-7906-47ec-b017-72916a7e4cc4")
-		(property "Reference" "R504"
+		(property "Reference" "R505"
 			(at 186.69 100.3299 0)
 			(effects
 				(font
@@ -3055,6 +3109,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC#" ""
+			(at 184.15 101.6 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "4caf00e5-c573-41ba-8d04-539ecda2b853")
 		)
@@ -3064,19 +3127,19 @@
 		(instances
 			(project ""
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/19a61a3a-8fa1-436d-bd7d-2a5bbbba9ead"
-					(reference "R904")
+					(reference "R905")
 					(unit 1)
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/77a35e86-caa6-4e6d-bbef-068e3f149509"
-					(reference "R504")
+					(reference "R505")
 					(unit 1)
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/c3e7d40a-c6bb-4448-a1ab-024312db52e9"
-					(reference "R704")
+					(reference "R705")
 					(unit 1)
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/eb3bd697-8b92-4dbb-b284-ee24031d3e18"
-					(reference "R804")
+					(reference "R805")
 					(unit 1)
 				)
 			)
@@ -3091,7 +3154,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "9894ed72-1c4f-49ad-93a6-6d842cc2baf6")
-		(property "Reference" "#PWR0501"
+		(property "Reference" "#PWR0502"
 			(at 107.95 137.16 0)
 			(effects
 				(font
@@ -3141,19 +3204,19 @@
 		(instances
 			(project "Main-Board"
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/19a61a3a-8fa1-436d-bd7d-2a5bbbba9ead"
-					(reference "#PWR0901")
+					(reference "#PWR0902")
 					(unit 1)
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/77a35e86-caa6-4e6d-bbef-068e3f149509"
-					(reference "#PWR0501")
+					(reference "#PWR0502")
 					(unit 1)
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/c3e7d40a-c6bb-4448-a1ab-024312db52e9"
-					(reference "#PWR0701")
+					(reference "#PWR0702")
 					(unit 1)
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/eb3bd697-8b92-4dbb-b284-ee24031d3e18"
-					(reference "#PWR0801")
+					(reference "#PWR0802")
 					(unit 1)
 				)
 			)
@@ -3169,7 +3232,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "a0dc74c3-6bf7-4586-8510-93cbba621f08")
-		(property "Reference" "#PWR0502"
+		(property "Reference" "#PWR0503"
 			(at 121.92 87.63 0)
 			(effects
 				(font
@@ -3219,19 +3282,19 @@
 		(instances
 			(project "Main-Board"
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/19a61a3a-8fa1-436d-bd7d-2a5bbbba9ead"
-					(reference "#PWR0902")
+					(reference "#PWR0903")
 					(unit 1)
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/77a35e86-caa6-4e6d-bbef-068e3f149509"
-					(reference "#PWR0502")
+					(reference "#PWR0503")
 					(unit 1)
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/c3e7d40a-c6bb-4448-a1ab-024312db52e9"
-					(reference "#PWR0702")
+					(reference "#PWR0703")
 					(unit 1)
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/eb3bd697-8b92-4dbb-b284-ee24031d3e18"
-					(reference "#PWR0802")
+					(reference "#PWR0803")
 					(unit 1)
 				)
 			)
@@ -3247,7 +3310,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "b8494cb4-7368-4968-9330-81440ab1a2c4")
-		(property "Reference" "R508"
+		(property "Reference" "R501"
 			(at 104.14 102.87 90)
 			(effects
 				(font
@@ -3290,7 +3353,16 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C95781"
+		(property "LCSC" ""
+			(at 104.14 107.95 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC#" "C95781"
 			(at 104.14 107.95 90)
 			(effects
 				(font
@@ -3308,19 +3380,19 @@
 		(instances
 			(project "Main-Board"
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/19a61a3a-8fa1-436d-bd7d-2a5bbbba9ead"
-					(reference "R905")
+					(reference "R901")
 					(unit 1)
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/77a35e86-caa6-4e6d-bbef-068e3f149509"
-					(reference "R508")
+					(reference "R501")
 					(unit 1)
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/c3e7d40a-c6bb-4448-a1ab-024312db52e9"
-					(reference "R705")
+					(reference "R701")
 					(unit 1)
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/eb3bd697-8b92-4dbb-b284-ee24031d3e18"
-					(reference "R805")
+					(reference "R801")
 					(unit 1)
 				)
 			)
@@ -3335,7 +3407,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "c55d3e64-87a1-45b5-b384-f6ff2be7f756")
-		(property "Reference" "#PWR0509"
+		(property "Reference" "#PWR0501"
 			(at 82.55 107.95 0)
 			(effects
 				(font
@@ -3385,19 +3457,19 @@
 		(instances
 			(project "Main-Board"
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/19a61a3a-8fa1-436d-bd7d-2a5bbbba9ead"
-					(reference "#PWR0905")
+					(reference "#PWR0901")
 					(unit 1)
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/77a35e86-caa6-4e6d-bbef-068e3f149509"
-					(reference "#PWR0509")
+					(reference "#PWR0501")
 					(unit 1)
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/c3e7d40a-c6bb-4448-a1ab-024312db52e9"
-					(reference "#PWR0705")
+					(reference "#PWR0701")
 					(unit 1)
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/eb3bd697-8b92-4dbb-b284-ee24031d3e18"
-					(reference "#PWR0805")
+					(reference "#PWR0801")
 					(unit 1)
 				)
 			)
@@ -3449,6 +3521,15 @@
 		)
 		(property "Description" "test point"
 			(at 139.7 116.84 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC#" ""
+			(at 139.7 116.84 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3552,7 +3633,16 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C258170"
+		(property "LCSC" ""
+			(at 142.24 96.52 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC#" "C258170"
 			(at 142.24 96.52 90)
 			(effects
 				(font
@@ -3598,7 +3688,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "dc078ed9-cb7c-466b-a1bf-9dcaa36fcac5")
-		(property "Reference" "R502"
+		(property "Reference" "R503"
 			(at 110.49 121.9199 0)
 			(effects
 				(font
@@ -3643,7 +3733,16 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C84376"
+		(property "LCSC" ""
+			(at 107.95 123.19 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC#" "C84376"
 			(at 107.95 123.19 0)
 			(effects
 				(font
@@ -3661,19 +3760,19 @@
 		(instances
 			(project "Main-Board"
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/19a61a3a-8fa1-436d-bd7d-2a5bbbba9ead"
-					(reference "R902")
+					(reference "R903")
 					(unit 1)
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/77a35e86-caa6-4e6d-bbef-068e3f149509"
-					(reference "R502")
+					(reference "R503")
 					(unit 1)
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/c3e7d40a-c6bb-4448-a1ab-024312db52e9"
-					(reference "R702")
+					(reference "R703")
 					(unit 1)
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/eb3bd697-8b92-4dbb-b284-ee24031d3e18"
-					(reference "R802")
+					(reference "R803")
 					(unit 1)
 				)
 			)
@@ -3688,7 +3787,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "deed6044-c096-48b9-847b-97f97a9e3e92")
-		(property "Reference" "#PWR0504"
+		(property "Reference" "#PWR0505"
 			(at 149.86 137.16 0)
 			(effects
 				(font
@@ -3738,19 +3837,19 @@
 		(instances
 			(project "Main-Board"
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/19a61a3a-8fa1-436d-bd7d-2a5bbbba9ead"
-					(reference "#PWR0904")
+					(reference "#PWR0905")
 					(unit 1)
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/77a35e86-caa6-4e6d-bbef-068e3f149509"
-					(reference "#PWR0504")
+					(reference "#PWR0505")
 					(unit 1)
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/c3e7d40a-c6bb-4448-a1ab-024312db52e9"
-					(reference "#PWR0704")
+					(reference "#PWR0705")
 					(unit 1)
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/eb3bd697-8b92-4dbb-b284-ee24031d3e18"
-					(reference "#PWR0804")
+					(reference "#PWR0805")
 					(unit 1)
 				)
 			)
@@ -3811,7 +3910,16 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C35449"
+		(property "LCSC" ""
+			(at 154.94 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC#" "C35449"
 			(at 154.94 96.52 0)
 			(effects
 				(font
