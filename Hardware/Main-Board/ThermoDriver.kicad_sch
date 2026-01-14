@@ -2842,7 +2842,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "86d53c71-8621-4172-a63f-76e2765d31bf")
-		(property "Reference" "#PWR0124"
+		(property "Reference" "#PWR0210"
 			(at 218.44 67.31 0)
 			(effects
 				(font
@@ -2898,19 +2898,19 @@
 			)
 			(project "Main-Board"
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/0682befe-b03d-4eef-b3f4-e121102c58a0"
-					(reference "#PWR0129")
+					(reference "#PWR0410")
 					(unit 1)
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/0a3f1c56-3b1b-46d6-8b68-5ab3bc06dc47"
-					(reference "#PWR0131")
+					(reference "#PWR0610")
 					(unit 1)
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/9ad4274c-a3cf-429a-84ee-9fa9dd23d602"
-					(reference "#PWR0127")
+					(reference "#PWR0310")
 					(unit 1)
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/deda2255-9a1d-4c4b-b8a3-23ecc8a0890b"
-					(reference "#PWR0124")
+					(reference "#PWR0210")
 					(unit 1)
 				)
 			)
@@ -3446,7 +3446,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "b7ddb047-faeb-434d-8a16-7da7783c5114")
-		(property "Reference" "#PWR0125"
+		(property "Reference" "#PWR0211"
 			(at 218.44 82.55 0)
 			(effects
 				(font
@@ -3502,19 +3502,19 @@
 			)
 			(project "Main-Board"
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/0682befe-b03d-4eef-b3f4-e121102c58a0"
-					(reference "#PWR0130")
+					(reference "#PWR0411")
 					(unit 1)
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/0a3f1c56-3b1b-46d6-8b68-5ab3bc06dc47"
-					(reference "#PWR0132")
+					(reference "#PWR0611")
 					(unit 1)
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/9ad4274c-a3cf-429a-84ee-9fa9dd23d602"
-					(reference "#PWR0128")
+					(reference "#PWR0311")
 					(unit 1)
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/deda2255-9a1d-4c4b-b8a3-23ecc8a0890b"
-					(reference "#PWR0125")
+					(reference "#PWR0211")
 					(unit 1)
 				)
 			)
@@ -4041,7 +4041,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "f20de457-a118-4e1c-9b6a-c677099016ce")
-		(property "Reference" "J1"
+		(property "Reference" "J202"
 			(at 188.595 60.96 0)
 			(effects
 				(font
@@ -4114,19 +4114,19 @@
 			)
 			(project "Main-Board"
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/0682befe-b03d-4eef-b3f4-e121102c58a0"
-					(reference "J3")
+					(reference "J402")
 					(unit 1)
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/0a3f1c56-3b1b-46d6-8b68-5ab3bc06dc47"
-					(reference "J4")
+					(reference "J602")
 					(unit 1)
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/9ad4274c-a3cf-429a-84ee-9fa9dd23d602"
-					(reference "J2")
+					(reference "J302")
 					(unit 1)
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/deda2255-9a1d-4c4b-b8a3-23ecc8a0890b"
-					(reference "J1")
+					(reference "J202")
 					(unit 1)
 				)
 			)
