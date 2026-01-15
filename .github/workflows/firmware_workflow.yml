@@ -16,6 +16,9 @@ jobs:
   make_firmware:
     runs-on: ubuntu-latest
     name: Firmware Builder
+    strategy:
+      matrix:
+        project: [HMI, Mainboard]
 
     steps:
       - uses: actions/checkout@v4
@@ -35,22 +38,99 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
       - name: Set up Python
         uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
       - name: Install PlatformIO
         run: |
           python -m pip install --upgrade pip
           pip install --upgrade platformio
 
       - name: Run PlatformIO
-        run: cd Firmware && make build
+        id: pio_build
+        run: |
+          cd Firmware/${{ matrix.project }}
+          pio run 2>&1 | tee build_output.txt
+          
+      - name: Parse Memory Usage and Send to Discord
+        if: success()
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          cd Firmware/${{ matrix.project }}
+          
+          # Get git version
+          GIT_VERSION=$(git describe --tags --always --dirty 2>/dev/null || echo "unknown")
+          
+          # Parse RAM usage
+          RAM_PERCENT=$(grep -oP 'RAM:\s+\[.*?\]\s+\K[\d.]+(?=%)' build_output.txt || echo "N/A")
+          RAM_USED=$(grep -oP 'RAM:.*?used \K[\d]+' build_output.txt || echo "N/A")
+          RAM_TOTAL=$(grep -oP 'RAM:.*?from \K[\d]+' build_output.txt || echo "N/A")
+          
+          # Parse Flash usage
+          FLASH_PERCENT=$(grep -oP 'Flash:\s+\[.*?\]\s+\K[\d.]+(?=%)' build_output.txt || echo "N/A")
+          FLASH_USED=$(grep -oP 'Flash:.*?used \K[\d]+' build_output.txt || echo "N/A")
+          FLASH_TOTAL=$(grep -oP 'Flash:.*?from \K[\d]+' build_output.txt || echo "N/A")
+          
+          # Format bytes to KB
+          RAM_USED_KB=$((RAM_USED / 1024))
+          RAM_TOTAL_KB=$((RAM_TOTAL / 1024))
+          FLASH_USED_KB=$((FLASH_USED / 1024))
+          FLASH_TOTAL_KB=$((FLASH_TOTAL / 1024))
+          
+          # Create Discord message
+          if [ -n "$DISCORD_WEBHOOK" ]; then
+            curl -H "Content-Type: application/json" \
+              -d "{
+                \"embeds\": [{
+                  \"title\": \"New Firmware Build - ${{ matrix.project }}\",
+                  \"description\": \"Firmware version **${GIT_VERSION}** built successfully!\",
+                  \"color\": 3066993,
+                  \"fields\": [
+                    {
+                      \"name\": \"Flash Usage\",
+                      \"value\": \"${FLASH_PERCENT}% (${FLASH_USED_KB} KB / ${FLASH_TOTAL_KB} KB)\",
+                      \"inline\": true
+                    },
+                    {
+                      \"name\": \"RAM Usage\",
+                      \"value\": \"${RAM_PERCENT}% (${RAM_USED_KB} KB / ${RAM_TOTAL_KB} KB)\",
+                      \"inline\": true
+                    },
+                    {
+                      \"name\": \"Version\",
+                      \"value\": \"${GIT_VERSION}\",
+                      \"inline\": false
+                    },
+                    {
+                      \"name\": \"Build\",
+                      \"value\": \"[View on GitHub](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})\",
+                      \"inline\": false
+                    }
+                  ],
+                  \"timestamp\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"
+                }]
+              }" \
+              "$DISCORD_WEBHOOK"
+            echo "Discord notification sent!"
+          else
+            echo "No Discord webhook configured, skipping notification"
+            echo "Version: ${GIT_VERSION}"
+            echo "Flash: ${FLASH_PERCENT}% (${FLASH_USED_KB} KB / ${FLASH_TOTAL_KB} KB)"
+            echo "RAM: ${RAM_PERCENT}% (${RAM_USED_KB} KB / ${RAM_TOTAL_KB} KB)"
+          fi
 
       - uses: actions/upload-artifact@v4
         with:
-          name: Display_Binaries
-          path: Firmware/.pio/build/ATmega328P/firmware.*
+          name: ${{ matrix.project }}_Binaries
+          path: Firmware/${{ matrix.project }}/.pio/build/**/*.uf2
+          if-no-files-found: ignore
 
   delint:
     runs-on: ubuntu-latest
     name: Delinter
+    strategy:
+      matrix:
+        project: [HMI, Mainboard]
 
     steps:
       - uses: actions/checkout@v4
@@ -70,11 +150,12 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
       - name: Set up Python
         uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
       - name: Install PlatformIO
         run: |
           python -m pip install --upgrade pip
           pip install --upgrade platformio
 
       - name: Run Delinter
-        run: cd Firmware && pio check
-#
+        run: cd Firmware/${{ matrix.project }} && pio check
