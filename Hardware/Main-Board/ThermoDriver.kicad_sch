@@ -257,6 +257,113 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "Connector:TestPoint"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0.762)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "TP"
+				(at 0 6.858 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "TestPoint"
+				(at 0 5.08 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 5.08 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 5.08 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "test point"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "test point tp"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "Pin* Test*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "TestPoint_0_1"
+				(circle
+					(center 0 3.302)
+					(radius 0.762)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "TestPoint_1_1"
+				(pin passive line
+					(at 0 0 90)
+					(length 2.54)
+					(name "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "Connector_Generic:Conn_01x02"
 			(pin_names
 				(offset 1.016)
@@ -1502,6 +1609,12 @@
 		(uuid "7054dc6e-77b5-4e9b-83f4-f21369796f4a")
 	)
 	(junction
+		(at 166.37 100.33)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "916e58ee-6127-41e1-984b-5ad92c168104")
+	)
+	(junction
 		(at 149.86 120.65)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -1524,6 +1637,16 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "fd178f63-7107-41d9-aacb-9c21e0c7a9bf")
+	)
+	(wire
+		(pts
+			(xy 166.37 100.33) (xy 167.64 100.33)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0183a602-8de6-4e5c-b306-4f8131f3e5fe")
 	)
 	(wire
 		(pts
@@ -1557,7 +1680,7 @@
 	)
 	(wire
 		(pts
-			(xy 160.02 100.33) (xy 167.64 100.33)
+			(xy 160.02 100.33) (xy 166.37 100.33)
 		)
 		(stroke
 			(width 0)
@@ -3326,6 +3449,92 @@
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/deda2255-9a1d-4c4b-b8a3-23ecc8a0890b"
 					(reference "#PWR0205")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 166.37 100.33 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "ab393f36-1e14-46ea-b490-9df9651758bd")
+		(property "Reference" "TP201"
+			(at 166.37 95.758 0)
+			(effects
+				(font
+					(size 0.508 0.508)
+				)
+			)
+		)
+		(property "Value" "TestPoint"
+			(at 168.91 97.028 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_D2.0mm"
+			(at 171.45 100.33 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 171.45 100.33 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "test point"
+			(at 166.37 100.33 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC#" ""
+			(at 166.37 100.33 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "37804a9e-0b2d-42c2-91ab-c6e83c812573")
+		)
+		(instances
+			(project "Main-Board"
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/0682befe-b03d-4eef-b3f4-e121102c58a0"
+					(reference "TP401")
+					(unit 1)
+				)
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/0a3f1c56-3b1b-46d6-8b68-5ab3bc06dc47"
+					(reference "TP601")
+					(unit 1)
+				)
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/9ad4274c-a3cf-429a-84ee-9fa9dd23d602"
+					(reference "TP301")
+					(unit 1)
+				)
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/deda2255-9a1d-4c4b-b8a3-23ecc8a0890b"
+					(reference "TP201")
 					(unit 1)
 				)
 			)

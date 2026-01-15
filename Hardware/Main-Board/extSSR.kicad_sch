@@ -1186,6 +1186,17 @@
 			(embedded_fonts no)
 		)
 	)
+	(text "Protection diode only needed\nfor physical external relay\ncan be ommitted for SSR"
+		(exclude_from_sim no)
+		(at 167.894 86.614 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "653aae8d-d363-4f78-a7fd-eef3b422825c")
+	)
 	(junction
 		(at 146.05 87.63)
 		(diameter 0)
