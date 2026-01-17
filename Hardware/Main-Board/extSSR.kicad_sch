@@ -2355,7 +2355,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC#" ""
+		(property "LCSC#" "C124482"
 			(at 143.51 97.79 0)
 			(effects
 				(font

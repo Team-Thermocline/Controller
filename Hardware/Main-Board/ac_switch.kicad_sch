@@ -3033,7 +3033,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC#" ""
+		(property "LCSC#" "C124482"
 			(at 147.32 116.84 0)
 			(effects
 				(font
