@@ -7679,7 +7679,7 @@
 	)
 	(polyline
 		(pts
-			(xy 283.21 133.35) (xy 283.21 165.1)
+			(xy 284.48 133.35) (xy 284.48 165.1)
 		)
 		(stroke
 			(width 0)
@@ -8256,6 +8256,16 @@
 			(type default)
 		)
 		(uuid "3f7e456c-cedf-448e-8e9e-47bbe5fba405")
+	)
+	(wire
+		(pts
+			(xy 146.05 33.02) (xy 146.05 35.56)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3ff650d1-a62d-4486-b9bc-687397d378c5")
 	)
 	(wire
 		(pts
@@ -9029,7 +9039,7 @@
 	)
 	(polyline
 		(pts
-			(xy 165.1 133.35) (xy 283.21 133.35)
+			(xy 165.1 133.35) (xy 284.48 133.35)
 		)
 		(stroke
 			(width 0)
@@ -9819,6 +9829,16 @@
 	)
 	(wire
 		(pts
+			(xy 146.05 25.4) (xy 146.05 27.94)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "d7987dc8-cdaf-452c-a848-5c29f7614f24")
+	)
+	(wire
+		(pts
 			(xy 109.22 48.26) (xy 120.65 48.26)
 		)
 		(stroke
@@ -9999,7 +10019,7 @@
 	)
 	(polyline
 		(pts
-			(xy 283.21 165.1) (xy 165.1 165.1)
+			(xy 284.48 165.1) (xy 165.1 165.1)
 		)
 		(stroke
 			(width 0)
@@ -12023,6 +12043,76 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:C_Small")
+		(at 146.05 30.48 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "233e689e-c499-41b0-a9b9-2ac3a08f3a38")
+		(property "Reference" "C1"
+			(at 148.59 29.2162 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "100nF"
+			(at 148.59 31.7562 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0805_2012Metric"
+			(at 146.05 30.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 146.05 30.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor, small symbol"
+			(at 146.05 30.48 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "c96caf9e-cdb7-4c34-a8e2-813007a1bdf5")
+		)
+		(pin "1"
+			(uuid "22e74687-f0e8-40c5-b925-0131c1b59707")
+		)
+		(instances
+			(project "Main-Board"
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353"
+					(reference "C1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:R_Small")
 		(at 102.87 96.52 0)
 		(unit 1)
@@ -12739,7 +12829,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_JST:JST_XH_S2B-XH-A_1x02_P2.50mm_Horizontal"
+		(property "Footprint" "Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical"
 			(at 132.08 157.48 0)
 			(effects
 				(font
@@ -13753,7 +13843,7 @@
 				)
 			)
 		)
-		(property "Value" "SW_5"
+		(property "Value" "SW_6"
 			(at 156.21 154.94 90)
 			(effects
 				(font
@@ -13761,7 +13851,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_JST:JST_XH_S2B-XH-A_1x02_P2.50mm_Horizontal"
+		(property "Footprint" "Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical"
 			(at 154.94 157.48 0)
 			(effects
 				(font
@@ -14289,7 +14379,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_JST:JST_XH_S2B-XH-A_1x02_P2.50mm_Horizontal"
+		(property "Footprint" "Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical"
 			(at 139.7 157.48 0)
 			(effects
 				(font
@@ -16696,7 +16786,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_JST:JST_XH_S2B-XH-A_1x02_P2.50mm_Horizontal"
+		(property "Footprint" "Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical"
 			(at 116.84 157.48 0)
 			(effects
 				(font
@@ -17479,6 +17569,136 @@
 		)
 	)
 	(symbol
+		(lib_id "power:GND")
+		(at 146.05 35.56 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "d0b2d1de-986c-4531-ba01-17ce66ff2bdc")
+		(property "Reference" "#PWR02"
+			(at 146.05 41.91 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 146.05 39.116 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 146.05 35.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 146.05 35.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 146.05 35.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "a2980888-4a73-4f98-b3d2-e6fb70ec03ad")
+		)
+		(instances
+			(project "Main-Board"
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353"
+					(reference "#PWR02")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3.3V")
+		(at 146.05 25.4 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "d2d64920-de6f-4efb-b190-6993c577d3c9")
+		(property "Reference" "#PWR01"
+			(at 146.05 29.21 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3.3V"
+			(at 146.05 21.59 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 146.05 25.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 146.05 25.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
+			(at 146.05 25.4 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "ab0e3cd5-784c-4037-9a47-e7179a2a28aa")
+		)
+		(instances
+			(project "Main-Board"
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353"
+					(reference "#PWR01")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Connector_Generic:Conn_01x01")
 		(at 170.18 142.24 180)
 		(unit 1)
@@ -18023,7 +18243,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_JST:JST_XH_S2B-XH-A_1x02_P2.50mm_Horizontal"
+		(property "Footprint" "Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical"
 			(at 147.32 157.48 0)
 			(effects
 				(font
@@ -18875,7 +19095,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Connector_JST:JST_XH_S2B-XH-A_1x02_P2.50mm_Horizontal"
+		(property "Footprint" "Connector_JST:JST_XH_B2B-XH-A_1x02_P2.50mm_Vertical"
 			(at 124.46 157.48 0)
 			(effects
 				(font
