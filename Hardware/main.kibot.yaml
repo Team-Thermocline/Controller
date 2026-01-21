@@ -15,8 +15,8 @@ preflight:
       command: "git describe --always --tags"
     - name: "ISSUE"
       command: "date '+%Y-%m-%d'"
-    # - name: "KENWOODFOX_3DMODELS" # My custom libs!
-    #   command: "echo 'Hardware/Interconnect-Board/Libraries/kenwoodfox-kicad-libraries/3d'"
+    - name: "KENWOODFOX_3DMODELS" # My custom libs!
+      command: "echo 'Hardware/Main-Board/Libraries/kenwoodfox-kicad-libraries/3d'"
 
 filters:
   - name: only_jlc_parts
@@ -47,7 +47,7 @@ outputs:
     type: render_3d
     options:
       ray_tracing: true
-      rotate_z: 9
+      rotate_z: 1
       rotate_x: 1
       rotate_y: 1
       zoom: -4
