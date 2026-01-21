@@ -7351,7 +7351,7 @@
 		(uuid "0b0539fb-e943-4f15-9a04-32115634fc11")
 	)
 	(bus_entry
-		(at 85.09 62.23)
+		(at 85.09 60.96)
 		(size 2.54 2.54)
 		(stroke
 			(width 0)
@@ -8379,7 +8379,7 @@
 	)
 	(bus
 		(pts
-			(xy 87.63 64.77) (xy 87.63 73.66)
+			(xy 87.63 63.5) (xy 87.63 73.66)
 		)
 		(stroke
 			(width 0)
@@ -8396,16 +8396,6 @@
 			(type default)
 		)
 		(uuid "4e68b177-660f-420f-a9e7-aab5c4fd174f")
-	)
-	(wire
-		(pts
-			(xy 71.12 48.26) (xy 85.09 48.26)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "4e76c3f0-95fc-48ec-8177-70d5ca77347d")
 	)
 	(wire
 		(pts
@@ -8429,7 +8419,7 @@
 	)
 	(bus
 		(pts
-			(xy 87.63 50.8) (xy 87.63 64.77)
+			(xy 87.63 50.8) (xy 87.63 63.5)
 		)
 		(stroke
 			(width 0)
@@ -8906,6 +8896,16 @@
 			(type default)
 		)
 		(uuid "76209ca5-91ca-40b1-a6fb-2be9710d44af")
+	)
+	(wire
+		(pts
+			(xy 71.12 48.26) (xy 85.09 48.26)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "771a05b2-47b5-47f4-a52e-ab70be4049a1")
 	)
 	(wire
 		(pts
@@ -9409,13 +9409,13 @@
 	)
 	(wire
 		(pts
-			(xy 71.12 62.23) (xy 85.09 62.23)
+			(xy 71.12 60.96) (xy 85.09 60.96)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "b1e56684-cf9a-47fa-b1b9-5d27cb2aadc7")
+		(uuid "aff43175-b6c9-45b2-88ca-27acce9e31da")
 	)
 	(wire
 		(pts
@@ -10748,7 +10748,7 @@
 		(uuid "7f20682e-007f-4624-b8a3-106c68df7c43")
 	)
 	(label "CT3"
-		(at 85.09 62.23 180)
+		(at 85.09 60.96 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -19342,7 +19342,7 @@
 		)
 	)
 	(sheet
-		(at 58.42 45.72)
+		(at 58.42 58.42)
 		(size 12.7 5.08)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -19357,7 +19357,7 @@
 		)
 		(uuid "4d2bd27d-8ac2-4067-b305-f70bba583845")
 		(property "Sheetname" "Current Sensor3"
-			(at 58.42 45.0084 0)
+			(at 58.42 57.7084 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -19366,7 +19366,7 @@
 			)
 		)
 		(property "Sheetfile" "CurrentSensor.kicad_sch"
-			(at 58.42 52.07 0)
+			(at 58.42 64.77 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -19375,7 +19375,7 @@
 			)
 		)
 		(pin "CT_OUT" output
-			(at 71.12 48.26 0)
+			(at 71.12 60.96 0)
 			(uuid "aea9edf4-0309-49a7-b451-75c324164f30")
 			(effects
 				(font
@@ -19475,7 +19475,7 @@
 		)
 	)
 	(sheet
-		(at 58.42 59.69)
+		(at 58.42 45.72)
 		(size 12.7 5.08)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -19490,7 +19490,7 @@
 		)
 		(uuid "79d891a4-f89e-4d0e-b573-820315325bac")
 		(property "Sheetname" "Current Sensor2"
-			(at 58.42 58.42 0)
+			(at 58.42 44.45 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -19499,7 +19499,7 @@
 			)
 		)
 		(property "Sheetfile" "CurrentSensor.kicad_sch"
-			(at 58.42 65.3546 0)
+			(at 58.42 51.3846 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -19508,7 +19508,7 @@
 			)
 		)
 		(pin "CT_OUT" output
-			(at 71.12 62.23 0)
+			(at 71.12 48.26 0)
 			(uuid "09ecb09f-dc23-4d97-a71b-3da4b573fc86")
 			(effects
 				(font
