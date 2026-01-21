@@ -64,7 +64,7 @@
       },
       "rule_severities": {
         "annular_width": "error",
-        "clearance": "error",
+        "clearance": "warning",
         "connection_width": "warning",
         "copper_edge_clearance": "error",
         "copper_sliver": "warning",
@@ -123,7 +123,7 @@
       },
       "rules": {
         "max_error": 0.005,
-        "min_clearance": 0.25,
+        "min_clearance": 0.3,
         "min_connection": 0.0,
         "min_copper_edge_clearance": 0.5,
         "min_groove_width": 0.0,
@@ -188,7 +188,6 @@
       ],
       "track_widths": [
         0.0,
-        0.4,
         0.8,
         1.025,
         1.5,
@@ -464,7 +463,7 @@
       "unconnected_wire_endpoint": "warning",
       "undefined_netclass": "error",
       "unit_value_mismatch": "error",
-      "unresolved_variable": "ignore",
+      "unresolved_variable": "error",
       "wire_dangling": "error"
     }
   },
@@ -497,7 +496,7 @@
         "wire_width": 6
       },
       {
-        "clearance": 2.0,
+        "clearance": 1.6,
         "name": "AC Power",
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "priority": 0,
@@ -614,7 +613,7 @@
           "group_by": false,
           "label": "LCSC",
           "name": "LCSC",
-          "show": false
+          "show": true
         },
         {
           "group_by": false,
@@ -627,20 +626,14 @@
           "label": "#",
           "name": "${ITEM_NUMBER}",
           "show": false
-        },
-        {
-          "group_by": false,
-          "label": "LCSC#",
-          "name": "LCSC#",
-          "show": true
         }
       ],
       "filter_string": "",
       "group_symbols": true,
       "include_excluded_from_bom": true,
       "name": "",
-      "sort_asc": false,
-      "sort_field": "LCSC"
+      "sort_asc": true,
+      "sort_field": "Footprint"
     },
     "connection_grid_size": 50.0,
     "drawing": {
