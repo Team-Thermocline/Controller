@@ -113,9 +113,92 @@ void touch_init()
   ts.registerTouchHandler(touch);
 
 #elif defined(TOUCH_GT911)
+  Serial.println("[TOUCH] Starting GT911 init...");
+  Serial.flush();
+  delay(100);
+  
   Wire.begin(TOUCH_GT911_SDA, TOUCH_GT911_SCL);
+  Serial.print("[TOUCH] Initializing GT911 on SDA=");
+  Serial.print(TOUCH_GT911_SDA);
+  Serial.print(" SCL=");
+  Serial.println(TOUCH_GT911_SCL);
+  Serial.flush();
+  delay(100);
+  
+  // Check I2C scanner to see if GT911 is present
+  // GT911 typically uses address 0x14 or 0x5D
+  Serial.println("[TOUCH] Scanning I2C bus for GT911...");
+  Serial.flush();
+  delay(200);
+  
+  byte error;
+  int nDevices = 0;
+  
+  // Check common GT911 addresses first
+  uint8_t gt911_addresses[] = {0x14, 0x5D, 0xBA, 0x28};
+  Serial.println("[TOUCH] Checking known GT911 addresses:");
+  Serial.flush();
+  
+  for(int i = 0; i < 4; i++) {
+    uint8_t addr = gt911_addresses[i];
+    Wire.beginTransmission(addr);
+    error = Wire.endTransmission();
+    Serial.print("[TOUCH] Address 0x");
+    if (addr < 16) Serial.print("0");
+    Serial.print(addr, HEX);
+    Serial.print(": ");
+    if (error == 0) {
+      Serial.println("FOUND!");
+      nDevices++;
+    } else {
+      Serial.print("Not found (error ");
+      Serial.print(error);
+      Serial.println(")");
+    }
+    Serial.flush();
+    delay(50);
+  }
+  
+  // Full scan
+  Serial.println("[TOUCH] Full I2C scan (1-126)...");
+  Serial.flush();
+  delay(100);
+  for(uint8_t address = 1; address < 127; address++ ) {
+    Wire.beginTransmission(address);
+    error = Wire.endTransmission();
+    if (error == 0) {
+      Serial.print("[TOUCH] I2C device at 0x");
+      if (address < 16) Serial.print("0");
+      Serial.print(address, HEX);
+      Serial.println(" !");
+      Serial.flush();
+      nDevices++;
+      delay(20);
+    }
+  }
+  
+  Serial.print("[TOUCH] I2C scan complete. Found ");
+  Serial.print(nDevices);
+  Serial.println(" device(s) total");
+  Serial.flush();
+  if (nDevices == 0) {
+    Serial.println("[TOUCH] ERROR: No I2C devices found! Check SDA/SCL pins!");
+    Serial.flush();
+  }
+  delay(300);
+  
+  Serial.println("[TOUCH] Calling ts.begin()...");
+  Serial.flush();
   ts.begin();
+  Serial.println("[TOUCH] ts.begin() completed");
+  Serial.flush();
+  delay(100);
+  
+  Serial.println("[TOUCH] Setting rotation...");
+  Serial.flush();
   ts.setRotation(TOUCH_GT911_ROTATION);
+  Serial.println("[TOUCH] GT911 initialized and rotation set");
+  Serial.flush();
 
 #elif defined(TOUCH_XPT2046)
   SPI.begin(TOUCH_XPT2046_SCK, TOUCH_XPT2046_MISO, TOUCH_XPT2046_MOSI, TOUCH_XPT2046_CS);
@@ -156,7 +239,34 @@ bool touch_touched()
   }
 
 #elif defined(TOUCH_GT911)
+  static int read_count = 0;
+  static unsigned long last_read_debug = 0;
+  static bool last_touched_state = false;
+  read_count++;
+  
+  // Debug read status every 2 seconds
+  if (millis() - last_read_debug > 2000) {
+    Serial.print("[TOUCH] GT911 read() called ");
+    Serial.print(read_count);
+    Serial.print(" times, isTouched=");
+    Serial.println(ts.isTouched ? "TRUE" : "FALSE");
+    Serial.flush();
+    last_read_debug = millis();
+    read_count = 0;
+  }
+  
   ts.read();
+  
+  // Always print the isTouched status when it changes
+  if (ts.isTouched != last_touched_state) {
+    Serial.print("[TOUCH] GT911 isTouched changed: ");
+    Serial.print(last_touched_state ? "TRUE" : "FALSE");
+    Serial.print(" -> ");
+    Serial.println(ts.isTouched ? "TRUE" : "FALSE");
+    Serial.flush();
+    last_touched_state = ts.isTouched;
+  }
+  
   if (ts.isTouched)
   {
 #if defined(TOUCH_SWAP_XY)
@@ -166,6 +276,14 @@ bool touch_touched()
     touch_last_x = map(ts.points[0].x, TOUCH_MAP_X1, TOUCH_MAP_X2, 0, lcd.width() - 1);
     touch_last_y = map(ts.points[0].y, TOUCH_MAP_Y1, TOUCH_MAP_Y2, 0, lcd.height() - 1);
 #endif
+    Serial.print("[TOUCH] GT911 TOUCHED! Raw X=");
+    Serial.print(ts.points[0].x);
+    Serial.print(" Raw Y=");
+    Serial.print(ts.points[0].y);
+    Serial.print(" Mapped X=");
+    Serial.print(touch_last_x);
+    Serial.print(" Mapped Y=");
+    Serial.println(touch_last_y);
     return true;
   }
   else

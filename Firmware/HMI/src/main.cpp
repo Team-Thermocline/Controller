@@ -1,6 +1,6 @@
 #include <PCA9557.h>
 #include <lvgl.h>
-#include <Crowbits_DHT20.h>
+//#include <Crowbits_DHT20.h>
 #include <LovyanGFX.hpp>
 #include <lgfx/v1/platforms/esp32s3/Panel_RGB.hpp>
 #include <lgfx/v1/platforms/esp32s3/Bus_RGB.hpp>
@@ -90,7 +90,7 @@ LGFX lcd;
 //UI
 #define TFT_BL 2
 int led;
-Crowbits_DHT20 dht20;
+//Crowbits_DHT20 dht20;
 SPIClass& spi = SPI;
 #include "touch.h"
 
@@ -123,8 +123,38 @@ void my_disp_flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color
 
 void my_touchpad_read(lv_indev_drv_t *indev_driver, lv_indev_data_t *data)
 {
+  static unsigned long last_debug = 0;
+  static int call_count = 0;
+  static bool first_call = true;
+  call_count++;
+  
+  // Print immediately on first call
+  if (first_call) {
+    Serial.println("[TOUCH] *** my_touchpad_read() FIRST CALL! ***");
+    Serial.flush();
+    first_call = false;
+  }
+  
+  // Print every 5 seconds
+  if (millis() - last_debug > 5000) {
+    Serial.print("[TOUCH] my_touchpad_read() called ");
+    Serial.print(call_count);
+    Serial.println(" times in last 5 seconds");
+    Serial.flush();
+    last_debug = millis();
+    call_count = 0;
+  }
+  
   if (touch_has_signal())
   {
+    // Don't spam this - only print occasionally
+    static unsigned long last_signal_debug = 0;
+    if (millis() - last_signal_debug > 2000) {
+      Serial.println("[TOUCH] touch_has_signal() = TRUE");
+      Serial.flush();
+      last_signal_debug = millis();
+    }
+    
     if (touch_touched())
     {
       data->state = LV_INDEV_STATE_PR;
@@ -132,21 +162,30 @@ void my_touchpad_read(lv_indev_drv_t *indev_driver, lv_indev_data_t *data)
       /*Set the coordinates*/
       data->point.x = touch_last_x;
       data->point.y = touch_last_y;
-      Serial.print( "Data x " );
-      Serial.println( data->point.x );
-      Serial.print( "Data y " );
-      Serial.println( data->point.y );
+      Serial.print("[TOUCH] TOUCHED! X: ");
+      Serial.print(data->point.x);
+      Serial.print(" Y: ");
+      Serial.println(data->point.y);
+      Serial.flush();
     }
     else if (touch_released())
     {
       data->state = LV_INDEV_STATE_REL;
+      Serial.println("[TOUCH] RELEASED");
+      Serial.flush();
+    }
+    else
+    {
+      data->state = LV_INDEV_STATE_REL;
+      // Don't spam this
     }
   }
   else
   {
     data->state = LV_INDEV_STATE_REL;
   }
-  delay(15);
+  // Reduced delay - 15ms might be too long
+  delay(5);
 }
 
 
@@ -156,17 +195,21 @@ void setup()
 {
   
   Serial.begin(9600);
+  delay(1000);  // Give serial time to initialize
+  Serial.println("\n\n[BOOT] ESP32-S3 HMI Starting...");
+  Serial.flush();
   
 
   //IO口引脚
   pinMode(38, OUTPUT);
   digitalWrite(38, LOW);
+  Serial.println("[SETUP] GPIO 38 configured");
   
 
 
   
-  Wire.begin(19, 20);
-  dht20.begin();
+  //Wire.begin(19, 20);
+  //dht20.begin();
   // Out.reset();
   // Out.setMode(IO_OUTPUT);  //设置为输出模式
 
@@ -214,10 +257,12 @@ void setup()
 
   
   // Init Display
+  Serial.println("[SETUP] Initializing display...");
   lcd.begin();
   lcd.fillScreen(TFT_BLACK);
   lcd.setTextSize(2);
   delay(200);
+  Serial.println("[SETUP] Display initialized");
   
 
 //    lcd.fillScreen(TFT_RED);
@@ -232,7 +277,9 @@ void setup()
 
 
   // Init touch device
+  Serial.println("[SETUP] Initializing touch device...");
   touch_init();
+  Serial.println("[SETUP] Touch device initialized");
 
   screenWidth = lcd.width();
   screenHeight = lcd.height();
@@ -249,11 +296,23 @@ void setup()
   lv_disp_drv_register(&disp_drv);
 
   /* Initialize the (dummy) input device driver */
+  Serial.println("[SETUP] Registering touch input device...");
+  Serial.flush();
   static lv_indev_drv_t indev_drv;
   lv_indev_drv_init(&indev_drv);
   indev_drv.type = LV_INDEV_TYPE_POINTER;
   indev_drv.read_cb = my_touchpad_read;
-  lv_indev_drv_register(&indev_drv);
+  lv_indev_t* indev = lv_indev_drv_register(&indev_drv);
+  Serial.print("[SETUP] Touch input device registered, pointer: ");
+  Serial.println((uint32_t)indev, HEX);
+  Serial.flush();
+  
+  // Test touch function directly
+  Serial.println("[SETUP] Testing touch function directly...");
+  lv_indev_data_t test_data;
+  my_touchpad_read(&indev_drv, &test_data);
+  Serial.println("[SETUP] Direct touch test completed");
+  Serial.flush();
 #ifdef TFT_BL
  
   //digitalWrite(TFT_BL, HIGH);
@@ -270,10 +329,14 @@ void setup()
   #endif
 
   
+  Serial.println("[SETUP] Initializing UI...");
   ui_init();//开机UI界面
+  Serial.println("[SETUP] UI initialized");
   
 
   lv_timer_handler();
+  Serial.println("[SETUP] Setup complete! Entering main loop...");
+  Serial.flush();
 
   
 
@@ -281,14 +344,43 @@ void setup()
 
 void loop()
 {
+  static unsigned long last_loop_debug = 0;
+  static unsigned long last_touch_test = 0;
+  
+  if (millis() - last_loop_debug > 10000) {
+    Serial.print("[LOOP] Running, uptime: ");
+    Serial.print(millis() / 1000);
+    Serial.println(" seconds");
+    last_loop_debug = millis();
+  }
+  
+  // Test touch reading directly every 2 seconds
+  if (millis() - last_touch_test > 2000) {
+    Serial.println("[LOOP] Testing touch directly...");
+    if (touch_has_signal()) {
+      Serial.println("[LOOP] touch_has_signal() = TRUE");
+      if (touch_touched()) {
+        Serial.print("[LOOP] Direct touch test: TOUCHED! X=");
+        Serial.print(touch_last_x);
+        Serial.print(" Y=");
+        Serial.println(touch_last_y);
+      } else {
+        Serial.println("[LOOP] Direct touch test: No touch detected");
+      }
+    } else {
+      Serial.println("[LOOP] touch_has_signal() = FALSE");
+    }
+    Serial.flush();
+    last_touch_test = millis();
+  }
 
-  char DHT_buffer[6];
-  int a = (int)dht20.getTemperature();
-  int b = (int)dht20.getHumidity();
-  snprintf(DHT_buffer, sizeof(DHT_buffer), "%d", a);
-  lv_label_set_text(ui_Label1, DHT_buffer);
-  snprintf(DHT_buffer, sizeof(DHT_buffer), "%d", b);
-  lv_label_set_text(ui_Label2, DHT_buffer);
+  //char DHT_buffer[6];
+  //int a = (int)dht20.getTemperature();
+  //int b = (int)dht20.getHumidity();
+  //snprintf(DHT_buffer, sizeof(DHT_buffer), "%d", a);
+  //lv_label_set_text(ui_Label1, DHT_buffer);
+  //snprintf(DHT_buffer, sizeof(DHT_buffer), "%d", b);
+  //lv_label_set_text(ui_Label2, DHT_buffer);
 
   if(led == 1)
   digitalWrite(38, HIGH);
