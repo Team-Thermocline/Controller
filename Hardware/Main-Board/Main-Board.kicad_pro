@@ -191,7 +191,8 @@
         0.8,
         1.025,
         1.5,
-        2.0
+        2.0,
+        3.5
       ],
       "tuning_pattern_settings": {
         "diff_pair_defaults": {
@@ -496,7 +497,7 @@
         "wire_width": 6
       },
       {
-        "clearance": 1.6,
+        "clearance": 1.0,
         "name": "AC Power",
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "priority": 0,
