@@ -10307,15 +10307,15 @@
 		)
 		(uuid "15c18207-042a-41d4-bc0b-dcc794c441f8")
 	)
-	(label "HMI_TX"
-		(at 228.6 72.39 180)
+	(label "GPIO1"
+		(at 228.6 77.47 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify right bottom)
 		)
-		(uuid "22c61761-e899-4ed9-80e8-dff9e081a2c3")
+		(uuid "1db12fbd-8e45-42ee-8bb2-845e1bd6e2be")
 	)
 	(label "TDR3"
 		(at 41.91 60.96 180)
@@ -10356,6 +10356,16 @@
 			(justify left bottom)
 		)
 		(uuid "2795608a-0d58-4ef6-b50c-1466b591c44d")
+	)
+	(label "HMI_AUX"
+		(at 228.6 82.55 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "2970c23f-38a0-47df-a74a-d6c4ed550bf8")
 	)
 	(label "TDR2"
 		(at 35.56 100.33 0)
@@ -10477,26 +10487,6 @@
 		)
 		(uuid "49885b11-9eee-403b-b207-d1f60d27b6dd")
 	)
-	(label "HMI_AUX"
-		(at 228.6 77.47 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "4d45a027-957f-4dca-bcda-0e34fafa04d8")
-	)
-	(label "GPIO1"
-		(at 228.6 82.55 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "4dc9cc98-d39b-41a3-9b8e-3f2c0aa3d17b")
-	)
 	(label "TDR1"
 		(at 35.56 97.79 0)
 		(effects
@@ -10527,15 +10517,15 @@
 		)
 		(uuid "51d6c74b-6ae6-471e-acb0-c51f050b1e8c")
 	)
-	(label "HMI_RX"
-		(at 228.6 74.93 180)
+	(label "GPIO3"
+		(at 228.6 72.39 180)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify right bottom)
 		)
-		(uuid "57897499-6c45-412d-bca5-79ed8c50e83d")
+		(uuid "54e685e8-c3e7-4d9a-9a07-60c52d11ea19")
 	)
 	(label "CT2"
 		(at 35.56 87.63 0)
@@ -10607,16 +10597,6 @@
 		)
 		(uuid "67b20a27-51b6-44a6-b068-52021171e6f0")
 	)
-	(label "GPIO2"
-		(at 228.6 85.09 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "69339c0a-7e84-4125-952e-7962ef646d22")
-	)
 	(label "SW_1"
 		(at 107.95 167.64 0)
 		(effects
@@ -10626,6 +10606,16 @@
 			(justify left bottom)
 		)
 		(uuid "6c5bd66a-bb3e-4c83-b41c-cbc793eaa3e5")
+	)
+	(label "HMI_TX"
+		(at 228.6 87.63 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "6f1765c0-d9e6-4c05-aa4b-821dac519dcc")
 	)
 	(label "CT3"
 		(at 109.22 40.64 0)
@@ -10706,16 +10696,6 @@
 			(justify left bottom)
 		)
 		(uuid "7af9dbe1-5f2c-46a4-9737-d066c1d587be")
-	)
-	(label "GPIO3"
-		(at 228.6 87.63 180)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify right bottom)
-		)
-		(uuid "7c21ab27-97c6-4831-8466-e92b90b9f1fe")
 	)
 	(label "TDR0"
 		(at 35.56 95.25 0)
@@ -10997,6 +10977,16 @@
 		)
 		(uuid "bbba7300-7b07-4daf-bb34-e27a252e2905")
 	)
+	(label "HMI_RX"
+		(at 228.6 85.09 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "be1b7b66-0bd1-45f4-bc5f-e81eed073033")
+	)
 	(label "728_RST"
 		(at 109.22 35.56 0)
 		(effects
@@ -11136,6 +11126,16 @@
 			(justify left bottom)
 		)
 		(uuid "e844e873-c4d0-455a-8d29-147848c8d50f")
+	)
+	(label "GPIO2"
+		(at 228.6 74.93 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "e90a48f9-3f9c-4105-bae2-e7a3daf86763")
 	)
 	(label "AC_N"
 		(at 38.1 134.62 180)
