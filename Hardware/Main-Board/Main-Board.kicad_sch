@@ -10327,26 +10327,6 @@
 		)
 		(uuid "22db4fbb-928f-4a55-b1cb-c878f80c8739")
 	)
-	(label "CT0"
-		(at 109.22 50.8 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "23c9f4fb-608f-4634-b78b-282435fec50a")
-	)
-	(label "CT1"
-		(at 109.22 53.34 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "26e74422-b103-4b58-8252-100bb356eafa")
-	)
 	(label "AC_N"
 		(at 193.04 154.94 180)
 		(effects
@@ -10377,7 +10357,7 @@
 		)
 		(uuid "2795608a-0d58-4ef6-b50c-1466b591c44d")
 	)
-	(label "CT2"
+	(label "TDR2"
 		(at 35.56 100.33 0)
 		(effects
 			(font
@@ -10517,7 +10497,7 @@
 		)
 		(uuid "4dc9cc98-d39b-41a3-9b8e-3f2c0aa3d17b")
 	)
-	(label "CT1"
+	(label "TDR1"
 		(at 35.56 97.79 0)
 		(effects
 			(font
@@ -10557,17 +10537,7 @@
 		)
 		(uuid "57897499-6c45-412d-bca5-79ed8c50e83d")
 	)
-	(label "TDR3"
-		(at 109.22 48.26 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "5a2de9c5-2bea-4884-890a-efd12e4c31f9")
-	)
-	(label "TDR1"
+	(label "CT2"
 		(at 35.56 87.63 0)
 		(effects
 			(font
@@ -10618,14 +10588,14 @@
 		(uuid "600dc84a-4cb6-4615-86eb-6d2a450bf44b")
 	)
 	(label "TDR0"
-		(at 109.22 40.64 0)
+		(at 109.22 50.8 0)
 		(effects
 			(font
 				(size 1.27 1.27)
 			)
 			(justify left bottom)
 		)
-		(uuid "646e96ac-9e0a-4ea2-9171-4d2459079486")
+		(uuid "6645ea03-9717-4d25-8c99-67aa75147251")
 	)
 	(label "728_A1"
 		(at 109.22 33.02 0)
@@ -10657,6 +10627,16 @@
 		)
 		(uuid "6c5bd66a-bb3e-4c83-b41c-cbc793eaa3e5")
 	)
+	(label "CT3"
+		(at 109.22 40.64 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "6fdc29a0-fb3a-433c-8db1-d3765ab80868")
+	)
 	(label "SDA"
 		(at 157.48 90.17 0)
 		(effects
@@ -10676,6 +10656,16 @@
 			(justify left bottom)
 		)
 		(uuid "759a01d1-787d-46d4-ba0d-7cd7aa05c88b")
+	)
+	(label "CT0"
+		(at 109.22 48.26 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "7696ed21-8b0f-40b4-a2f7-d5f357445609")
 	)
 	(label "SW_6"
 		(at 107.95 180.34 0)
@@ -10707,7 +10697,7 @@
 		)
 		(uuid "78e4db69-5031-489e-84c9-3d569468b983")
 	)
-	(label "TDR0"
+	(label "CT3"
 		(at 35.56 85.09 0)
 		(effects
 			(font
@@ -10727,7 +10717,7 @@
 		)
 		(uuid "7c21ab27-97c6-4831-8466-e92b90b9f1fe")
 	)
-	(label "CT0"
+	(label "TDR0"
 		(at 35.56 95.25 0)
 		(effects
 			(font
@@ -10817,6 +10807,16 @@
 		)
 		(uuid "8efd8039-fe22-4332-987a-462d584baad4")
 	)
+	(label "TDR2"
+		(at 109.22 55.88 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "9338b4ed-e8e1-4418-b270-550b11b7600d")
+	)
 	(label "SDA"
 		(at 76.2 95.25 180)
 		(effects
@@ -10826,16 +10826,6 @@
 			(justify right bottom)
 		)
 		(uuid "9397dc54-7c08-4d55-94a7-ba1696453ebf")
-	)
-	(label "TDR2"
-		(at 109.22 45.72 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "99b7b9ee-59c7-4fa5-a682-d02613ec4ee3")
 	)
 	(label "EN_LOAD_5"
 		(at 135.89 142.24 180)
@@ -10907,16 +10897,6 @@
 		)
 		(uuid "aac68613-b17b-42b9-87fd-fe252eeebe6e")
 	)
-	(label "TDR1"
-		(at 109.22 43.18 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "ac7137eb-cb8b-4c55-b66a-ff743a3ee0a0")
-	)
 	(label "SCL"
 		(at 76.2 97.79 180)
 		(effects
@@ -10937,7 +10917,7 @@
 		)
 		(uuid "ae0e08e8-3a99-4043-b7e9-d381640c92f9")
 	)
-	(label "TDR3"
+	(label "CT0"
 		(at 35.56 92.71 0)
 		(effects
 			(font
@@ -10957,7 +10937,17 @@
 		)
 		(uuid "af03e15c-814d-4f8b-b71b-53d76bdd67f7")
 	)
-	(label "CT3"
+	(label "CT1"
+		(at 109.22 43.18 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "b0ddf358-8984-458c-98a2-9d40c72eed06")
+	)
+	(label "TDR3"
 		(at 35.56 102.87 0)
 		(effects
 			(font
@@ -10976,6 +10966,16 @@
 			(justify left bottom)
 		)
 		(uuid "b515921f-e7e8-49c4-9d1f-68dfcffc5d1d")
+	)
+	(label "TDR1"
+		(at 109.22 53.34 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "b8d6ca34-0ae8-46d9-8413-490320fd08cb")
 	)
 	(label "SW_5"
 		(at 157.48 80.01 0)
@@ -11057,16 +11057,6 @@
 		)
 		(uuid "d3de193c-db38-45a0-bf0c-35da32601265")
 	)
-	(label "CT3"
-		(at 109.22 58.42 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "d54db1f8-82f4-4e53-94e7-12f8f0242307")
-	)
 	(label "AC_L"
 		(at 44.45 184.15 0)
 		(effects
@@ -11117,6 +11107,16 @@
 		)
 		(uuid "e2d17d9d-15e3-44d8-9c55-ff502279019a")
 	)
+	(label "TDR3"
+		(at 109.22 58.42 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "e626f679-c9c7-4d36-bed6-f0c0f733c1d1")
+	)
 	(label "AC_N"
 		(at 38.1 184.15 180)
 		(effects
@@ -11126,6 +11126,16 @@
 			(justify right bottom)
 		)
 		(uuid "e7ff911e-2aa3-4a31-8cd3-0ec0e02db012")
+	)
+	(label "CT2"
+		(at 109.22 45.72 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "e844e873-c4d0-455a-8d29-147848c8d50f")
 	)
 	(label "AC_N"
 		(at 38.1 134.62 180)
@@ -11167,17 +11177,7 @@
 		)
 		(uuid "ec687475-9536-4a64-9653-84b8ccb1bac5")
 	)
-	(label "CT2"
-		(at 109.22 55.88 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
-		)
-		(uuid "f186a9b2-db67-45a2-8290-40315594acad")
-	)
-	(label "TDR2"
+	(label "CT1"
 		(at 35.56 90.17 0)
 		(effects
 			(font
@@ -12228,7 +12228,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Module:RaspberryPi_Pico_Common_Unspecified"
+		(property "Footprint" "thermocline:RaspberryPi_Pico_Common_Unspecified"
 			(at 195.58 132.08 0)
 			(effects
 				(font
