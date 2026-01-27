@@ -40646,7 +40646,7 @@
 		(uuid "c0509d6a-7606-4b14-8998-e778dfa8b714")
 		(at 26.42 -40.96 -90)
 		(property "Reference" "J126"
-			(at -7.62 -12.7 270)
+			(at -7.37 -12.7 270)
 			(unlocked yes)
 			(layer "F.Fab")
 			(uuid "27582c96-763b-49df-a227-4b58e26a4500")
@@ -47344,7 +47344,7 @@
 	(footprint "thermocline:thermocline-logo-large"
 		(layer "F.Cu")
 		(uuid "d7bc3f99-7c65-4a91-acc5-e42d3d6132e4")
-		(at 34.75 -56.75)
+		(at 34.75 -57.75)
 		(property "Reference" "G***"
 			(at 0 0 0)
 			(layer "F.Fab")
@@ -58480,7 +58480,7 @@
 		)
 	)
 	(gr_text "https://team-thermocline.github.io/"
-		(at 35.5 -57 0)
+		(at 34.25 -52.25 0)
 		(layer "F.SilkS")
 		(uuid "fb82eeba-0f3c-4515-906a-3b7d13741a64")
 		(effects
@@ -59109,7 +59109,7 @@
 		(uuid "c475e9b9-104c-4df9-922d-06a3107e6f02")
 	)
 	(via
-		(at 38.5 -51)
+		(at 38.5 -49.5)
 		(size 0.6)
 		(drill 0.3)
 		(layers "F.Cu" "B.Cu")
