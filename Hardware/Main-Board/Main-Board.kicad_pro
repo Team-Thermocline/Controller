@@ -247,7 +247,20 @@
     "equivalence_files": []
   },
   "erc": {
-    "erc_exclusions": [],
+    "erc_exclusions": [
+      [
+        "pin_to_pin|1955800|1206500|6667e88c-712f-42de-bf2d-95febd457e8f|a2faed9c-2ade-4d59-a8ca-f452bf53c435|/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353|/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353|/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353",
+        ""
+      ],
+      [
+        "pin_to_pin|2070100|1206500|6667e88c-712f-42de-bf2d-95febd457e8f|a2faed9c-2ade-4d59-a8ca-f452bf53c435|/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353|/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353|/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353",
+        ""
+      ],
+      [
+        "power_pin_not_driven|2184400|927100|10aeba65-04d1-4ed7-b235-a46beea2f928|00000000-0000-0000-0000-000000000000|/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353|/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353|",
+        ""
+      ]
+    ],
     "meta": {
       "version": 0
     },
@@ -463,7 +476,7 @@
       "unconnected_wire_endpoint": "warning",
       "undefined_netclass": "error",
       "unit_value_mismatch": "error",
-      "unresolved_variable": "error",
+      "unresolved_variable": "ignore",
       "wire_dangling": "error"
     }
   },
@@ -613,7 +626,7 @@
           "group_by": false,
           "label": "LCSC",
           "name": "LCSC",
-          "show": true
+          "show": false
         },
         {
           "group_by": false,
@@ -626,14 +639,20 @@
           "label": "#",
           "name": "${ITEM_NUMBER}",
           "show": false
+        },
+        {
+          "group_by": false,
+          "label": "LCSC#",
+          "name": "LCSC#",
+          "show": true
         }
       ],
       "filter_string": "",
       "group_symbols": true,
       "include_excluded_from_bom": true,
       "name": "",
-      "sort_asc": true,
-      "sort_field": "Footprint"
+      "sort_asc": false,
+      "sort_field": "LCSC"
     },
     "connection_grid_size": 50.0,
     "drawing": {

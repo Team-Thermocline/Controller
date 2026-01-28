@@ -257,6 +257,113 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "Connector:TestPoint"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0.762)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "TP"
+				(at 0 6.858 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "TestPoint"
+				(at 0 5.08 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 5.08 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 5.08 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "test point"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "test point tp"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "Pin* Test*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "TestPoint_0_1"
+				(circle
+					(center 0 3.302)
+					(radius 0.762)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "TestPoint_1_1"
+				(pin passive line
+					(at 0 0 90)
+					(length 2.54)
+					(name "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "Connector_Generic:Conn_01x02"
 			(pin_names
 				(offset 1.016)
@@ -1502,6 +1609,12 @@
 		(uuid "7054dc6e-77b5-4e9b-83f4-f21369796f4a")
 	)
 	(junction
+		(at 166.37 100.33)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "916e58ee-6127-41e1-984b-5ad92c168104")
+	)
+	(junction
 		(at 149.86 120.65)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -1524,6 +1637,16 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "fd178f63-7107-41d9-aacb-9c21e0c7a9bf")
+	)
+	(wire
+		(pts
+			(xy 166.37 100.33) (xy 167.64 100.33)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0183a602-8de6-4e5c-b306-4f8131f3e5fe")
 	)
 	(wire
 		(pts
@@ -1557,7 +1680,7 @@
 	)
 	(wire
 		(pts
-			(xy 160.02 100.33) (xy 167.64 100.33)
+			(xy 160.02 100.33) (xy 166.37 100.33)
 		)
 		(stroke
 			(width 0)
@@ -2405,6 +2528,24 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC" ""
+			(at 106.68 115.57 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC#" "C49678"
+			(at 106.68 115.57 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "dce3d7cf-6bde-4b96-9ea2-d4dda94185dd")
 		)
@@ -2575,6 +2716,24 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC" ""
+			(at 83.82 139.7 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC#" "C157931"
+			(at 83.82 139.7 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "1"
 			(uuid "f5c398c0-4c6b-4116-a33a-ff9615122494")
 		)
@@ -2654,6 +2813,24 @@
 		)
 		(property "Description" "Unpolarized capacitor, small symbol"
 			(at 114.3 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" ""
+			(at 114.3 118.11 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC#" "C1710"
+			(at 114.3 118.11 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -2788,7 +2965,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "86d53c71-8621-4172-a63f-76e2765d31bf")
-		(property "Reference" "#PWR0124"
+		(property "Reference" "#PWR0210"
 			(at 218.44 67.31 0)
 			(effects
 				(font
@@ -2844,19 +3021,19 @@
 			)
 			(project "Main-Board"
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/0682befe-b03d-4eef-b3f4-e121102c58a0"
-					(reference "#PWR0129")
+					(reference "#PWR0410")
 					(unit 1)
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/0a3f1c56-3b1b-46d6-8b68-5ab3bc06dc47"
-					(reference "#PWR0131")
+					(reference "#PWR0610")
 					(unit 1)
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/9ad4274c-a3cf-429a-84ee-9fa9dd23d602"
-					(reference "#PWR0127")
+					(reference "#PWR0310")
 					(unit 1)
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/deda2255-9a1d-4c4b-b8a3-23ecc8a0890b"
-					(reference "#PWR0124")
+					(reference "#PWR0210")
 					(unit 1)
 				)
 			)
@@ -2908,6 +3085,24 @@
 		)
 		(property "Description" "Unpolarized capacitor, small symbol"
 			(at 99.06 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" ""
+			(at 99.06 118.11 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC#" "C1710"
+			(at 99.06 118.11 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -3001,7 +3196,16 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C578736"
+		(property "LCSC" ""
+			(at 147.32 100.33 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC#" "C578736"
 			(at 147.32 100.33 0)
 			(effects
 				(font
@@ -3107,6 +3311,24 @@
 			)
 		)
 		(property "Description" "Resistor, small symbol"
+			(at 163.83 115.57 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" ""
+			(at 163.83 115.57 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC#" "C95781"
 			(at 163.83 115.57 0)
 			(effects
 				(font
@@ -3233,6 +3455,92 @@
 		)
 	)
 	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 166.37 100.33 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "ab393f36-1e14-46ea-b490-9df9651758bd")
+		(property "Reference" "TP201"
+			(at 166.37 95.758 0)
+			(effects
+				(font
+					(size 0.508 0.508)
+				)
+			)
+		)
+		(property "Value" "TestPoint"
+			(at 168.91 97.028 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_D2.0mm"
+			(at 171.45 100.33 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 171.45 100.33 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "test point"
+			(at 166.37 100.33 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC#" ""
+			(at 166.37 100.33 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "37804a9e-0b2d-42c2-91ab-c6e83c812573")
+		)
+		(instances
+			(project "Main-Board"
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/0682befe-b03d-4eef-b3f4-e121102c58a0"
+					(reference "TP401")
+					(unit 1)
+				)
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/0a3f1c56-3b1b-46d6-8b68-5ab3bc06dc47"
+					(reference "TP601")
+					(unit 1)
+				)
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/9ad4274c-a3cf-429a-84ee-9fa9dd23d602"
+					(reference "TP301")
+					(unit 1)
+				)
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/deda2255-9a1d-4c4b-b8a3-23ecc8a0890b"
+					(reference "TP201")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Device:R_Small")
 		(at 102.87 128.27 180)
 		(unit 1)
@@ -3286,6 +3594,24 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC" ""
+			(at 102.87 128.27 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC#" "C17408"
+			(at 102.87 128.27 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "8cfe30da-c514-4d4a-846f-03916cf5ae07")
 		)
@@ -3329,7 +3655,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "b7ddb047-faeb-434d-8a16-7da7783c5114")
-		(property "Reference" "#PWR0125"
+		(property "Reference" "#PWR0211"
 			(at 218.44 82.55 0)
 			(effects
 				(font
@@ -3385,19 +3711,19 @@
 			)
 			(project "Main-Board"
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/0682befe-b03d-4eef-b3f4-e121102c58a0"
-					(reference "#PWR0130")
+					(reference "#PWR0411")
 					(unit 1)
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/0a3f1c56-3b1b-46d6-8b68-5ab3bc06dc47"
-					(reference "#PWR0132")
+					(reference "#PWR0611")
 					(unit 1)
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/9ad4274c-a3cf-429a-84ee-9fa9dd23d602"
-					(reference "#PWR0128")
+					(reference "#PWR0311")
 					(unit 1)
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/deda2255-9a1d-4c4b-b8a3-23ecc8a0890b"
-					(reference "#PWR0125")
+					(reference "#PWR0211")
 					(unit 1)
 				)
 			)
@@ -3460,7 +3786,16 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" "C963380"
+		(property "LCSC" ""
+			(at 149.86 127 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC#" "C963380"
 			(at 149.86 127 90)
 			(effects
 				(font
@@ -3559,6 +3894,24 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC" ""
+			(at 95.25 146.05 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC#" "C4337252"
+			(at 95.25 146.05 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "8305a612-4924-48d8-a217-ca2c8ea1954e")
 		)
@@ -3639,6 +3992,24 @@
 			)
 		)
 		(property "Description" "Unpolarized capacitor, small symbol"
+			(at 156.21 78.74 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC" ""
+			(at 156.21 78.74 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC#" "C49678"
 			(at 156.21 78.74 0)
 			(effects
 				(font
@@ -3818,6 +4189,24 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC" ""
+			(at 110.49 128.27 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "LCSC#" "C17408"
+			(at 110.49 128.27 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "423dbe75-7707-42a2-9878-023964df7f5d")
 		)
@@ -3861,7 +4250,7 @@
 		(dnp no)
 		(fields_autoplaced yes)
 		(uuid "f20de457-a118-4e1c-9b6a-c677099016ce")
-		(property "Reference" "J1"
+		(property "Reference" "J202"
 			(at 188.595 60.96 0)
 			(effects
 				(font
@@ -3904,6 +4293,15 @@
 				(hide yes)
 			)
 		)
+		(property "LCSC#" ""
+			(at 187.96 68.58 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
 		(pin "2"
 			(uuid "73801f97-ab9c-4e47-ad7f-b78345e998cf")
 		)
@@ -3925,19 +4323,19 @@
 			)
 			(project "Main-Board"
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/0682befe-b03d-4eef-b3f4-e121102c58a0"
-					(reference "J3")
+					(reference "J402")
 					(unit 1)
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/0a3f1c56-3b1b-46d6-8b68-5ab3bc06dc47"
-					(reference "J4")
+					(reference "J602")
 					(unit 1)
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/9ad4274c-a3cf-429a-84ee-9fa9dd23d602"
-					(reference "J2")
+					(reference "J302")
 					(unit 1)
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/deda2255-9a1d-4c4b-b8a3-23ecc8a0890b"
-					(reference "J1")
+					(reference "J202")
 					(unit 1)
 				)
 			)
@@ -4027,10 +4425,4 @@
 			)
 		)
 	)
-	(sheet_instances
-		(path "/"
-			(page "1")
-		)
-	)
-	(embedded_fonts no)
 )
