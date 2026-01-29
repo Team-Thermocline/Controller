@@ -48,7 +48,7 @@
         "silk_text_thickness": 0.1,
         "silk_text_upright": false,
         "zones": {
-          "min_clearance": 0.5
+          "min_clearance": 0.0
         }
       },
       "diff_pair_dimensions": [
@@ -58,20 +58,7 @@
           "width": 0.0
         }
       ],
-      "drc_exclusions": [
-        [
-          "clearance|-64000000|36000000|e6309c7d-acd9-4ced-be12-7a0b4c163d8f|ed81e8bb-3651-454d-83a9-9ed4c8f21f22",
-          ""
-        ],
-        [
-          "clearance|-64000000|63000000|6dc9af22-9aea-4ff2-b42f-25bb93ca4046|ad5cd7be-4750-495b-9a9d-42e9763202ba",
-          ""
-        ],
-        [
-          "unresolved_variable|-8000000|-87000000|de3a25a4-d46d-4782-b349-b85fa174af51|00000000-0000-0000-0000-000000000000",
-          ""
-        ]
-      ],
+      "drc_exclusions": [],
       "meta": {
         "version": 2
       },
@@ -113,12 +100,12 @@
         "padstack": "warning",
         "pth_inside_courtyard": "ignore",
         "shorting_items": "error",
-        "silk_edge_clearance": "ignore",
+        "silk_edge_clearance": "warning",
         "silk_over_copper": "warning",
         "silk_overlap": "warning",
         "skew_out_of_range": "error",
         "solder_mask_bridge": "error",
-        "starved_thermal": "warning",
+        "starved_thermal": "error",
         "text_height": "warning",
         "text_on_edge_cuts": "error",
         "text_thickness": "warning",
@@ -130,13 +117,13 @@
         "track_width": "error",
         "tracks_crossing": "error",
         "unconnected_items": "error",
-        "unresolved_variable": "warning",
+        "unresolved_variable": "error",
         "via_dangling": "warning",
         "zones_intersect": "error"
       },
       "rules": {
         "max_error": 0.005,
-        "min_clearance": 0.15,
+        "min_clearance": 0.3,
         "min_connection": 0.0,
         "min_copper_edge_clearance": 0.5,
         "min_groove_width": 0.0,
@@ -144,7 +131,7 @@
         "min_hole_to_hole": 0.25,
         "min_microvia_diameter": 0.2,
         "min_microvia_drill": 0.1,
-        "min_resolved_spokes": 1,
+        "min_resolved_spokes": 2,
         "min_silk_clearance": 0.0,
         "min_text_height": 0.8,
         "min_text_thickness": 0.08,
@@ -201,11 +188,11 @@
       ],
       "track_widths": [
         0.0,
-        0.4,
         0.8,
         1.025,
         1.5,
-        2.0
+        2.0,
+        2.6
       ],
       "tuning_pattern_settings": {
         "diff_pair_defaults": {
@@ -264,6 +251,10 @@
     "erc_exclusions": [
       [
         "pin_to_pin|1955800|1206500|6667e88c-712f-42de-bf2d-95febd457e8f|a2faed9c-2ade-4d59-a8ca-f452bf53c435|/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353|/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353|/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353",
+        ""
+      ],
+      [
+        "pin_to_pin|2070100|1206500|6667e88c-712f-42de-bf2d-95febd457e8f|a2faed9c-2ade-4d59-a8ca-f452bf53c435|/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353|/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353|/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353",
         ""
       ],
       [
@@ -636,7 +627,7 @@
           "group_by": false,
           "label": "LCSC",
           "name": "LCSC",
-          "show": true
+          "show": false
         },
         {
           "group_by": false,
@@ -649,14 +640,20 @@
           "label": "#",
           "name": "${ITEM_NUMBER}",
           "show": false
+        },
+        {
+          "group_by": false,
+          "label": "LCSC#",
+          "name": "LCSC#",
+          "show": true
         }
       ],
       "filter_string": "",
       "group_symbols": true,
       "include_excluded_from_bom": true,
       "name": "",
-      "sort_asc": true,
-      "sort_field": "Footprint"
+      "sort_asc": false,
+      "sort_field": "LCSC"
     },
     "connection_grid_size": 50.0,
     "drawing": {
