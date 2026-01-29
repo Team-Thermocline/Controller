@@ -58576,6 +58576,19 @@
 			(justify top)
 		)
 	)
+	(gr_text "-Dr. Ruben Del-Rio-Ruiz"
+		(at 66.5 -26.5 270)
+		(layer "B.SilkS")
+		(uuid "516c209f-6d6c-46ad-86e9-01f32f07fdff")
+		(effects
+			(font
+				(size 1.4 1.4)
+				(thickness 0.19)
+				(italic yes)
+			)
+			(justify left mirror)
+		)
+	)
 	(gr_text "Designed In New Hampshire\nat SNHU for 2025-2026\nengineering capstone.\n\nTeam Members\nJoe Sedutto\nNik DiLullo​\nJacob Morrissette\nAlexandra Friebolin​\nAlexia Hnatowicz​"
 		(at 27.296415 -85.950173 0)
 		(layer "B.SilkS")
@@ -58586,6 +58599,18 @@
 				(thickness 0.23)
 			)
 			(justify top mirror)
+		)
+	)
+	(gr_text "{dblquote}Don't just think like technicians, think like engineers.{dblquote}"
+		(at 69.5 -12.5 270)
+		(layer "B.SilkS")
+		(uuid "8a104a49-743a-43e4-b37c-baf7bce7e37e")
+		(effects
+			(font
+				(size 2.1 2.1)
+				(thickness 0.25)
+			)
+			(justify mirror)
 		)
 	)
 	(dimension
