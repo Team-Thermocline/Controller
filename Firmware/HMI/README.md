@@ -1,15 +1,25 @@
-# How to Build
+# Crowpanel HMI firmware
 
-First get [platformio](https://platformio.org/)
+Original HMI documentation for pio [here](https://www.elecrow.com/wiki/CrowPanel_ESP32_7.0-inch_with_PlatformIO.html) vendor supplied
 
-Next invoke
+
+## Compiling this firmware
+
+Luckily, this project is built with [platformio!](https://platformio.org/)
+
+simply invoke
 
 ```shell
-pio run -t build
+pio run
 ```
 
-then to upload to the HMI
+in this directory. Some other helpful commands
+
 
 ```shell
-pio run -t upload
+pio run -t upload   # To upload
+```
+
+```shell
+pio run -t monitor  # To open serial interface
 ```
