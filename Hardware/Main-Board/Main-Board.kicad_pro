@@ -48,7 +48,7 @@
         "silk_text_thickness": 0.1,
         "silk_text_upright": false,
         "zones": {
-          "min_clearance": 0.0
+          "min_clearance": 0.2
         }
       },
       "diff_pair_dimensions": [
@@ -519,7 +519,7 @@
         "wire_width": 6
       },
       {
-        "clearance": 2.0,
+        "clearance": 1.8,
         "name": "AC Power",
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "priority": 0,
