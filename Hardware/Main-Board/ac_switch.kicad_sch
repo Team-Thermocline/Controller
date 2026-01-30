@@ -993,6 +993,156 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "Jumper:Jumper_2_Bridged"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "JP"
+				(at 0 1.905 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "Jumper_2_Bridged"
+				(at 0 -2.54 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Jumper, 2-pole, closed/bridged"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "Jumper SPST"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "Jumper* TestPoint*2Pads* TestPoint*Bridge*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "Jumper_2_Bridged_0_0"
+				(circle
+					(center -2.032 0)
+					(radius 0.508)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center 2.032 0)
+					(radius 0.508)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "Jumper_2_Bridged_0_1"
+				(arc
+					(start -1.524 0.254)
+					(mid 0 0.762)
+					(end 1.524 0.254)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "Jumper_2_Bridged_1_1"
+				(pin passive line
+					(at -5.08 0 0)
+					(length 2.54)
+					(name "A"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 5.08 0 180)
+					(length 2.54)
+					(name "B"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "Relay:SANYOU_SRD_Form_C"
 			(exclude_from_sim no)
 			(in_bom yes)
@@ -2135,6 +2285,16 @@
 	)
 	(wire
 		(pts
+			(xy 214.63 111.76) (xy 222.25 111.76)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "09ded43c-4131-48f5-914c-30b1abae16ec")
+	)
+	(wire
+		(pts
 			(xy 149.86 130.81) (xy 149.86 121.92)
 		)
 		(stroke
@@ -2215,16 +2375,6 @@
 	)
 	(wire
 		(pts
-			(xy 184.15 82.55) (xy 217.17 82.55)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "66ca8282-a3b4-4078-83a5-494b6c8156e9")
-	)
-	(wire
-		(pts
 			(xy 149.86 111.76) (xy 149.86 109.22)
 		)
 		(stroke
@@ -2255,7 +2405,7 @@
 	)
 	(wire
 		(pts
-			(xy 184.15 111.76) (xy 201.93 111.76)
+			(xy 184.15 111.76) (xy 204.47 111.76)
 		)
 		(stroke
 			(width 0)
@@ -2335,7 +2485,7 @@
 	)
 	(wire
 		(pts
-			(xy 209.55 111.76) (xy 217.17 111.76)
+			(xy 229.87 111.76) (xy 237.49 111.76)
 		)
 		(stroke
 			(width 0)
@@ -2475,6 +2625,16 @@
 	)
 	(wire
 		(pts
+			(xy 184.15 82.55) (xy 237.49 82.55)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e784bde9-502d-41dc-b490-70fdc2a228bc")
+	)
+	(wire
+		(pts
 			(xy 82.55 107.95) (xy 87.63 107.95)
 		)
 		(stroke
@@ -2513,9 +2673,19 @@
 		)
 		(uuid "3fe6531a-1984-4323-a596-47b3449965ed")
 	)
+	(label "AC_SENSE"
+		(at 215.9 111.76 0)
+		(effects
+			(font
+				(size 0.508 0.508)
+			)
+			(justify left bottom)
+		)
+		(uuid "9e747a02-3466-4a49-877f-3c715c5c4f14")
+	)
 	(hierarchical_label "AC_LINE"
 		(shape input)
-		(at 217.17 111.76 0)
+		(at 237.49 111.76 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2526,7 +2696,7 @@
 	)
 	(hierarchical_label "AC_LOAD"
 		(shape output)
-		(at 217.17 82.55 0)
+		(at 237.49 82.55 0)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -2950,6 +3120,86 @@
 				)
 				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/eb3bd697-8b92-4dbb-b284-ee24031d3e18"
 					(reference "R804")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Jumper:Jumper_2_Bridged")
+		(at 209.55 111.76 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "50425465-9ec8-4588-8ee8-46c0b0a869bc")
+		(property "Reference" "JP501"
+			(at 209.55 106.68 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "Current Sense"
+			(at 209.55 109.22 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "thermocline:current_transformer_jumper"
+			(at 209.55 111.76 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 209.55 111.76 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Jumper, 2-pole, closed/bridged"
+			(at 209.55 111.76 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "6a67e3d0-bd55-40fd-b05c-1d71b165a99f")
+		)
+		(pin "1"
+			(uuid "82ee8f02-dc1c-4f0e-b12a-0d72eb361227")
+		)
+		(instances
+			(project ""
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/19a61a3a-8fa1-436d-bd7d-2a5bbbba9ead"
+					(reference "JP901")
+					(unit 1)
+				)
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/77a35e86-caa6-4e6d-bbef-068e3f149509"
+					(reference "JP501")
+					(unit 1)
+				)
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/c3e7d40a-c6bb-4448-a1ab-024312db52e9"
+					(reference "JP701")
+					(unit 1)
+				)
+				(path "/9edb6f85-3e37-42c8-a1d1-5c2eb41eb353/eb3bd697-8b92-4dbb-b284-ee24031d3e18"
+					(reference "JP801")
 					(unit 1)
 				)
 			)
@@ -4158,7 +4408,7 @@
 	)
 	(symbol
 		(lib_id "Device:Fuse")
-		(at 205.74 111.76 90)
+		(at 226.06 111.76 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -4166,7 +4416,7 @@
 		(dnp no)
 		(uuid "e901b5b9-eecc-474b-80c4-a9016b1d0436")
 		(property "Reference" "F501"
-			(at 205.74 106.934 90)
+			(at 226.06 106.934 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4174,7 +4424,7 @@
 			)
 		)
 		(property "Value" "Fuse"
-			(at 205.74 109.474 90)
+			(at 226.06 109.474 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4182,7 +4432,7 @@
 			)
 		)
 		(property "Footprint" "Fuse:Fuseholder_Littelfuse_100_series_5x20mm"
-			(at 205.74 113.538 90)
+			(at 226.06 113.538 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4191,7 +4441,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 205.74 111.76 0)
+			(at 226.06 111.76 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4200,7 +4450,7 @@
 			)
 		)
 		(property "Description" "Fuse"
-			(at 205.74 111.76 0)
+			(at 226.06 111.76 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4209,7 +4459,7 @@
 			)
 		)
 		(property "LCSC" ""
-			(at 205.74 111.76 90)
+			(at 226.06 111.76 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -4218,7 +4468,7 @@
 			)
 		)
 		(property "LCSC#" "C142797"
-			(at 205.74 111.76 90)
+			(at 226.06 111.76 90)
 			(effects
 				(font
 					(size 1.27 1.27)
