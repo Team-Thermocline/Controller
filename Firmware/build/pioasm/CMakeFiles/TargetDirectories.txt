@@ -1,7 +1,0 @@
-/home/joe/git/SNHU/Capstone/Controller/Firmware/build/pioasm/CMakeFiles/pioasm.dir
-/home/joe/git/SNHU/Capstone/Controller/Firmware/build/pioasm/CMakeFiles/edit_cache.dir
-/home/joe/git/SNHU/Capstone/Controller/Firmware/build/pioasm/CMakeFiles/rebuild_cache.dir
-/home/joe/git/SNHU/Capstone/Controller/Firmware/build/pioasm/CMakeFiles/list_install_components.dir
-/home/joe/git/SNHU/Capstone/Controller/Firmware/build/pioasm/CMakeFiles/install.dir
-/home/joe/git/SNHU/Capstone/Controller/Firmware/build/pioasm/CMakeFiles/install/local.dir
-/home/joe/git/SNHU/Capstone/Controller/Firmware/build/pioasm/CMakeFiles/install/strip.dir

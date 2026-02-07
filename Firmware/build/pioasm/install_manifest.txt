@@ -1,5 +1,0 @@
-/home/joe/git/SNHU/Capstone/Controller/Firmware/build/pioasm-install/pioasm/pioasm
-/home/joe/git/SNHU/Capstone/Controller/Firmware/build/pioasm-install/pioasm/pioasmTargets.cmake
-/home/joe/git/SNHU/Capstone/Controller/Firmware/build/pioasm-install/pioasm/pioasmTargets-release.cmake
-/home/joe/git/SNHU/Capstone/Controller/Firmware/build/pioasm-install/pioasm/pioasmConfig.cmake
-/home/joe/git/SNHU/Capstone/Controller/Firmware/build/pioasm-install/pioasm/pioasmConfigVersion.cmake
