@@ -46,16 +46,19 @@ int main() {
   // Program Begin
   // =============
 
+  // Configure Status LEDs (GPIO25 on Pico)
+  gpio_init(STAT_LED_PIN);
+  gpio_set_dir(STAT_LED_PIN, GPIO_OUT);
+  gpio_init(FAULT_LED_PIN);
+  gpio_set_dir(FAULT_LED_PIN, GPIO_OUT);
+  gpio_put(STAT_LED_PIN, 0);
+  gpio_put(FAULT_LED_PIN, 1);
+
   // =============================
   // Initialize stdio (USB serial)
   // =============================
   stdio_init_all();
   setvbuf(stdout, NULL, _IONBF, 0); // Disable buffering for stdout
-
-  // Configure Status LEDs (GPIO25 on Pico)
-  gpio_init(STAT_LED_PIN);
-  gpio_set_dir(STAT_LED_PIN, GPIO_OUT);
-  gpio_put(STAT_LED_PIN, 0);
 
   // Load outputs (relays and SSRs)
   gpio_init(LOAD_PIN_1);
@@ -80,6 +83,8 @@ int main() {
   if (!adg728_init(i2c0, ADG728_ADDR_MIN)) {
     FAULT = FAULT_CODE_I2C_COMMUNICATION_ERROR; // Set global fault
   }
+
+  gpio_put(FAULT_LED_PIN, FAULT == FAULT_CODE_NONE);
 
   // ===========
   // Begin Tasks
