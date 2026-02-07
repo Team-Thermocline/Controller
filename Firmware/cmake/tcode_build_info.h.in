@@ -1,0 +1,8 @@
+#pragma once
+
+// Auto-generated. Do not edit.
+
+#define TCODE_BUILD_GIT_DESCRIBE "@TCODE_BUILD_GIT_DESCRIBE@"
+#define TCODE_BUILD_BUILDER "@TCODE_BUILD_BUILDER@"
+#define TCODE_BUILD_DATE_UNIX "@TCODE_BUILD_DATE_UNIX@"
+

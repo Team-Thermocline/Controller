@@ -11,89 +11,111 @@ on:
       - "Firmware/**"
       - ".github/workflows/**"
 
-#
+# RP2040 limits (for calcualting percentage)
+env:
+  FLASH_TOTAL_KB: 2048   # 2 MB
+  RAM_TOTAL_KB: 264      # 264 KB SRAM
+
 jobs:
   make_firmware:
     runs-on: ubuntu-latest
     name: Firmware Builder
-    strategy:
-      matrix:
-        project: [HMI, Mainboard]
 
     steps:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
-      - name: Cache pip
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
-      - name: Cache PlatformIO
-        uses: actions/cache@v4
-        with:
-          path: ~/.platformio
-          key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-      - name: Install PlatformIO
-        run: |
-          python -m pip install --upgrade pip
-          pip install --upgrade platformio
 
-      - name: Run PlatformIO
-        id: pio_build
+      - name: Cache Pico SDK
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pico-sdk
+          key: ${{ runner.os }}-pico-sdk-${{ hashFiles('Firmware/CMakeLists.txt', 'Firmware/pico_sdk_import.cmake') }}
+          restore-keys: |
+            ${{ runner.os }}-pico-sdk-
+
+      - name: Install ARM GCC and CMake
         run: |
-          cd Firmware/${{ matrix.project }}
-          pio run 2>&1 | tee build_output.txt
-          
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            cmake \
+            gcc-arm-none-eabi \
+            libnewlib-arm-none-eabi \
+            ninja-build
+
+      - name: Configure and build
+        id: build
+        run: |
+          cd Firmware
+          # Remove stale CMake state so generator (Ninja) always matches (e.g. when reusing build dir from Unix Makefiles)
+          rm -rf build/CMakeCache.txt build/CMakeFiles
+          cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+          cmake --build build 2>&1 | tee build_output.txt
+
+      - name: Extract binary size and memory usage
+        id: size
+        run: |
+          cd Firmware/build
+          # arm-none-eabi-size: text (flash code) + data (init'd RAM) + bss (zero-init RAM)
+          # Flash used = text + data; RAM used = data + bss
+          size_line=$(arm-none-eabi-size thermocline_controller.elf | sed -n '2p')
+          set -- $size_line
+          text=$1 data=$2 bss=$3
+          FLASH_USED=$((text + data))
+          RAM_USED=$((data + bss))
+          FLASH_KB=$((FLASH_USED / 1024))
+          RAM_KB=$((RAM_USED / 1024))
+          FLASH_PERCENT=$((FLASH_USED * 100 / (FLASH_TOTAL_KB * 1024)))
+          RAM_PERCENT=$((RAM_USED * 100 / (RAM_TOTAL_KB * 1024)))
+          echo "flash_used=$FLASH_USED" >> $GITHUB_OUTPUT
+          echo "flash_used_kb=$FLASH_KB" >> $GITHUB_OUTPUT
+          echo "flash_percent=$FLASH_PERCENT" >> $GITHUB_OUTPUT
+          echo "ram_used=$RAM_USED" >> $GITHUB_OUTPUT
+          echo "ram_used_kb=$RAM_KB" >> $GITHUB_OUTPUT
+          echo "ram_percent=$RAM_PERCENT" >> $GITHUB_OUTPUT
+          echo "Binary (flash): ${FLASH_KB} KB (${FLASH_PERCENT}% of ${FLASH_TOTAL_KB} KB)"
+          echo "RAM (static):   ${RAM_KB} KB (${RAM_PERCENT}% of ${RAM_TOTAL_KB} KB)"
+        env:
+          FLASH_TOTAL_KB: ${{ env.FLASH_TOTAL_KB }}
+          RAM_TOTAL_KB: ${{ env.RAM_TOTAL_KB }}
+
+      - name: Optional picotool info (binary start/end from .uf2)
+        if: success()
+        run: |
+          cd Firmware/build
+          if command -v picotool >/dev/null 2>&1; then
+            picotool info -a thermocline_controller.uf2 || true
+          else
+            echo "picotool not installed; binary size from elf: ${{ steps.size.outputs.flash_used_kb }} KB"
+          fi
+
       - name: Parse Memory Usage and Send to Discord
         if: success()
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         run: |
-          cd Firmware/${{ matrix.project }}
-          
-          # Get git version
           GIT_VERSION=$(git describe --tags --always --dirty 2>/dev/null || echo "unknown")
-          
-          # Parse RAM usage
-          RAM_PERCENT=$(grep -oP 'RAM:\s+\[.*?\]\s+\K[\d.]+(?=%)' build_output.txt || echo "N/A")
-          RAM_USED=$(grep -oP 'RAM:.*?used \K[\d]+' build_output.txt || echo "N/A")
-          RAM_TOTAL=$(grep -oP 'RAM:.*?from \K[\d]+' build_output.txt || echo "N/A")
-          
-          # Parse Flash usage
-          FLASH_PERCENT=$(grep -oP 'Flash:\s+\[.*?\]\s+\K[\d.]+(?=%)' build_output.txt || echo "N/A")
-          FLASH_USED=$(grep -oP 'Flash:.*?used \K[\d]+' build_output.txt || echo "N/A")
-          FLASH_TOTAL=$(grep -oP 'Flash:.*?from \K[\d]+' build_output.txt || echo "N/A")
-          
-          # Format bytes to KB
-          RAM_USED_KB=$((RAM_USED / 1024))
-          RAM_TOTAL_KB=$((RAM_TOTAL / 1024))
-          FLASH_USED_KB=$((FLASH_USED / 1024))
-          FLASH_TOTAL_KB=$((FLASH_TOTAL / 1024))
-          
-          # Create Discord message
+          FLASH_PERCENT="${{ steps.size.outputs.flash_percent }}"
+          FLASH_USED_KB="${{ steps.size.outputs.flash_used_kb }}"
+          RAM_PERCENT="${{ steps.size.outputs.ram_percent }}"
+          RAM_USED_KB="${{ steps.size.outputs.ram_used_kb }}"
+
           if [ -n "$DISCORD_WEBHOOK" ]; then
-            curl -H "Content-Type: application/json" \
+            curl -sS -H "Content-Type: application/json" \
               -d "{
                 \"embeds\": [{
-                  \"title\": \"New Firmware Build - ${{ matrix.project }}\",
+                  \"title\": \"New Firmware Build - thermocline_controller\",
                   \"description\": \"Firmware version **${GIT_VERSION}** built successfully!\",
                   \"color\": 3066993,
                   \"fields\": [
                     {
                       \"name\": \"Flash Usage\",
-                      \"value\": \"${FLASH_PERCENT}% (${FLASH_USED_KB} KB / ${FLASH_TOTAL_KB} KB)\",
+                      \"value\": \"${FLASH_PERCENT}% (${FLASH_USED_KB} KB / ${{ env.FLASH_TOTAL_KB }} KB)\",
                       \"inline\": true
                     },
                     {
-                      \"name\": \"RAM Usage\",
-                      \"value\": \"${RAM_PERCENT}% (${RAM_USED_KB} KB / ${RAM_TOTAL_KB} KB)\",
+                      \"name\": \"RAM Usage (static)\",
+                      \"value\": \"${RAM_PERCENT}% (${RAM_USED_KB} KB / ${{ env.RAM_TOTAL_KB }} KB)\",
                       \"inline\": true
                     },
                     {
@@ -115,47 +137,34 @@ jobs:
           else
             echo "No Discord webhook configured, skipping notification"
             echo "Version: ${GIT_VERSION}"
-            echo "Flash: ${FLASH_PERCENT}% (${FLASH_USED_KB} KB / ${FLASH_TOTAL_KB} KB)"
-            echo "RAM: ${RAM_PERCENT}% (${RAM_USED_KB} KB / ${RAM_TOTAL_KB} KB)"
+            echo "Flash: ${FLASH_PERCENT}% (${FLASH_USED_KB} KB / ${{ env.FLASH_TOTAL_KB }} KB)"
+            echo "RAM: ${RAM_PERCENT}% (${RAM_USED_KB} KB / ${{ env.RAM_TOTAL_KB }} KB)"
           fi
 
       - uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.project }}_Binaries
-          path: Firmware/${{ matrix.project }}/.pio/build/**/*.uf2
-          if-no-files-found: ignore
+          name: Firmware_Binaries
+          path: Firmware/build/thermocline_controller.uf2
+          if-no-files-found: error
 
   delint:
     runs-on: ubuntu-latest
-    name: Delinter
-    strategy:
-      matrix:
-        project: [HMI, Mainboard]
-
+    name: Build (lint check)
     steps:
       - uses: actions/checkout@v4
         with:
           submodules: recursive
-      - name: Cache pip
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
-      - name: Cache PlatformIO
-        uses: actions/cache@v4
-        with:
-          path: ~/.platformio
-          key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-      - name: Install PlatformIO
+      - name: Install ARM GCC and CMake
         run: |
-          python -m pip install --upgrade pip
-          pip install --upgrade platformio
-
-      - name: Run Delinter
-        run: cd Firmware/${{ matrix.project }} && pio check
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            cmake \
+            gcc-arm-none-eabi \
+            libnewlib-arm-none-eabi \
+            ninja-build
+      - name: Configure and build
+        run: |
+          cd Firmware
+          rm -rf build/CMakeCache.txt build/CMakeFiles
+          cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+          cmake --build build

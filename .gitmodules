@@ -16,3 +16,6 @@
 [submodule "Hardware/Main-Board/libraries/faston-kicad-library"]
 	path = Hardware/Main-Board/libraries/faston-kicad-library
 	url = https://github.com/KenwoodFox/faston-kicad-library.git
+[submodule "Firmware/lib/FreeRTOS-Kernel"]
+	path = Firmware/lib/FreeRTOS-Kernel
+	url = https://github.com/FreeRTOS/FreeRTOS-Kernel

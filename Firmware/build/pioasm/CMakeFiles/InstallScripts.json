@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/joe/git/SNHU/Capstone/Controller/Firmware/build/pioasm/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
