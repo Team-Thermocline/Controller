@@ -21,3 +21,9 @@ bool adg728_probe(i2c_inst_t *i2c, uint8_t addr);
  * Returns true if the device is present and init succeeded.
  */
 bool adg728_init(i2c_inst_t *i2c, uint8_t addr);
+
+/**
+ * Select a single channel 0..7 (all others off).
+ * Returns true on success.
+ */
+bool adg728_select_channel(i2c_inst_t *i2c, uint8_t addr, uint8_t channel);

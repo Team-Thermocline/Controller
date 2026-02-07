@@ -6,6 +6,7 @@
 #include "pico/error.h"
 #include "pico/stdio.h"
 #include "pico/stdio_usb.h"
+#include "analog_task.h"
 #include "pindefs.h"
 #include "serial_task.h"
 #include "sim_thermo_system_task.h"
@@ -112,6 +113,14 @@ int main() {
     vApplicationMallocFailedHook();
   if (status_led_task_create(1, NULL) != pdPASS)
     vApplicationMallocFailedHook();
+
+  static const analog_task_config_t analog_cfg = {
+      .i2c = i2c0,
+      .adg728_addr = ADG728_ADDR_MIN,
+  };
+  if (analog_task_create(&analog_cfg, 1, NULL) != pdPASS)
+    vApplicationMallocFailedHook();
+
   if (sim_thermo_system_task_create(&thermo_cfg, 1, NULL) != pdPASS)
     vApplicationMallocFailedHook();
   if (xTaskCreate(heartbeat_task, "heartbeat", 512, NULL, 1, NULL) != pdPASS)

@@ -80,6 +80,7 @@ add_executable(thermocline_controller
         tasks/sim_thermo_system_task.c
         tasks/serial_task.c
         tasks/status_led_task.c
+        tasks/analog_task.c
 )
 
 # Override TinyUSB default descriptor strings (pico_stdio_usb default descriptors).
@@ -119,6 +120,7 @@ target_link_libraries(thermocline_controller
         pico_stdlib
         hardware_pio
         hardware_clocks
+        hardware_adc
         freertos_kernel
         pico_adg728
 )
