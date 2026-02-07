@@ -4,6 +4,7 @@ _build
 
 # Binaries
 *.FCStd1
+*.FCBak
 *.stl
 *.pdf
 *.zip
