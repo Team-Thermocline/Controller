@@ -1,5 +1,7 @@
+#include "ADG728.h"
 #include "FreeRTOS.h"
 #include "hardware/gpio.h"
+#include "hardware/i2c.h"
 #include "neopixel_ws2812.h"
 #include "pico/error.h"
 #include "pico/stdio.h"
@@ -39,7 +41,13 @@ static void heartbeat_task(void *pvParameters) {
 }
 
 int main() {
+  // =============
+  // Program Begin
+  // =============
+
+  // =============================
   // Initialize stdio (USB serial)
+  // =============================
   stdio_init_all();
   setvbuf(stdout, NULL, _IONBF, 0); // Disable buffering for stdout
 
@@ -58,6 +66,19 @@ int main() {
   neopixel_ws2812_put_rgb(&g_neopixel, 2, 2, 2); // Dim white light on startup.
 
   fflush(stdout);
+
+  // =============================
+  // Initialize I2C devices
+  // =============================
+  i2c_init(i2c0, 400000);
+  gpio_set_function(I2C_SDA_PIN, GPIO_FUNC_I2C);
+  gpio_set_function(I2C_SCL_PIN, GPIO_FUNC_I2C);
+
+  // Initialize ADG728
+  adg728_init(i2c0, ADG728_ADDR_MIN);
+  if (!adg728_init(i2c0, ADG728_ADDR_MIN)) {
+    FAULT = FAULT_CODE_I2C_COMMUNICATION_ERROR; // Set global fault
+  }
 
   // ===========
   // Begin Tasks

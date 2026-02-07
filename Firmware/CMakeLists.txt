@@ -67,7 +67,11 @@ target_include_directories(freertos_kernel PUBLIC
         ${CMAKE_CURRENT_LIST_DIR}/include  # FreeRTOSConfig.h
 )
 
-# rest of your project
+# Everything else
+add_library(pico_adg728 STATIC lib/pico_adg728/ADG728.c)
+target_include_directories(pico_adg728 PUBLIC ${CMAKE_CURRENT_LIST_DIR}/lib/pico_adg728)
+target_link_libraries(pico_adg728 hardware_i2c)
+
 add_executable(thermocline_controller
         main.c
         lib/freertos_support.c
@@ -104,6 +108,7 @@ pico_generate_pio_header(thermocline_controller ${CMAKE_CURRENT_LIST_DIR}/lib/ne
 target_include_directories(thermocline_controller PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}/include
         ${CMAKE_CURRENT_BINARY_DIR}/generated
+        ${CMAKE_CURRENT_LIST_DIR}/lib/pico_adg728
         ${CMAKE_CURRENT_LIST_DIR}/lib/neopixel_ws2812
         ${CMAKE_CURRENT_LIST_DIR}/lib/tcode_protocol
         ${CMAKE_CURRENT_LIST_DIR}/tasks
@@ -115,6 +120,7 @@ target_link_libraries(thermocline_controller
         hardware_pio
         hardware_clocks
         freertos_kernel
+        pico_adg728
 )
 
 # create map/bin/hex/uf2 file

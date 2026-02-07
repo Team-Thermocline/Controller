@@ -1,8 +1,10 @@
 #include "status_led_task.h"
 
 #include "hardware/gpio.h"
-#include "pico/stdio_usb.h"
 #include "pindefs.h"
+#include "pico/stdio_usb.h"
+
+fault_code_t FAULT = FAULT_CODE_NONE;
 
 static void status_led_task(void *pvParameters) {
   (void)pvParameters;
@@ -30,7 +32,8 @@ static void status_led_task(void *pvParameters) {
     // Work Status, Blinks if work is in progress
     vTaskDelay(pdMS_TO_TICKS(200));
 
-    // TODO: Add checks for Error and other statuses
+    // Set fault LED solid for any non-zero fault code
+    gpio_put(FAULT_LED_PIN, FAULT != FAULT_CODE_NONE);
   }
 }
 
