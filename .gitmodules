@@ -16,3 +16,6 @@
 [submodule "Hardware/Main-Board/libraries/faston-kicad-library"]
 	path = Hardware/Main-Board/libraries/faston-kicad-library
 	url = https://github.com/KenwoodFox/faston-kicad-library.git
+[submodule "Hardware/Complete-System/libraries/thermocline-kicad-libraries"]
+	path = Hardware/Complete-System/libraries/thermocline-kicad-libraries
+	url = git@github.com:Team-Thermocline/thermocline-kicad-libraries.git
