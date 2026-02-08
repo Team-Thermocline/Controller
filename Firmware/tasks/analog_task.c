@@ -66,7 +66,7 @@ static void analog_task(void *pvParameters) {
 
     adc_init();
     adc_gpio_init(ADC_TMUX_PIN);
-    adc_select_input(0); /* ADC0 = GPIO26 (ADC_TMUX_PIN) */
+    adc_select_input(ADG_CH_CT0);
 
     uint16_t samples[NUM_SAMPLES];
     float mean, rms_adc;
