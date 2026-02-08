@@ -1,19 +1,10 @@
 #include "sim_thermo_system_task.h"
 
+#include "globals.h"
 #include "hardware/gpio.h"
 #include "pindefs.h"
 #include <math.h>
 #include <stdbool.h>
-
-// Shared simulator state (defined in main.c)
-extern float current_temperature_setpoint;
-extern float current_humidity_setpoint;
-extern float current_temperature;
-extern float current_humidity;
-extern bool heater_on;
-extern bool compressor_on;
-extern int current_state;
-extern int alarm_state;
 
 // Clamps a float between lo and hi
 static float clampf(float x, float lo, float hi) {
@@ -145,8 +136,8 @@ static void sim_thermo_system_task(void *pvParameters) {
     gpio_put(LOAD_PIN_1, heater_on ? 1 : 0);
     set_status_color(cfg, mode);
 
-    current_state = (mode == SIM_MODE_IDLE) ? 0 : 1;
-    alarm_state = 0;
+    current_state = (mode == SIM_MODE_IDLE) ? RUN_STATE_IDLE : RUN_STATE_RUN;
+    FAULT = FAULT_CODE_NONE;
 
     // Update temperature.
     float dt_s =

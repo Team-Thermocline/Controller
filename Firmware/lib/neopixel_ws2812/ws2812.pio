@@ -1,17 +1,29 @@
 .program ws2812
+
+; We can set aside a pin (or more than one) for timing while running commands
 .side_set 1
 
-; 800khz neopixel timing
+; WS2812/NeoPixel timing constants for 800kHz protocol (in PIO clock cycles):
+; T1: Length of logic '1' high time after start of each bit (2 cycles)
+; T2: Length of total bit time minus T3 (so T1+T2 = '1' time, '0' is T3+T2)
+; T3: Initial low time after each bit (3 cycles)
 .define public T1 2
 .define public T2 5
 .define public T3 3
 
 .wrap_target
 bitloop:
-    out x, 1       side 0 [T3 - 1]
-    jmp !x do_zero side 1 [T1 - 1]
+    ; For each bit, output the MSB of OSR to x, set output low for T3 cycles
+    out x, 1       side 0 [T3 - 1]        ; Shift 1 bit from OSR to x. Output low for (T3) cycles.
+    ; If the bit just shifted is '0', branch to do_zero after T1 cycles with output high;
+    ; otherwise, fall through to do_one.
+    jmp !x do_zero side 1 [T1 - 1]        ; If x==0 (the bit was 0), set output high and go to do_zero after T1 cycles.
 do_one:
+    ; Output high for (T2) cycles to represent a logic '1'
     jmp bitloop    side 1 [T2 - 1]
 do_zero:
+    ; Nothing for no-op
     nop            side 0 [T2 - 1]
 .wrap
+
+; Man assembly is fucking cool

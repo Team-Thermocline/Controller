@@ -7,6 +7,7 @@
 #include "pico/stdio.h"
 #include "pico/stdio_usb.h"
 #include "analog_task.h"
+#include "globals.h"
 #include "pindefs.h"
 #include "serial_task.h"
 #include "sim_thermo_system_task.h"
@@ -20,17 +21,6 @@ bool ENABLE_ECHO = false;
 static const float NEOPIXEL_FREQ_HZ = 800000.0f;
 
 static neopixel_ws2812_t g_neopixel;
-
-// Global, overall setpoint and currentvariables
-float current_temperature_setpoint = 20.0f; // Current temperature setpoint in Celsius
-float current_humidity_setpoint = 100.0f; // Current humidity setpoint in %
-float current_temperature; // Current temperature in Celsius
-float current_humidity; // Current humidity in %
-bool heater_on; // Heater on/off
-bool compressor_on; // Compressor on/off (active cooling)
-int current_state; // Current state (0=IDLE, 1=RUN, 2=STOP, 3=FAULT) TODO: use an enum
-int alarm_state; // Alarm state (0=OK, 1=ERROR) TODO: use an enum
-
 
 static void heartbeat_task(void *pvParameters) {
   (void)pvParameters;
@@ -84,6 +74,12 @@ int main() {
     FAULT = FAULT_CODE_I2C_COMMUNICATION_ERROR; // Set global fault
   }
 
+  // Intalize Misc
+  gpio_init(SWITCH_PIN_1);
+  gpio_set_dir(SWITCH_PIN_1, GPIO_IN);
+  gpio_pull_up(SWITCH_PIN_1);
+
+  // Initialize Fault LED
   gpio_put(FAULT_LED_PIN, FAULT == FAULT_CODE_NONE);
 
   // ===========

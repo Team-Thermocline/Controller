@@ -39,7 +39,8 @@ typedef struct sim_thermo_system_config {
 // - current_temperature / current_humidity
 // - heater_on (simulated output)
 // - compressor_on (simulated output)
-// - current_state (0=IDLE, 1=RUN)
+// - current_state (RUN_STATE_IDLE / RUN_STATE_RUN)
+// - FAULT (cleared to NONE when running)
 //
 // It uses current_temperature_setpoint / current_humidity_setpoint as inputs.
 BaseType_t sim_thermo_system_task_create(const sim_thermo_system_config_t *cfg,

@@ -1,10 +1,9 @@
 #include "status_led_task.h"
 
+#include "globals.h"
 #include "hardware/gpio.h"
 #include "pindefs.h"
 #include "pico/stdio_usb.h"
-
-fault_code_t FAULT = FAULT_CODE_NONE;
 
 static void status_led_task(void *pvParameters) {
   (void)pvParameters;

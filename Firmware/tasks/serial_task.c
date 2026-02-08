@@ -1,5 +1,8 @@
 #include "serial_task.h"
 
+#include "globals.h"
+#include "hardware/gpio.h"
+#include "pindefs.h"
 #include "tcode_build_info.h"
 #include "tcode_protocol.h"
 #include "pico/error.h"
@@ -13,15 +16,6 @@
 // TCode command processing
 // ------------------------
 
-extern float current_temperature_setpoint;
-extern float current_humidity_setpoint;
-extern float current_temperature;
-extern float current_humidity;
-extern bool heater_on;
-extern bool compressor_on;
-extern int current_state;
-extern int alarm_state;
-
 static bool is_unsigned_int_token(const char *s) {
   if (!s || !*s)
     return false;
@@ -30,6 +24,10 @@ static bool is_unsigned_int_token(const char *s) {
       return false;
   }
   return true;
+}
+
+static bool temp_door_open() {
+  return gpio_get(SWITCH_PIN_1);
 }
 
 static void process_tcode_line(char *line) {
@@ -131,29 +129,14 @@ static void process_tcode_line(char *line) {
     }
 
     if (strcmp(qarg, "0") == 0) {
-      const char *state_str = "UNKNOWN";
-      switch (current_state) {
-      case 0:
-        state_str = "IDLE";
-        break;
-      case 1:
-        state_str = "RUN";
-        break;
-      case 2:
-        state_str = "STOP";
-        break;
-      case 3:
-        state_str = "FAULT";
-        break;
-      }
       printf("data: TEMP=%.1f RH=%.1f HEAT=%s COOL=%s STATE=%s SET_TEMP=%.1f "
-             "SET_RH=%.1f ALARM=%d\n",
+             "SET_RH=%.1f FAULT=%s DOOR=%s\n",
              current_temperature, current_humidity,
              heater_on ? "true" : "false",
              compressor_on ? "true" : "false",
-             state_str,
+             run_state_string(current_state),
              current_temperature_setpoint, current_humidity_setpoint,
-             alarm_state);
+             fault_code_string(FAULT), temp_door_open() ? "true" : "false");
     } else if (strcmp(qarg, "1") == 0) {
       const char *q1_arg = NULL;
       if (cur_segment + 1 < segment_count)

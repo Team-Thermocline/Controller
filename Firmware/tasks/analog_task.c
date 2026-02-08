@@ -1,32 +1,30 @@
 #include "analog_task.h"
 #include "ADG728.h"
+#include "globals.h"
 #include "hardware/adc.h"
 #include "hardware/timer.h"
 #include "pico/stdio.h"
 #include "pindefs.h"
-#include "status_led_task.h"
 #include "task.h"
 #include <math.h>
 #include <stdio.h>
 
-/* 60 Hz AC: sample over multiple periods for RMS */
+/* Math for 60hz AC sampling */
 #define AC_HZ              60
 #define SAMPLE_RATE_HZ      2000
 #define NUM_PERIODS         3
 #define NUM_SAMPLES         ((SAMPLE_RATE_HZ * NUM_PERIODS) / AC_HZ)
 #define SAMPLE_INTERVAL_US  (1000000 / SAMPLE_RATE_HZ)
 
+// Mux interval and poll settings
 #define MUX_SETTLE_MS    2
 #define POLL_INTERVAL_MS 500
 
-/* 1000:1 CT current estimate: ADC ref and burden – tune BURDEN_OHMS to match hardware */
+/* 1000:1 CT current estimate: ADC ref and burden */
 #define ADC_REF_V       3.3f
 #define ADC_MAX_COUNTS  4096.f
 #define CT_RATIO        1000
 #define BURDEN_OHMS     68.f
-
-/* RMS above this suggests ADC saturation – don't report bogus amps */
-#define ADC_CLIP_RMS_THRESHOLD 1500.f
 
 /**
  * Sample ADC over the configured AC window and compute DC mean and AC RMS.
@@ -66,34 +64,30 @@ static void analog_task(void *pvParameters) {
 
     adc_init();
     adc_gpio_init(ADC_TMUX_PIN);
-    adc_select_input(ADG_CH_CT0);
 
     uint16_t samples[NUM_SAMPLES];
     float mean, rms_adc;
 
-    while (true) {
-        if (!adg728_probe(i2c, addr)) {
-            FAULT = FAULT_CODE_I2C_COMMUNICATION_ERROR;
-            vTaskDelay(pdMS_TO_TICKS(POLL_INTERVAL_MS));
-            continue;
-        }
-        FAULT = FAULT_CODE_NONE;
+    // Check ADG728
+    if (!adg728_probe(i2c, addr)) {
+        FAULT = FAULT_CODE_I2C_COMMUNICATION_ERROR;
+        vTaskDelay(pdMS_TO_TICKS(POLL_INTERVAL_MS));
+    }
 
+    while (true) {
+        // Select Channel
         if (!adg728_select_channel(i2c, addr, ADG_CH_CT0)) {
             FAULT = FAULT_CODE_I2C_COMMUNICATION_ERROR;
             vTaskDelay(pdMS_TO_TICKS(POLL_INTERVAL_MS));
             continue;
         }
+
+        // Allow for mux to settle
         vTaskDelay(pdMS_TO_TICKS(MUX_SETTLE_MS));
 
         sample_ac_rms(samples, NUM_SAMPLES, &mean, &rms_adc);
-
-        if (rms_adc >= ADC_CLIP_RMS_THRESHOLD) {
-            printf("CT0: mean=%.1f rms=%.1f (ADC) clipped\n", mean, rms_adc);
-        } else {
-            float amps = analog_rms_adc_to_primary_amps(rms_adc);
-            printf("CT0: mean=%.1f rms=%.1f (ADC) ~ %.2f A\n", mean, rms_adc, amps);
-        }
+        float amps = analog_rms_adc_to_primary_amps(rms_adc);
+        // printf("CT0: mean=%.1f rms=%.1f (ADC) ~ %.2f A\n", mean, rms_adc, amps);
 
         vTaskDelay(pdMS_TO_TICKS(POLL_INTERVAL_MS));
     }
