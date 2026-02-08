@@ -148,6 +148,22 @@ static void process_tcode_line(char *line) {
         printf("data: BUILDER=%s\n", TCODE_BUILD_BUILDER);
       } else if (q1_arg && strcmp(q1_arg, "BUILD_DATE") == 0) {
         printf("data: BUILD_DATE=%s\n", TCODE_BUILD_DATE_UNIX);
+      } else if (q1_arg && strcmp(q1_arg, "CT0_AMPS") == 0) {
+        printf("data: CT0_AMPS=%.2f\n", ct0_amps);
+      } else if (q1_arg && strcmp(q1_arg, "CT1_AMPS") == 0) {
+        printf("data: CT1_AMPS=%.2f\n", ct1_amps);
+      } else if (q1_arg && strcmp(q1_arg, "CT2_AMPS") == 0) {
+        printf("data: CT2_AMPS=%.2f\n", ct2_amps);
+      } else if (q1_arg && strcmp(q1_arg, "CT3_AMPS") == 0) {
+        printf("data: CT3_AMPS=%.2f\n", ct3_amps);
+      } else if (q1_arg && strcmp(q1_arg, "TDR0_TEMPERATURE_C") == 0) {
+        printf("data: TDR0_TEMPERATURE_C=%.2f\n", tdr0_temperature_c);
+      } else if (q1_arg && strcmp(q1_arg, "TDR1_TEMPERATURE_C") == 0) {
+        printf("data: TDR1_TEMPERATURE_C=%.2f\n", tdr1_temperature_c);
+      } else if (q1_arg && strcmp(q1_arg, "TDR2_TEMPERATURE_C") == 0) {
+        printf("data: TDR2_TEMPERATURE_C=%.2f\n", tdr2_temperature_c);
+      } else if (q1_arg && strcmp(q1_arg, "TDR3_TEMPERATURE_C") == 0) {
+        printf("data: TDR3_TEMPERATURE_C=%.2f\n", tdr3_temperature_c);
       } else {
         printf("error:UNKNOWN_KEY %s\n", q1_arg ? q1_arg : "(missing)");
       }

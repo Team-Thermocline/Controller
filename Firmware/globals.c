@@ -37,10 +37,23 @@ const char *run_state_string(run_state_t state) {
  * ----------------------------------------------------------------------------- */
 fault_code_t FAULT = FAULT_CODE_NONE;
 
+// Setpoints
 float current_temperature_setpoint = 20.0f;
 float current_humidity_setpoint = 100.0f;
 float current_temperature = 0.0f;
 float current_humidity = 0.0f;
+
+// Outputs
 bool heater_on = false;
 bool compressor_on = false;
 run_state_t current_state = RUN_STATE_IDLE;
+
+// Debug/Monitoring
+float ct0_amps = 0.0f;
+float ct1_amps = 0.0f;
+float ct2_amps = 0.0f;
+float ct3_amps = 0.0f;
+float tdr0_temperature_c = 0.0f;
+float tdr1_temperature_c = 0.0f;
+float tdr2_temperature_c = 0.0f;
+float tdr3_temperature_c = 0.0f;

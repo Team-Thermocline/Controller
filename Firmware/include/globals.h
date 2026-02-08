@@ -33,10 +33,23 @@ const char *run_state_string(run_state_t state);
  * ----------------------------------------------------------------------------- */
 extern fault_code_t FAULT;
 
+// Setpoints
 extern float current_temperature_setpoint;
 extern float current_humidity_setpoint;
 extern float current_temperature;
 extern float current_humidity;
+
+// Outputs
 extern bool heater_on;
 extern bool compressor_on;
 extern run_state_t current_state;
+
+// Debug/Monitoring
+extern float ct0_amps;
+extern float ct1_amps;
+extern float ct2_amps;
+extern float ct3_amps;
+extern float tdr0_temperature_c;
+extern float tdr1_temperature_c;
+extern float tdr2_temperature_c;
+extern float tdr3_temperature_c;

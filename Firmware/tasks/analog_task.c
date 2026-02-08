@@ -86,8 +86,8 @@ static void analog_task(void *pvParameters) {
         vTaskDelay(pdMS_TO_TICKS(MUX_SETTLE_MS));
 
         sample_ac_rms(samples, NUM_SAMPLES, &mean, &rms_adc);
-        float amps = analog_rms_adc_to_primary_amps(rms_adc);
-        // printf("CT0: mean=%.1f rms=%.1f (ADC) ~ %.2f A\n", mean, rms_adc, amps);
+        ct0_amps = analog_rms_adc_to_primary_amps(rms_adc);
+        // printf("CT0: mean=%.1f rms=%.1f (ADC) ~ %.2f A\n", mean, rms_adc, ct0_amps);
 
         vTaskDelay(pdMS_TO_TICKS(POLL_INTERVAL_MS));
     }
