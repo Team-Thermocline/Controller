@@ -2,13 +2,11 @@
 [![Firmware](https://github.com/Team-Thermocline/EG-498-Temperature-Chamber-Team-Thermocline/actions/workflows/firmware_workflow.yml/badge.svg)](https://github.com/Team-Thermocline/EG-498-Temperature-Chamber-Team-Thermocline/actions/workflows/firmware_workflow.yml)
 
 
-# EG-498-Temperature-Chamber-Team-Thermocline
+# Temperature Chamber Controller
 
 ![Banner](Static/Banner.png)
 
 This repo contains all the firmware and hardware for [Team Thermocline's](https://team-thermocline.github.io/) thermal chamber controller.
-
-If you're looking for the latest docs/builds, see our [Releases Page](https://github.com/Team-Thermocline/EG-498-Temperature-Chamber-Team-Thermocline/releases).
 
 # Getting Started
 
@@ -17,8 +15,8 @@ If you're looking for the latest docs/builds, see our [Releases Page](https://gi
 First, clone this repo (and optionally checkout a branch)
 
 ```shell
-git clone https://github.com/Team-Thermocline/EG-498-Temperature-Chamber-Team-Thermocline.git
-cd EG-498-Temperature-Chamber-Team-Thermocline
+git clone https://github.com/Team-Thermocline/Controller.git
+cd Controller
 ```
 
 ### Init Submodules
