@@ -32,12 +32,12 @@ static bool tick_reached(TickType_t now, TickType_t target) {
 static sim_mode_t desired_mode(const sim_thermo_system_config_t *cfg, float t,
                                float sp, sim_mode_t current) {
   float h = cfg->temp_hysteresis_c;
-  if (t < sp - h)
+  if (t <= sp - h)
     return SIM_MODE_HEAT;
-  if (cfg->enable_active_cooling && t > sp + h)
+  if (cfg->enable_active_cooling && t >= sp + h)
     return SIM_MODE_COOL;
-  // stay in current mode inside band, otherwise idle
-  if (t >= sp - h && t <= sp + h)
+  // stay in current mode inside band (sp-h < t < sp+h), otherwise idle
+  if (t > sp - h && t < sp + h)
     return current;
   return SIM_MODE_IDLE;
 }
@@ -118,8 +118,13 @@ static void sim_thermo_system_task(void *pvParameters) {
       cooling_rest = true;
     if (cooling_rest && t >= sp + h / 2.0f)
       cooling_rest = false;
+    // Clear cooling_rest if temp falls below heating threshold (allow heating)
+    if (cooling_rest && t <= sp - h)
+      cooling_rest = false;
 
-    sim_mode_t want = cooling_rest ? SIM_MODE_IDLE : desired_mode(cfg, t, sp, mode);
+    sim_mode_t want_raw = desired_mode(cfg, t, sp, mode);
+    // cooling_rest only blocks cooling, not heating
+    sim_mode_t want = (cooling_rest && want_raw == SIM_MODE_COOL) ? SIM_MODE_IDLE : want_raw;
 
     if (!pending && want != mode) {
       pending = true;

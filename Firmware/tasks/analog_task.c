@@ -75,7 +75,7 @@ static void analog_task(void *pvParameters) {
     }
 
     while (true) {
-        // Select Channel
+        // Select Current Transformer Channel TODO: Loop through all current transformers ADG_CH_CT0, ADG_CH_CT1, ADG_CH_CT2 and ADG_CH_CT3
         if (!adg728_select_channel(i2c, addr, ADG_CH_CT0)) {
             FAULT = FAULT_CODE_I2C_COMMUNICATION_ERROR;
             vTaskDelay(pdMS_TO_TICKS(POLL_INTERVAL_MS));
@@ -88,6 +88,29 @@ static void analog_task(void *pvParameters) {
         sample_ac_rms(samples, NUM_SAMPLES, &mean, &rms_adc);
         ct0_amps = analog_rms_adc_to_primary_amps(rms_adc);
         // printf("CT0: mean=%.1f rms=%.1f (ADC) ~ %.2f A\n", mean, rms_adc, ct0_amps);
+
+        vTaskDelay(pdMS_TO_TICKS(POLL_INTERVAL_MS));
+
+        // TODO: Move this into a neater loop above
+        // Read temperature sensor channel
+        if (!adg728_select_channel(i2c, addr, ADG_CH_TDR0)) {
+            FAULT = FAULT_CODE_I2C_COMMUNICATION_ERROR;
+            vTaskDelay(pdMS_TO_TICKS(POLL_INTERVAL_MS));
+            continue;
+        }
+
+        // Allow for mux to settle
+        vTaskDelay(pdMS_TO_TICKS(MUX_SETTLE_MS));
+
+        // Read temperature sensor ADC value
+        uint16_t tdr0_adc = adc_read();
+
+        // Convert ADC value to voltage
+        float tdr0_voltage = ((float)tdr0_adc / ADC_MAX_COUNTS) * ADC_REF_V;
+        
+        // Calculate temperature using T = (V - 1.25) / 0.005
+        // Formula assumes sensor outputs 1.25V at 0°C, 0.005V/°C slope
+        tdr0_temperature_c = (tdr0_voltage - 1.25f) / 0.005f;
 
         vTaskDelay(pdMS_TO_TICKS(POLL_INTERVAL_MS));
     }
