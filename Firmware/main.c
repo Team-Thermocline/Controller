@@ -19,6 +19,7 @@ bool ENABLE_ECHO = false;
 
 // NeoPixel (WS2812) config
 static const float NEOPIXEL_FREQ_HZ = 800000.0f;
+static const uint NEOPIXEL_NUM_PIXELS = 35;
 
 static neopixel_ws2812_t g_neopixel;
 
@@ -56,8 +57,8 @@ int main() {
   gpio_put(LOAD_PIN_1, 0);
 
   neopixel_ws2812_init(&g_neopixel, pio0, NEOPIXEL_PIN, NEOPIXEL_FREQ_HZ,
-                       false);
-  neopixel_ws2812_put_rgb(&g_neopixel, 2, 2, 2); // Dim white light on startup.
+                       false, NEOPIXEL_NUM_PIXELS);
+  neopixel_ws2812_put_rgb(&g_neopixel, 2, 2, 2);
 
   fflush(stdout);
 
