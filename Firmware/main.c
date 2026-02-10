@@ -55,6 +55,9 @@ int main() {
   gpio_init(LOAD_PIN_1);
   gpio_set_dir(LOAD_PIN_1, GPIO_OUT);
   gpio_put(LOAD_PIN_1, 0);
+  gpio_init(LOAD_PIN_6);
+  gpio_set_dir(LOAD_PIN_6, GPIO_OUT);
+  gpio_put(LOAD_PIN_6, 0);
 
   neopixel_ws2812_init(&g_neopixel, pio0, NEOPIXEL_PIN, NEOPIXEL_FREQ_HZ,
                        false, NEOPIXEL_NUM_PIXELS);

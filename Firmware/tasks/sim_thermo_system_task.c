@@ -139,6 +139,7 @@ static void sim_thermo_system_task(void *pvParameters) {
     heater_on = (mode == SIM_MODE_HEAT);
     compressor_on = (mode == SIM_MODE_COOL);
     gpio_put(LOAD_PIN_1, heater_on ? 1 : 0);
+    gpio_put(LOAD_PIN_6, compressor_on ? 1 : 0);
     set_status_color(cfg, mode);
 
     current_state = (mode == SIM_MODE_IDLE) ? RUN_STATE_IDLE : RUN_STATE_RUN;
