@@ -34,15 +34,13 @@ typedef struct sim_thermo_system_config {
   TickType_t update_period_ticks;
 } sim_thermo_system_config_t;
 
-// Creates the simulator thermo system task.
+// Creates the thermo control task.
 // The task updates:
-// - current_temperature / current_humidity
-// - heater_on (simulated output)
-// - compressor_on (simulated output)
+// - heater_on / compressor_on (load outputs)
 // - current_state (RUN_STATE_IDLE / RUN_STATE_RUN)
 // - FAULT (cleared to NONE when running)
 //
-// It uses current_temperature_setpoint / current_humidity_setpoint as inputs.
+// It uses tdr1_temperature_c as temperature input and current_temperature_setpoint.
 BaseType_t sim_thermo_system_task_create(const sim_thermo_system_config_t *cfg,
                                         UBaseType_t priority,
                                         TaskHandle_t *out_handle);

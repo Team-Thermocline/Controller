@@ -3,17 +3,7 @@
 #include "globals.h"
 #include "hardware/gpio.h"
 #include "pindefs.h"
-#include <math.h>
 #include <stdbool.h>
-
-// Clamps a float between lo and hi
-static float clampf(float x, float lo, float hi) {
-  if (x < lo)
-    return lo;
-  if (x > hi)
-    return hi;
-  return x;
-}
 
 // Enum for the different simulation modes
 typedef enum sim_mode {
@@ -36,9 +26,14 @@ static sim_mode_t desired_mode(const sim_thermo_system_config_t *cfg, float t,
     return SIM_MODE_HEAT;
   if (cfg->enable_active_cooling && t >= sp + h)
     return SIM_MODE_COOL;
-  // stay in current mode inside band (sp-h < t < sp+h), otherwise idle
-  if (t > sp - h && t < sp + h)
+  // Inside band (sp-h < t < sp+h): don't heat when already at/above setpoint, don't cool when at/below
+  if (t > sp - h && t < sp + h) {
+    if (current == SIM_MODE_HEAT && t >= sp)
+      return SIM_MODE_IDLE;
+    if (current == SIM_MODE_COOL && t <= sp)
+      return SIM_MODE_IDLE;
     return current;
+  }
   return SIM_MODE_IDLE;
 }
 
@@ -82,12 +77,6 @@ static void sim_thermo_system_task(void *pvParameters) {
     return;
   }
 
-  // Initialize simulated readings if unset.
-  if (current_temperature == 0.0f)
-    current_temperature = cfg->ambient_temp_c;
-  if (current_humidity == 0.0f)
-    current_humidity = cfg->ambient_rh;
-
   sim_mode_t mode = SIM_MODE_IDLE;
   if (heater_on)
     mode = SIM_MODE_HEAT;
@@ -109,7 +98,7 @@ static void sim_thermo_system_task(void *pvParameters) {
     vTaskDelayUntil(&last, cfg->update_period_ticks);
 
     float sp = current_temperature_setpoint;
-    float t = current_temperature;
+    float t = tdr1_temperature_c;
     TickType_t now = xTaskGetTickCount();
 
     // Cooling undershoot: when cooling drops temp to sp - h/2, stop and rest
@@ -144,47 +133,6 @@ static void sim_thermo_system_task(void *pvParameters) {
 
     current_state = (mode == SIM_MODE_IDLE) ? RUN_STATE_IDLE : RUN_STATE_RUN;
     FAULT = FAULT_CODE_NONE;
-
-    // Update temperature.
-    float dt_s =
-        ((float)cfg->update_period_ticks) / (float)configTICK_RATE_HZ;
-    if (mode == SIM_MODE_HEAT) {
-      current_temperature += cfg->heat_ramp_c_per_s * dt_s;
-    } else if (mode == SIM_MODE_COOL) {
-      current_temperature -= cfg->cool_ramp_c_per_s * dt_s;
-    } else {
-      // drift toward ambient
-      float step = cfg->passive_ramp_c_per_s * dt_s;
-      if (current_temperature < cfg->ambient_temp_c) {
-        current_temperature += step;
-        if (current_temperature > cfg->ambient_temp_c)
-          current_temperature = cfg->ambient_temp_c;
-      } else if (current_temperature > cfg->ambient_temp_c) {
-        current_temperature -= step;
-        if (current_temperature < cfg->ambient_temp_c)
-          current_temperature = cfg->ambient_temp_c;
-      }
-    }
-    current_temperature = clampf(current_temperature, cfg->min_temp_c,
-                                 cfg->max_temp_c);
-
-    // Humidity mapping (log-based): 
-    // At 0°C => 100%, at >=20°C => ~50%, falling quickly from 0 to 20°C.
-    // Uses a natural log profile.
-    if (current_temperature <= 0.0f) {
-        current_humidity = 100.0f;
-    } else if (current_temperature >= 20.0f) {
-        current_humidity = 50.0f;
-    } else {
-        // Scale so log curve passes through (0,100) and (20,50)
-        // ln(temp + 1) is always defined for temp >= 0
-        float min_hum = 50.0f, max_hum = 100.0f, t_cutoff = 20.0f;
-        float log_min = logf(1.0f);            // ln(1) = 0
-        float log_max = logf(t_cutoff + 1.0f); // ln(21)
-        float factor = (max_hum - min_hum) / (log_max - log_min);
-        float humidity = max_hum - factor * (logf(current_temperature + 1.0f) - log_min);
-        current_humidity = clampf(humidity, 50.0f, 100.0f);
-    }
   }
 }
 

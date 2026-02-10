@@ -91,28 +91,32 @@ static void analog_task(void *pvParameters) {
 
         vTaskDelay(pdMS_TO_TICKS(POLL_INTERVAL_MS));
 
-        // TODO: Move this into a neater loop above
-        // Read temperature sensor channel
-        if (!adg728_select_channel(i2c, addr, ADG_CH_TDR0)) {
-            FAULT = FAULT_CODE_I2C_COMMUNICATION_ERROR;
+        // Read temperature sensor channels TDR0 and TDR1 in a loop
+        const uint8_t tdr_channels[2] = {ADG_CH_TDR0, ADG_CH_TDR1};
+        float *tdr_temperatures[2] = {&tdr0_temperature_c, &tdr1_temperature_c};
+
+        for (int i = 0; i < 2; i++) {
+            if (!adg728_select_channel(i2c, addr, tdr_channels[i])) {
+                FAULT = FAULT_CODE_I2C_COMMUNICATION_ERROR;
+                vTaskDelay(pdMS_TO_TICKS(POLL_INTERVAL_MS));
+                continue;
+            }
+
+            // Allow for mux to settle
+            vTaskDelay(pdMS_TO_TICKS(MUX_SETTLE_MS));
+
+            // Read temperature sensor ADC value
+            uint16_t tdr_adc = adc_read();
+
+            // Convert ADC value to voltage
+            float tdr_voltage = ((float)tdr_adc / ADC_MAX_COUNTS) * ADC_REF_V;
+
+            // Calculate temperature using T = (V - 1.25) / 0.005
+            // Formula assumes sensor outputs 1.25V at 0°C, 0.005V/°C slope
+            *(tdr_temperatures[i]) = (tdr_voltage - 1.25f) / 0.005f;
+
             vTaskDelay(pdMS_TO_TICKS(POLL_INTERVAL_MS));
-            continue;
         }
-
-        // Allow for mux to settle
-        vTaskDelay(pdMS_TO_TICKS(MUX_SETTLE_MS));
-
-        // Read temperature sensor ADC value
-        uint16_t tdr0_adc = adc_read();
-
-        // Convert ADC value to voltage
-        float tdr0_voltage = ((float)tdr0_adc / ADC_MAX_COUNTS) * ADC_REF_V;
-        
-        // Calculate temperature using T = (V - 1.25) / 0.005
-        // Formula assumes sensor outputs 1.25V at 0°C, 0.005V/°C slope
-        tdr0_temperature_c = (tdr0_voltage - 1.25f) / 0.005f;
-
-        vTaskDelay(pdMS_TO_TICKS(POLL_INTERVAL_MS));
     }
 }
 
