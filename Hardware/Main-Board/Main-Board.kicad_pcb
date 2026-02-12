@@ -25032,7 +25032,7 @@
 	(footprint "Faston:Faston 63823"
 		(layer "F.Cu")
 		(uuid "81eeed9e-0787-44d5-9f3d-c04b491544c6")
-		(at -75.12 -21)
+		(at -74.58 -21)
 		(descr "Part 63823-1 ")
 		(tags "TAB, FASTON, P.C.BOARD, BLADE")
 		(property "Reference" "J110"
