@@ -19,3 +19,9 @@
 [submodule "Hardware/Complete-System/libraries/thermocline-kicad-libraries"]
 	path = Hardware/Complete-System/libraries/thermocline-kicad-libraries
 	url = git@github.com:Team-Thermocline/thermocline-kicad-libraries.git
+[submodule "Firmware/lib/FreeRTOS-Kernel"]
+	path = Firmware/lib/FreeRTOS-Kernel
+	url = https://github.com/FreeRTOS/FreeRTOS-Kernel
+[submodule "Firmware/lib/pico_adg728"]
+	path = Firmware/lib/pico_adg728
+	url = https://github.com/Team-Thermocline/Pico-ADG728

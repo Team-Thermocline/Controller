@@ -11,151 +11,92 @@ on:
       - "Firmware/**"
       - ".github/workflows/**"
 
-#
-jobs:
-  make_firmware:
-    runs-on: ubuntu-latest
-    name: Firmware Builder
-    strategy:
-      matrix:
-        project: [HMI, Mainboard]
+env:
+  FLASH_TOTAL_KB: 2048
+  RAM_TOTAL_KB: 264
 
+jobs:
+  build:
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout (with submodules)
+        uses: actions/checkout@v4
         with:
           submodules: recursive
-      - name: Cache pip
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
-      - name: Cache PlatformIO
-        uses: actions/cache@v4
-        with:
-          path: ~/.platformio
-          key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-      - name: Install PlatformIO
-        run: |
-          python -m pip install --upgrade pip
-          pip install --upgrade platformio
 
-      - name: Run PlatformIO
-        id: pio_build
+      - name: Install build dependencies
         run: |
-          cd Firmware/${{ matrix.project }}
-          pio run 2>&1 | tee build_output.txt
-          
-      - name: Parse Memory Usage and Send to Discord
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            build-essential \
+            cmake \
+            git \
+            pkg-config \
+            python3 \
+            gcc-arm-none-eabi \
+            libnewlib-arm-none-eabi \
+            libstdc++-arm-none-eabi-newlib \
+            libusb-1.0-0-dev
+
+      - name: Configure
+        run: |
+          rm -rf Firmware/build
+          mkdir -p Firmware/build
+          cd Firmware/build
+          cmake ..
+
+      - name: Build
+        run: |
+          cd Firmware/build
+          make -j"$(nproc)" 2>&1 | tee build_output.txt
+
+      - name: Extract binary size and memory usage
+        id: size
+        run: |
+          cd Firmware/build
+          test -f thermocline_controller.elf || { echo "::error::Build did not produce thermocline_controller.elf"; exit 1; }
+          size_line=$(arm-none-eabi-size thermocline_controller.elf | sed -n '2p')
+          set -- $size_line
+          text=$1 data=$2 bss=$3
+          FLASH_USED=$((text + data))
+          RAM_USED=$((data + bss))
+          echo "flash_used=$FLASH_USED" >> $GITHUB_OUTPUT
+          echo "flash_used_kb=$((FLASH_USED / 1024))" >> $GITHUB_OUTPUT
+          echo "flash_percent=$((FLASH_USED * 100 / (FLASH_TOTAL_KB * 1024)))" >> $GITHUB_OUTPUT
+          echo "ram_used=$RAM_USED" >> $GITHUB_OUTPUT
+          echo "ram_used_kb=$((RAM_USED / 1024))" >> $GITHUB_OUTPUT
+          echo "ram_percent=$((RAM_USED * 100 / (RAM_TOTAL_KB * 1024)))" >> $GITHUB_OUTPUT
+        env:
+          FLASH_TOTAL_KB: ${{ env.FLASH_TOTAL_KB }}
+          RAM_TOTAL_KB: ${{ env.RAM_TOTAL_KB }}
+
+      - name: Send to Discord
         if: success()
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         run: |
-          cd Firmware/${{ matrix.project }}
-          
-          # Get git version
           GIT_VERSION=$(git describe --tags --always --dirty 2>/dev/null || echo "unknown")
-          
-          # Parse RAM usage
-          RAM_PERCENT=$(grep -oP 'RAM:\s+\[.*?\]\s+\K[\d.]+(?=%)' build_output.txt || echo "N/A")
-          RAM_USED=$(grep -oP 'RAM:.*?used \K[\d]+' build_output.txt || echo "N/A")
-          RAM_TOTAL=$(grep -oP 'RAM:.*?from \K[\d]+' build_output.txt || echo "N/A")
-          
-          # Parse Flash usage
-          FLASH_PERCENT=$(grep -oP 'Flash:\s+\[.*?\]\s+\K[\d.]+(?=%)' build_output.txt || echo "N/A")
-          FLASH_USED=$(grep -oP 'Flash:.*?used \K[\d]+' build_output.txt || echo "N/A")
-          FLASH_TOTAL=$(grep -oP 'Flash:.*?from \K[\d]+' build_output.txt || echo "N/A")
-          
-          # Format bytes to KB
-          RAM_USED_KB=$((RAM_USED / 1024))
-          RAM_TOTAL_KB=$((RAM_TOTAL / 1024))
-          FLASH_USED_KB=$((FLASH_USED / 1024))
-          FLASH_TOTAL_KB=$((FLASH_TOTAL / 1024))
-          
-          # Create Discord message
           if [ -n "$DISCORD_WEBHOOK" ]; then
-            curl -H "Content-Type: application/json" \
-              -d "{
-                \"embeds\": [{
-                  \"title\": \"New Firmware Build - ${{ matrix.project }}\",
-                  \"description\": \"Firmware version **${GIT_VERSION}** built successfully!\",
-                  \"color\": 3066993,
-                  \"fields\": [
-                    {
-                      \"name\": \"Flash Usage\",
-                      \"value\": \"${FLASH_PERCENT}% (${FLASH_USED_KB} KB / ${FLASH_TOTAL_KB} KB)\",
-                      \"inline\": true
-                    },
-                    {
-                      \"name\": \"RAM Usage\",
-                      \"value\": \"${RAM_PERCENT}% (${RAM_USED_KB} KB / ${RAM_TOTAL_KB} KB)\",
-                      \"inline\": true
-                    },
-                    {
-                      \"name\": \"Version\",
-                      \"value\": \"${GIT_VERSION}\",
-                      \"inline\": false
-                    },
-                    {
-                      \"name\": \"Build\",
-                      \"value\": \"[View on GitHub](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})\",
-                      \"inline\": false
-                    }
-                  ],
-                  \"timestamp\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"
-                }]
-              }" \
-              "$DISCORD_WEBHOOK"
-            echo "Discord notification sent!"
+            curl -sS -H "Content-Type: application/json" -d "{
+              \"embeds\": [{
+                \"title\": \"Firmware Build - thermocline_controller\",
+                \"description\": \"**${GIT_VERSION}** built successfully.\",
+                \"color\": 3066993,
+                \"fields\": [
+                  {\"name\": \"Flash\", \"value\": \"${{ steps.size.outputs.flash_percent }}% (${{ steps.size.outputs.flash_used_kb }} KB / ${{ env.FLASH_TOTAL_KB }} KB)\", \"inline\": true},
+                  {\"name\": \"RAM (static)\", \"value\": \"${{ steps.size.outputs.ram_percent }}% (${{ steps.size.outputs.ram_used_kb }} KB / ${{ env.RAM_TOTAL_KB }} KB)\", \"inline\": true},
+                  {\"name\": \"Build\", \"value\": \"[View run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})\", \"inline\": false}
+                ],
+                \"timestamp\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"
+              }]
+            }" "$DISCORD_WEBHOOK"
           else
-            echo "No Discord webhook configured, skipping notification"
-            echo "Version: ${GIT_VERSION}"
-            echo "Flash: ${FLASH_PERCENT}% (${FLASH_USED_KB} KB / ${FLASH_TOTAL_KB} KB)"
-            echo "RAM: ${RAM_PERCENT}% (${RAM_USED_KB} KB / ${RAM_TOTAL_KB} KB)"
+            echo "Flash: ${{ steps.size.outputs.flash_percent }}% | RAM: ${{ steps.size.outputs.ram_percent }}% | ${GIT_VERSION}"
           fi
 
-      - uses: actions/upload-artifact@v4
+      - name: Upload UF2 artifact
+        uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.project }}_Binaries
-          path: Firmware/${{ matrix.project }}/.pio/build/**/*.uf2
-          if-no-files-found: ignore
-
-  delint:
-    runs-on: ubuntu-latest
-    name: Delinter
-    strategy:
-      matrix:
-        project: [HMI, Mainboard]
-
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: recursive
-      - name: Cache pip
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
-      - name: Cache PlatformIO
-        uses: actions/cache@v4
-        with:
-          path: ~/.platformio
-          key: ${{ runner.os }}-${{ hashFiles('**/lockfiles') }}
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-      - name: Install PlatformIO
-        run: |
-          python -m pip install --upgrade pip
-          pip install --upgrade platformio
-
-      - name: Run Delinter
-        run: cd Firmware/${{ matrix.project }} && pio check
+          name: thermocline_controller-uf2
+          path: Firmware/build/*.uf2
+          if-no-files-found: error
