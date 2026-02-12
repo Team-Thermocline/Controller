@@ -113,7 +113,7 @@ static void analog_task(void *pvParameters) {
 
             // Calculate temperature using T = (V - 1.25) / 0.005
             // Formula assumes sensor outputs 1.25V at 0°C, 0.005V/°C slope
-            *(tdr_temperatures[i]) = (tdr_voltage - 1.25f) / 0.005f;
+            *(tdr_temperatures[i]) = (tdr_voltage - 1.265f) / 0.005f;
 
             vTaskDelay(pdMS_TO_TICKS(POLL_INTERVAL_MS));
         }
