@@ -13907,15 +13907,6 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC" ""
-			(at 276.86 74.93 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
 		(property "LCSC#" "C163036"
 			(at 276.86 74.93 0)
 			(effects
@@ -15594,7 +15585,7 @@
 				(hide yes)
 			)
 		)
-		(property "LCSC#" "C163036"
+		(property "LCSC#" "C163037"
 			(at 276.86 24.13 0)
 			(effects
 				(font
