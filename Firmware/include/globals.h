@@ -19,10 +19,11 @@ const char *fault_code_string(fault_code_t code);
  * Run state (chamber controller state machine)
  * ----------------------------------------------------------------------------- */
 typedef enum run_state {
-  RUN_STATE_IDLE = 0,
-  RUN_STATE_RUN = 1,
-  RUN_STATE_STOP = 2,
-  RUN_STATE_FAULT = 3,
+  RUN_STATE_STANDBY = 0, // Totally standby, all systems off and no automatic logic
+  RUN_STATE_IDLE = 1, // Automatic logic is ready, choose to be idle
+  RUN_STATE_RUN = 2, // We're running, either heating or cooling
+  RUN_STATE_STOP = 3, // We're instructed to stop (move to standby quickly)
+  RUN_STATE_FAULT = 4, // Theres a fault, stay here, then when cleared move to standby
 } run_state_t;
 
 /** Human-readable string for run state. */

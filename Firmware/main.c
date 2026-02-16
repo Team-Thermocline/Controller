@@ -10,7 +10,7 @@
 #include "globals.h"
 #include "pindefs.h"
 #include "serial_task.h"
-#include "sim_thermo_system_task.h"
+#include "thermo_control_task.h"
 #include "status_led_task.h"
 #include "task.h"
 #include <stdio.h>
@@ -93,20 +93,9 @@ int main() {
   static const serial_task_config_t serial_cfg = {
       .enable_echo = &ENABLE_ECHO,
   };
-  static const sim_thermo_system_config_t thermo_cfg = {
-      .ambient_temp_c = 22.0f,
-      .ambient_rh = 45.0f,
-      .heat_ramp_c_per_s = 0.30f,
-      .passive_ramp_c_per_s = 0.05f,
-      .cool_ramp_c_per_s = 0.40f,
-      .heat_on_delay_ticks = pdMS_TO_TICKS(500),
-      .heat_off_delay_ticks = pdMS_TO_TICKS(500),
-      .cool_on_delay_ticks = pdMS_TO_TICKS(500),
-      .cool_off_delay_ticks = pdMS_TO_TICKS(500),
-      .enable_active_cooling = true,
+  static const thermo_control_config_t thermo_cfg = {
       .temp_hysteresis_c = 3.0f,
-      .min_temp_c = -40.0f,
-      .max_temp_c = 90.0f,
+      .enable_active_cooling = true,
       .status_pixel = &g_neopixel,
       .color_idle = {2, 2, 2},
       .color_heat = {16, 2, 0},
@@ -126,7 +115,7 @@ int main() {
   if (analog_task_create(&analog_cfg, 1, NULL) != pdPASS)
     vApplicationMallocFailedHook();
 
-  if (sim_thermo_system_task_create(&thermo_cfg, 1, NULL) != pdPASS)
+  if (thermo_control_task_create(&thermo_cfg, 1, NULL) != pdPASS)
     vApplicationMallocFailedHook();
   if (xTaskCreate(heartbeat_task, "heartbeat", 512, NULL, 1, NULL) != pdPASS)
     vApplicationMallocFailedHook();
