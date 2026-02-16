@@ -91,8 +91,13 @@ static void process_tcode_line(char *line) {
           if (th[0] == 'T') {
             if (value < -45 || value > 90)
               printf("Error: temp out of range\n");
-            else
+            else {
               current_temperature_setpoint = (float)value;
+              // Transition from STANDBY to IDLE when setpoint is set
+              if (current_state == RUN_STATE_STANDBY) {
+                current_state = RUN_STATE_IDLE;
+              }
+            }
           } else {
             if (value < 0 || value > 100)
               printf("Error: humidity out of range\n");
