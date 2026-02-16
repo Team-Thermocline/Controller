@@ -5,8 +5,10 @@
 #include "pindefs.h"
 #include "tcode_build_info.h"
 #include "tcode_protocol.h"
+#include "thermo_control_task.h"
 #include "pico/error.h"
 #include "pico/stdio.h"
+#include <sys/time.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -169,6 +171,14 @@ static void process_tcode_line(char *line) {
         printf("data: TDR2_TEMPERATURE_C=%.2f\n", tdr2_temperature_c);
       } else if (q1_arg && strcmp(q1_arg, "TDR3_TEMPERATURE_C") == 0) {
         printf("data: TDR3_TEMPERATURE_C=%.2f\n", tdr3_temperature_c);
+      } else if (q1_arg && strcmp(q1_arg, "STATE") == 0) {
+        printf("data: STATE=%s\n", run_state_string(current_state));
+      } else if (q1_arg && strcmp(q1_arg, "FAULT") == 0) {
+        printf("data: FAULT=%s\n", fault_code_string(FAULT));
+      } else if (q1_arg && strcmp(q1_arg, "COMPRESSOR_ON_TIME") == 0) {
+        printf("data: COMPRESSOR_ON_TIME=%lu\n", thermo_control_get_compressor_on_time());
+      } else if (q1_arg && strcmp(q1_arg, "COMPRESSOR_OFF_TIME") == 0) {
+        printf("data: COMPRESSOR_OFF_TIME=%lu\n", thermo_control_get_compressor_off_time());
       } else {
         printf("error:UNKNOWN_KEY %s\n", q1_arg ? q1_arg : "(missing)");
       }
