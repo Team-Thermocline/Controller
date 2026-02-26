@@ -26,6 +26,9 @@
 #define CT_RATIO        1000
 #define BURDEN_OHMS     68.f
 
+/* Theres some slight nearby coupling to the sensors, this sets the zero noise floor */
+#define CT_ZERO_THRESHOLD_A  0.05f
+
 /**
  * Sample ADC over the configured AC window and compute DC mean and AC RMS.
  * Caller must have already selected the mux channel and waited for settle.
@@ -86,8 +89,17 @@ static void analog_task(void *pvParameters) {
                 continue;
             }
             vTaskDelay(pdMS_TO_TICKS(MUX_SETTLE_MS));
+
+            // Fill buf with AC samples
             sample_ac_rms(samples, NUM_SAMPLES, &mean, &rms_adc);
-            *ct_amps[i] = analog_rms_adc_to_primary_amps(rms_adc);
+
+            // Convert ADC counts to current (A)
+            float a = analog_rms_adc_to_primary_amps(rms_adc);
+
+            // Account for noise floor
+            *ct_amps[i] = (a < CT_ZERO_THRESHOLD_A) ? 0.0f : a;
+
+            // Wait for next poll
             vTaskDelay(pdMS_TO_TICKS(POLL_INTERVAL_MS));
         }
 
