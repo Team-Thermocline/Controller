@@ -75,27 +75,27 @@ static void analog_task(void *pvParameters) {
     }
 
     while (true) {
-        // Select Current Transformer Channel TODO: Loop through all current transformers ADG_CH_CT0, ADG_CH_CT1, ADG_CH_CT2 and ADG_CH_CT3
-        if (!adg728_select_channel(i2c, addr, ADG_CH_CT0)) {
-            FAULT = FAULT_CODE_I2C_COMMUNICATION_ERROR;
+        // Scan all current transformer channels CT0–CT3
+        const uint8_t ct_channels[4] = {ADG_CH_CT0, ADG_CH_CT1, ADG_CH_CT2, ADG_CH_CT3};
+        float *ct_amps[4] = {&ct0_amps, &ct1_amps, &ct2_amps, &ct3_amps};
+
+        for (int i = 0; i < 4; i++) {
+            if (!adg728_select_channel(i2c, addr, ct_channels[i])) {
+                FAULT = FAULT_CODE_I2C_COMMUNICATION_ERROR;
+                vTaskDelay(pdMS_TO_TICKS(POLL_INTERVAL_MS));
+                continue;
+            }
+            vTaskDelay(pdMS_TO_TICKS(MUX_SETTLE_MS));
+            sample_ac_rms(samples, NUM_SAMPLES, &mean, &rms_adc);
+            *ct_amps[i] = analog_rms_adc_to_primary_amps(rms_adc);
             vTaskDelay(pdMS_TO_TICKS(POLL_INTERVAL_MS));
-            continue;
         }
 
-        // Allow for mux to settle
-        vTaskDelay(pdMS_TO_TICKS(MUX_SETTLE_MS));
+        // Read temperature sensor channels TDR0-3 in a loop
+        const uint8_t tdr_channels[4] = {ADG_CH_TDR0, ADG_CH_TDR1, ADG_CH_TDR2, ADG_CH_TDR3};
+        float *tdr_temperatures[4] = {&tdr0_temperature_c, &tdr1_temperature_c, &tdr2_temperature_c, &tdr3_temperature_c};
 
-        sample_ac_rms(samples, NUM_SAMPLES, &mean, &rms_adc);
-        ct0_amps = analog_rms_adc_to_primary_amps(rms_adc);
-        // printf("CT0: mean=%.1f rms=%.1f (ADC) ~ %.2f A\n", mean, rms_adc, ct0_amps);
-
-        vTaskDelay(pdMS_TO_TICKS(POLL_INTERVAL_MS));
-
-        // Read temperature sensor channels TDR0 and TDR1 in a loop
-        const uint8_t tdr_channels[2] = {ADG_CH_TDR0, ADG_CH_TDR1};
-        float *tdr_temperatures[2] = {&tdr0_temperature_c, &tdr1_temperature_c};
-
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 4; i++) {
             if (!adg728_select_channel(i2c, addr, tdr_channels[i])) {
                 FAULT = FAULT_CODE_I2C_COMMUNICATION_ERROR;
                 vTaskDelay(pdMS_TO_TICKS(POLL_INTERVAL_MS));
