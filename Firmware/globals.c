@@ -6,6 +6,7 @@
 static const char *const fault_strings[] = {
     [FAULT_CODE_NONE] = "NONE",
     [FAULT_CODE_I2C_COMMUNICATION_ERROR] = "I2C_COMMUNICATION_ERROR",
+    [FAULT_CODE_THERMOCOUPLE_OPEN] = "THERMOCOUPLE_OPEN",
 };
 
 const char *fault_code_string(fault_code_t code) {

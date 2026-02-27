@@ -150,7 +150,8 @@ static void thermo_control_task(void *pvParameters) {
     // In STANDBY, outputs stay off (transition to IDLE handled by serial_task when setpoint is set)
     if (current_state == RUN_STATE_STANDBY) {
       command_idle(now);
-      FAULT = FAULT_CODE_NONE;
+      if (FAULT != FAULT_CODE_THERMOCOUPLE_OPEN)
+        FAULT = FAULT_CODE_NONE;
       continue;
     }
 
@@ -188,7 +189,8 @@ static void thermo_control_task(void *pvParameters) {
     // Update state: IDLE if both are off, RUN if either is on
     current_state = (mode == THERMO_MODE_IDLE && !compressor_state && !heater_on) 
                     ? RUN_STATE_IDLE : RUN_STATE_RUN;
-    FAULT = FAULT_CODE_NONE;
+    if (FAULT != FAULT_CODE_THERMOCOUPLE_OPEN)
+      FAULT = FAULT_CODE_NONE;
   }
 }
 

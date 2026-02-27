@@ -29,6 +29,9 @@
 /* Theres some slight nearby coupling to the sensors, this sets the zero noise floor */
 #define CT_ZERO_THRESHOLD_A  0.05f
 
+/* Thermocouple open/broken: amp reports ~ -245°C */
+#define TDR_OPEN_THERMOCOUPLE_THRESHOLD_C  (-200.0f)
+
 /**
  * Sample ADC over the configured AC window and compute DC mean and AC RMS.
  * Caller must have already selected the mux channel and waited for settle.
@@ -106,6 +109,7 @@ static void analog_task(void *pvParameters) {
         // Read temperature sensor channels TDR0-3 in a loop
         const uint8_t tdr_channels[4] = {ADG_CH_TDR0, ADG_CH_TDR1, ADG_CH_TDR2, ADG_CH_TDR3};
         float *tdr_temperatures[4] = {&tdr0_temperature_c, &tdr1_temperature_c, &tdr2_temperature_c, &tdr3_temperature_c};
+        bool any_open = false;
 
         for (int i = 0; i < 4; i++) {
             if (!adg728_select_channel(i2c, addr, tdr_channels[i])) {
@@ -123,11 +127,21 @@ static void analog_task(void *pvParameters) {
             // Convert ADC value to voltage
             float tdr_voltage = ((float)tdr_adc / ADC_MAX_COUNTS) * ADC_REF_V;
 
-            // Calculate temperature using T = (V - 1.25) / 0.005
-            // Formula assumes sensor outputs 1.25V at 0°C, 0.005V/°C slope
-            *(tdr_temperatures[i]) = (tdr_voltage - 1.265f) / 0.005f;
+            // Calculate temperature (5 mV/°C slope; open thermocouple ~ -245°C)
+            float t_c = (tdr_voltage - 1.265f) / 0.005f;
+            *(tdr_temperatures[i]) = t_c;
+
+            if (t_c < TDR_OPEN_THERMOCOUPLE_THRESHOLD_C) {
+                any_open = true;
+            }
 
             vTaskDelay(pdMS_TO_TICKS(POLL_INTERVAL_MS));
+        }
+
+        if (any_open) {
+            FAULT = FAULT_CODE_THERMOCOUPLE_OPEN;
+        } else if (FAULT == FAULT_CODE_THERMOCOUPLE_OPEN) {
+            FAULT = FAULT_CODE_NONE;
         }
     }
 }

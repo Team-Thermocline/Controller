@@ -9,6 +9,7 @@
 typedef enum fault_code {
   FAULT_CODE_NONE = 0,
   FAULT_CODE_I2C_COMMUNICATION_ERROR = 1,
+  FAULT_CODE_THERMOCOUPLE_OPEN = 2,
   /* Add further fault codes here and in fault_code_string() in globals.c */
 } fault_code_t;
 
