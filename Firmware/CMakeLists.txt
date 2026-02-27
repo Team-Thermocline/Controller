@@ -78,7 +78,7 @@ add_executable(thermocline_controller
         lib/freertos_support.c
         lib/neopixel_ws2812/neopixel_ws2812.c
         lib/tcode_protocol/tcode_protocol.c
-        tasks/sim_thermo_system_task.c
+        tasks/thermo_control_task.c
         tasks/serial_task.c
         tasks/status_led_task.c
         tasks/analog_task.c

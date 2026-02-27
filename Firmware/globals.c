@@ -6,6 +6,7 @@
 static const char *const fault_strings[] = {
     [FAULT_CODE_NONE] = "NONE",
     [FAULT_CODE_I2C_COMMUNICATION_ERROR] = "I2C_COMMUNICATION_ERROR",
+    [FAULT_CODE_THERMOCOUPLE_OPEN] = "THERMOCOUPLE_OPEN",
 };
 
 const char *fault_code_string(fault_code_t code) {
@@ -19,6 +20,7 @@ const char *fault_code_string(fault_code_t code) {
  * Run state strings
  * ----------------------------------------------------------------------------- */
 static const char *const run_state_strings[] = {
+    [RUN_STATE_STANDBY] = "STANDBY",
     [RUN_STATE_IDLE] = "IDLE",
     [RUN_STATE_RUN] = "RUN",
     [RUN_STATE_STOP] = "STOP",
@@ -46,7 +48,7 @@ float current_humidity = 0.0f;
 // Outputs
 bool heater_on = false;
 bool compressor_on = false;
-run_state_t current_state = RUN_STATE_IDLE;
+run_state_t current_state = RUN_STATE_STANDBY;
 
 // Debug/Monitoring
 float ct0_amps = 0.0f;

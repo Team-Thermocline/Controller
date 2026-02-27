@@ -26,6 +26,12 @@
 #define CT_RATIO        1000
 #define BURDEN_OHMS     68.f
 
+/* Theres some slight nearby coupling to the sensors, this sets the zero noise floor */
+#define CT_ZERO_THRESHOLD_A  0.05f
+
+/* Thermocouple open/broken: amp reports ~ -245°C */
+#define TDR_OPEN_THERMOCOUPLE_THRESHOLD_C  (-200.0f)
+
 /**
  * Sample ADC over the configured AC window and compute DC mean and AC RMS.
  * Caller must have already selected the mux channel and waited for settle.
@@ -75,27 +81,37 @@ static void analog_task(void *pvParameters) {
     }
 
     while (true) {
-        // Select Current Transformer Channel TODO: Loop through all current transformers ADG_CH_CT0, ADG_CH_CT1, ADG_CH_CT2 and ADG_CH_CT3
-        if (!adg728_select_channel(i2c, addr, ADG_CH_CT0)) {
-            FAULT = FAULT_CODE_I2C_COMMUNICATION_ERROR;
+        // Scan all current transformer channels CT0–CT3
+        const uint8_t ct_channels[4] = {ADG_CH_CT0, ADG_CH_CT1, ADG_CH_CT2, ADG_CH_CT3};
+        float *ct_amps[4] = {&ct0_amps, &ct1_amps, &ct2_amps, &ct3_amps};
+
+        for (int i = 0; i < 4; i++) {
+            if (!adg728_select_channel(i2c, addr, ct_channels[i])) {
+                FAULT = FAULT_CODE_I2C_COMMUNICATION_ERROR;
+                vTaskDelay(pdMS_TO_TICKS(POLL_INTERVAL_MS));
+                continue;
+            }
+            vTaskDelay(pdMS_TO_TICKS(MUX_SETTLE_MS));
+
+            // Fill buf with AC samples
+            sample_ac_rms(samples, NUM_SAMPLES, &mean, &rms_adc);
+
+            // Convert ADC counts to current (A)
+            float a = analog_rms_adc_to_primary_amps(rms_adc);
+
+            // Account for noise floor
+            *ct_amps[i] = (a < CT_ZERO_THRESHOLD_A) ? 0.0f : a;
+
+            // Wait for next poll
             vTaskDelay(pdMS_TO_TICKS(POLL_INTERVAL_MS));
-            continue;
         }
 
-        // Allow for mux to settle
-        vTaskDelay(pdMS_TO_TICKS(MUX_SETTLE_MS));
+        // Read temperature sensor channels TDR0-3 in a loop
+        const uint8_t tdr_channels[4] = {ADG_CH_TDR0, ADG_CH_TDR1, ADG_CH_TDR2, ADG_CH_TDR3};
+        float *tdr_temperatures[4] = {&tdr0_temperature_c, &tdr1_temperature_c, &tdr2_temperature_c, &tdr3_temperature_c};
+        bool any_open = false;
 
-        sample_ac_rms(samples, NUM_SAMPLES, &mean, &rms_adc);
-        ct0_amps = analog_rms_adc_to_primary_amps(rms_adc);
-        // printf("CT0: mean=%.1f rms=%.1f (ADC) ~ %.2f A\n", mean, rms_adc, ct0_amps);
-
-        vTaskDelay(pdMS_TO_TICKS(POLL_INTERVAL_MS));
-
-        // Read temperature sensor channels TDR0 and TDR1 in a loop
-        const uint8_t tdr_channels[2] = {ADG_CH_TDR0, ADG_CH_TDR1};
-        float *tdr_temperatures[2] = {&tdr0_temperature_c, &tdr1_temperature_c};
-
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 4; i++) {
             if (!adg728_select_channel(i2c, addr, tdr_channels[i])) {
                 FAULT = FAULT_CODE_I2C_COMMUNICATION_ERROR;
                 vTaskDelay(pdMS_TO_TICKS(POLL_INTERVAL_MS));
@@ -111,11 +127,21 @@ static void analog_task(void *pvParameters) {
             // Convert ADC value to voltage
             float tdr_voltage = ((float)tdr_adc / ADC_MAX_COUNTS) * ADC_REF_V;
 
-            // Calculate temperature using T = (V - 1.25) / 0.005
-            // Formula assumes sensor outputs 1.25V at 0°C, 0.005V/°C slope
-            *(tdr_temperatures[i]) = (tdr_voltage - 1.265f) / 0.005f;
+            // Calculate temperature (5 mV/°C slope; open thermocouple ~ -245°C)
+            float t_c = (tdr_voltage - 1.265f) / 0.005f;
+            *(tdr_temperatures[i]) = t_c;
+
+            if (t_c < TDR_OPEN_THERMOCOUPLE_THRESHOLD_C) {
+                any_open = true;
+            }
 
             vTaskDelay(pdMS_TO_TICKS(POLL_INTERVAL_MS));
+        }
+
+        if (any_open) {
+            FAULT = FAULT_CODE_THERMOCOUPLE_OPEN;
+        } else if (FAULT == FAULT_CODE_THERMOCOUPLE_OPEN) {
+            FAULT = FAULT_CODE_NONE;
         }
     }
 }
