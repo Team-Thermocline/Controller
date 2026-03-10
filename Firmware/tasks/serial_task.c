@@ -2,6 +2,7 @@
 
 #include "globals.h"
 #include "hardware/gpio.h"
+#include "hardware/i2c.h"
 #include "pindefs.h"
 #include "tcode_build_info.h"
 #include "tcode_protocol.h"
@@ -138,7 +139,7 @@ static void process_tcode_line(char *line) {
     if (strcmp(qarg, "0") == 0) {
       printf("data: TEMP=%.1f RH=%.1f HEAT=%s COOL=%s STATE=%s SET_TEMP=%.1f "
              "SET_RH=%.1f FAULT=%s DOOR=%s\n",
-             tdr0_temperature_c, current_humidity,
+             sht35_temperature_c, sht35_humidity,
              heater_on ? "true" : "false",
              compressor_on ? "true" : "false",
              run_state_string(current_state),
@@ -179,6 +180,24 @@ static void process_tcode_line(char *line) {
         printf("data: COMPRESSOR_ON_TIME=%lu\n", thermo_control_get_compressor_on_time());
       } else if (q1_arg && strcmp(q1_arg, "COMPRESSOR_OFF_TIME") == 0) {
         printf("data: COMPRESSOR_OFF_TIME=%lu\n", thermo_control_get_compressor_off_time());
+      } else if (q1_arg && strcmp(q1_arg, "SHT35_TEMPERATURE_C") == 0) {
+        printf("data: SHT35_TEMPERATURE_C=%.2f\n", sht35_temperature_c);
+      } else if (q1_arg && strcmp(q1_arg, "SHT35_HUMIDITY") == 0) {
+        printf("data: SHT35_HUMIDITY=%.2f\n", sht35_humidity);
+      } else if (q1_arg && strcmp(q1_arg, "I2C_SCAN") == 0) {
+        printf("data: I2C_SCAN=");
+        bool first = true;
+        uint8_t dummy;
+        for (uint8_t a = 1; a < 0x7F; ++a) {
+          int res = i2c_read_blocking(i2c0, a, &dummy, 1, false);
+          if (res >= 0) { // got an ACK
+            if (!first)
+              printf(",");
+            printf("0x%02X", a);
+            first = false;
+          }
+        }
+        printf("\n");
       } else {
         printf("error:UNKNOWN_KEY %s\n", q1_arg ? q1_arg : "(missing)");
       }

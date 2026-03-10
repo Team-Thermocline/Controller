@@ -50,12 +50,14 @@ bool heater_on = false;
 bool compressor_on = false;
 run_state_t current_state = RUN_STATE_STANDBY;
 
-// Debug/Monitoring
-float ct0_amps = 0.0f;
-float ct1_amps = 0.0f;
-float ct2_amps = 0.0f;
-float ct3_amps = 0.0f;
-float tdr0_temperature_c = 0.0f;
-float tdr1_temperature_c = 0.0f;
-float tdr2_temperature_c = 0.0f;
-float tdr3_temperature_c = 0.0f;
+// Global Sensor States
+volatile float ct0_amps = 0.0f;
+volatile float ct1_amps = 0.0f;
+volatile float ct2_amps = 0.0f;
+volatile float ct3_amps = 0.0f;
+volatile float tdr0_temperature_c = 0.0f;
+volatile float tdr1_temperature_c = 0.0f;
+volatile float tdr2_temperature_c = 0.0f;
+volatile float tdr3_temperature_c = 0.0f;
+volatile float sht35_temperature_c = 0.0f;
+volatile float sht35_humidity = 0.0f;

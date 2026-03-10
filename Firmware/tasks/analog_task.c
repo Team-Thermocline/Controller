@@ -5,6 +5,7 @@
 #include "hardware/timer.h"
 #include "pico/stdio.h"
 #include "pindefs.h"
+#include "sht35.h"
 #include "task.h"
 #include <math.h>
 #include <stdio.h>
@@ -68,6 +69,10 @@ static void analog_task(void *pvParameters) {
     i2c_inst_t *i2c = cfg->i2c;
     uint8_t addr = cfg->adg728_addr;
 
+    // Check and Initialize SHT35
+    sht35_t sht;
+    sht35_init(&sht, i2c, SHT35_DEFAULT_ADDR);
+
     adc_init();
     adc_gpio_init(ADC_TMUX_PIN);
 
@@ -83,7 +88,7 @@ static void analog_task(void *pvParameters) {
     while (true) {
         // Scan all current transformer channels CT0–CT3
         const uint8_t ct_channels[4] = {ADG_CH_CT0, ADG_CH_CT1, ADG_CH_CT2, ADG_CH_CT3};
-        float *ct_amps[4] = {&ct0_amps, &ct1_amps, &ct2_amps, &ct3_amps};
+        volatile float *ct_amps[4] = {&ct0_amps, &ct1_amps, &ct2_amps, &ct3_amps};
 
         for (int i = 0; i < 4; i++) {
             if (!adg728_select_channel(i2c, addr, ct_channels[i])) {
@@ -108,7 +113,7 @@ static void analog_task(void *pvParameters) {
 
         // Read temperature sensor channels TDR0-3 in a loop
         const uint8_t tdr_channels[4] = {ADG_CH_TDR0, ADG_CH_TDR1, ADG_CH_TDR2, ADG_CH_TDR3};
-        float *tdr_temperatures[4] = {&tdr0_temperature_c, &tdr1_temperature_c, &tdr2_temperature_c, &tdr3_temperature_c};
+        volatile float *tdr_temperatures[4] = {&tdr0_temperature_c, &tdr1_temperature_c, &tdr2_temperature_c, &tdr3_temperature_c};
         bool any_open = false;
 
         for (int i = 0; i < 4; i++) {
@@ -142,6 +147,18 @@ static void analog_task(void *pvParameters) {
             FAULT = FAULT_CODE_THERMOCOUPLE_OPEN;
         } else if (FAULT == FAULT_CODE_THERMOCOUPLE_OPEN) {
             FAULT = FAULT_CODE_NONE;
+        }
+
+        // Read SHT35 temperature/humidity
+        // On success, update globals; on failure, leave previous values, fault
+        float sht_t = 0.0f;
+        float sht_rh = 0.0f;
+        if (sht35_read_single_shot(&sht, &sht_t, &sht_rh)) {
+            sht35_temperature_c = sht_t;
+            sht35_humidity = sht_rh;
+        } else {
+            FAULT = FAULT_CODE_I2C_COMMUNICATION_ERROR;
+            vTaskDelay(pdMS_TO_TICKS(POLL_INTERVAL_MS));
         }
     }
 }
