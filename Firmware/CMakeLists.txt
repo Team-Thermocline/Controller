@@ -77,6 +77,7 @@ add_executable(thermocline_controller
         globals.c
         lib/freertos_support.c
         lib/neopixel_ws2812/neopixel_ws2812.c
+        lib/tools.c
         lib/sht35/sht35.c
         lib/tcode_protocol/tcode_protocol.c
         tasks/thermo_control_task.c

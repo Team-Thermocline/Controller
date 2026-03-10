@@ -2,11 +2,11 @@
 
 #include "globals.h"
 #include "hardware/gpio.h"
-#include "hardware/i2c.h"
 #include "pindefs.h"
 #include "tcode_build_info.h"
 #include "tcode_protocol.h"
 #include "thermo_control_task.h"
+#include "tools.h"
 #include "pico/error.h"
 #include "pico/stdio.h"
 #include <sys/time.h>
@@ -185,19 +185,9 @@ static void process_tcode_line(char *line) {
       } else if (q1_arg && strcmp(q1_arg, "SHT35_HUMIDITY") == 0) {
         printf("data: SHT35_HUMIDITY=%.2f\n", sht35_humidity);
       } else if (q1_arg && strcmp(q1_arg, "I2C_SCAN") == 0) {
-        printf("data: I2C_SCAN=");
-        bool first = true;
-        uint8_t dummy;
-        for (uint8_t a = 1; a < 0x7F; ++a) {
-          int res = i2c_read_blocking(i2c0, a, &dummy, 1, false);
-          if (res >= 0) { // got an ACK
-            if (!first)
-              printf(",");
-            printf("0x%02X", a);
-            first = false;
-          }
-        }
-        printf("\n");
+        char buf[50];
+        build_i2c_scan_string(buf, sizeof(buf));
+        printf("data: I2C_SCAN=%s\n", buf);
       } else {
         printf("error:UNKNOWN_KEY %s\n", q1_arg ? q1_arg : "(missing)");
       }
