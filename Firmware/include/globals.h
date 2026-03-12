@@ -57,3 +57,6 @@ extern volatile float tdr2_temperature_c;
 extern volatile float tdr3_temperature_c;
 extern volatile float sht35_temperature_c;
 extern volatile float sht35_humidity;
+
+// Door state, true when shut.
+extern volatile bool door_open;

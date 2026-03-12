@@ -21,19 +21,6 @@ static TickType_t compressor_on_time = 0;   // When compressor was turned on (0 
 static TickType_t compressor_off_time = 0;   // When compressor was turned off (0 = never off or currently on)
 static bool compressor_state = false;        // Actual GPIO state
 
-// Sets the status color based on the current mode
-static void set_status_color(const thermo_control_config_t *cfg,
-                             thermo_mode_t mode) {
-  if (!cfg->status_pixel)
-    return;
-  const uint8_t *rgb = cfg->color_idle;
-  if (mode == THERMO_MODE_HEAT)
-    rgb = cfg->color_heat;
-  else if (mode == THERMO_MODE_COOL)
-    rgb = cfg->color_cool;
-  neopixel_ws2812_put_rgb(cfg->status_pixel, rgb[0], rgb[1], rgb[2]);
-}
-
 // Updates compressor GPIO state respecting minimum on/off times
 // Returns true if compressor is actually on, false if off (may differ from want_on due to timing)
 static bool update_compressor_state(bool want_on, TickType_t now) {
@@ -183,8 +170,6 @@ static void thermo_control_task(void *pvParameters) {
       mode = THERMO_MODE_IDLE;
       command_idle(now);
     }
-
-    set_status_color(cfg, mode);
 
     // Update state: IDLE if both are off, RUN if either is on
     current_state = (mode == THERMO_MODE_IDLE && !compressor_state && !heater_on) 

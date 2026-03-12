@@ -1,8 +1,6 @@
 #include "serial_task.h"
 
 #include "globals.h"
-#include "hardware/gpio.h"
-#include "pindefs.h"
 #include "tcode_build_info.h"
 #include "tcode_protocol.h"
 #include "thermo_control_task.h"
@@ -27,10 +25,6 @@ static bool is_unsigned_int_token(const char *s) {
       return false;
   }
   return true;
-}
-
-static bool temp_door_open() {
-  return gpio_get(SWITCH_PIN_1);
 }
 
 static void process_tcode_line(char *line) {
@@ -144,7 +138,7 @@ static void process_tcode_line(char *line) {
              compressor_on ? "true" : "false",
              run_state_string(current_state),
              current_temperature_setpoint, current_humidity_setpoint,
-             fault_code_string(FAULT), temp_door_open() ? "true" : "false");
+             fault_code_string(FAULT), door_open ? "true" : "false");
     } else if (strcmp(qarg, "1") == 0) {
       const char *q1_arg = NULL;
       if (cur_segment + 1 < segment_count)
