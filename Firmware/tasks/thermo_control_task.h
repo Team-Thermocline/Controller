@@ -1,19 +1,12 @@
 #pragma once
 
 #include "FreeRTOS.h"
-#include "neopixel_ws2812.h"
 #include "task.h"
 #include <stdbool.h>
 
 typedef struct thermo_control_config {
   float temp_hysteresis_c;  // hysteresis around setpoint
   bool enable_active_cooling;
-  
-  // Optional: if set, task will set a solid status color.
-  neopixel_ws2812_t *status_pixel;
-  uint8_t color_idle[3];
-  uint8_t color_heat[3];
-  uint8_t color_cool[3];
 
   TickType_t update_period_ticks;
 } thermo_control_config_t;

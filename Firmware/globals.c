@@ -61,3 +61,6 @@ volatile float tdr2_temperature_c = 0.0f;
 volatile float tdr3_temperature_c = 0.0f;
 volatile float sht35_temperature_c = 0.0f;
 volatile float sht35_humidity = 0.0f;
+
+// Door state, true when shut.
+volatile bool door_open = false;
