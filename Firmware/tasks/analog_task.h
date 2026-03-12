@@ -13,8 +13,8 @@ struct i2c_inst;
  * TDR0-3: S5, S6, S7, S8 in order.
  */
 #define ADG_CH_CT0  3u  /* S4 */
-#define ADG_CH_CT1  2u  /* S3 */
-#define ADG_CH_CT2  1u  /* S2 */
+#define ADG_CH_CT1  1u  /* S2 */
+#define ADG_CH_CT2  2u  /* S3 */
 #define ADG_CH_CT3  0u  /* S1 */
 #define ADG_CH_TDR0 4u  /* S5 */
 #define ADG_CH_TDR1 5u  /* S6 */

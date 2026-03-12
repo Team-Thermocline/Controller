@@ -1,27 +1,18 @@
 #include "ADG728.h"
-#include "FreeRTOS.h"
 #include "hardware/gpio.h"
 #include "hardware/i2c.h"
-#include "neopixel_ws2812.h"
-#include "pico/error.h"
 #include "pico/stdio.h"
-#include "pico/stdio_usb.h"
 #include "analog_task.h"
 #include "globals.h"
 #include "pindefs.h"
 #include "serial_task.h"
-#include "sim_thermo_system_task.h"
+#include "thermo_control_task.h"
 #include "status_led_task.h"
+#include "interior_led_task.h"
 #include "task.h"
 #include <stdio.h>
 
 bool ENABLE_ECHO = false;
-
-// NeoPixel (WS2812) config
-static const float NEOPIXEL_FREQ_HZ = 800000.0f;
-static const uint NEOPIXEL_NUM_PIXELS = 35;
-
-static neopixel_ws2812_t g_neopixel;
 
 static void heartbeat_task(void *pvParameters) {
   (void)pvParameters;
@@ -59,10 +50,6 @@ int main() {
   gpio_set_dir(LOAD_PIN_6, GPIO_OUT);
   gpio_put(LOAD_PIN_6, 0);
 
-  neopixel_ws2812_init(&g_neopixel, pio0, NEOPIXEL_PIN, NEOPIXEL_FREQ_HZ,
-                       false, NEOPIXEL_NUM_PIXELS);
-  neopixel_ws2812_put_rgb(&g_neopixel, 2, 2, 2);
-
   fflush(stdout);
 
   // =============================
@@ -93,30 +80,17 @@ int main() {
   static const serial_task_config_t serial_cfg = {
       .enable_echo = &ENABLE_ECHO,
   };
-  static const sim_thermo_system_config_t thermo_cfg = {
-      .ambient_temp_c = 22.0f,
-      .ambient_rh = 45.0f,
-      .heat_ramp_c_per_s = 0.30f,
-      .passive_ramp_c_per_s = 0.05f,
-      .cool_ramp_c_per_s = 0.40f,
-      .heat_on_delay_ticks = pdMS_TO_TICKS(500),
-      .heat_off_delay_ticks = pdMS_TO_TICKS(500),
-      .cool_on_delay_ticks = pdMS_TO_TICKS(500),
-      .cool_off_delay_ticks = pdMS_TO_TICKS(500),
-      .enable_active_cooling = true,
+  static const thermo_control_config_t thermo_cfg = {
       .temp_hysteresis_c = 3.0f,
-      .min_temp_c = -40.0f,
-      .max_temp_c = 90.0f,
-      .status_pixel = &g_neopixel,
-      .color_idle = {2, 2, 2},
-      .color_heat = {16, 2, 0},
-      .color_cool = {0, 2, 16},
+      .enable_active_cooling = true,
       .update_period_ticks = pdMS_TO_TICKS(100),
   };
 
   if (serial_task_create(&serial_cfg, 2, NULL) != pdPASS)
     vApplicationMallocFailedHook();
   if (status_led_task_create(1, NULL) != pdPASS)
+    vApplicationMallocFailedHook();
+  if (interior_led_task_create(1, NULL) != pdPASS)
     vApplicationMallocFailedHook();
 
   static const analog_task_config_t analog_cfg = {
@@ -126,7 +100,7 @@ int main() {
   if (analog_task_create(&analog_cfg, 1, NULL) != pdPASS)
     vApplicationMallocFailedHook();
 
-  if (sim_thermo_system_task_create(&thermo_cfg, 1, NULL) != pdPASS)
+  if (thermo_control_task_create(&thermo_cfg, 1, NULL) != pdPASS)
     vApplicationMallocFailedHook();
   if (xTaskCreate(heartbeat_task, "heartbeat", 512, NULL, 1, NULL) != pdPASS)
     vApplicationMallocFailedHook();
