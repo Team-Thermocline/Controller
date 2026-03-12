@@ -4,7 +4,15 @@
 #include "pico/time.h"
 #include "ws2812.pio.h"
 
+// Global brightness clamp (0–255). Default to full brightness.
+uint8_t neopixel_ws2812_max_brightness = 255;
+
 static inline uint32_t urgb_u32(uint8_t r, uint8_t g, uint8_t b) {
+  // Clamp channels to global brightness limit
+  uint8_t max = neopixel_ws2812_max_brightness;
+  if (r > max) r = max;
+  if (g > max) g = max;
+  if (b > max) b = max;
   // WS2812 expects GRB byte order
   return ((uint32_t)g << 16) | ((uint32_t)r << 8) | (uint32_t)b;
 }
