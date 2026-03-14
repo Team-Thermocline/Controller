@@ -1,7 +1,6 @@
 #include "interior_led_task.h"
 
 #include "globals.h"
-#include "hardware/gpio.h"
 #include "hardware/pio.h"
 #include "neopixel_ws2812.h"
 #include "pindefs.h"
@@ -73,8 +72,7 @@ static void interior_led_task(void *pvParameters) {
   uint32_t fault_tick = 0;
 
   while (true) {
-    // Collect door input state
-    door_open = gpio_get(SWITCH_PIN_1);
+    // Use global door_open. Alert when door closed and not standby.
     bool should_alert_door = !door_open && current_state != RUN_STATE_STANDBY;
 
     // Advance internal phase
