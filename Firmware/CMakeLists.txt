@@ -75,6 +75,7 @@ target_link_libraries(pico_adg728 hardware_i2c)
 add_executable(thermocline_controller
         main.c
         globals.c
+        fault.c
         lib/freertos_support.c
         lib/neopixel_ws2812/neopixel_ws2812.c
         lib/tools.c

@@ -1,5 +1,6 @@
 #include "analog_task.h"
 #include "ADG728.h"
+#include "fault.h"
 #include "globals.h"
 #include "hardware/adc.h"
 #include "hardware/timer.h"
@@ -81,7 +82,7 @@ static void analog_task(void *pvParameters) {
 
     // Check ADG728
     if (!adg728_probe(i2c, addr)) {
-        FAULT = FAULT_CODE_I2C_COMMUNICATION_ERROR;
+        fault_raise(FAULT_CODE_I2C_COMMUNICATION_ERROR);
         vTaskDelay(pdMS_TO_TICKS(POLL_INTERVAL_MS));
     }
 
@@ -92,7 +93,7 @@ static void analog_task(void *pvParameters) {
 
         for (int i = 0; i < 4; i++) {
             if (!adg728_select_channel(i2c, addr, ct_channels[i])) {
-                FAULT = FAULT_CODE_I2C_COMMUNICATION_ERROR;
+                fault_raise(FAULT_CODE_I2C_COMMUNICATION_ERROR);
                 vTaskDelay(pdMS_TO_TICKS(POLL_INTERVAL_MS));
                 continue;
             }
@@ -118,7 +119,7 @@ static void analog_task(void *pvParameters) {
 
         for (int i = 0; i < 4; i++) {
             if (!adg728_select_channel(i2c, addr, tdr_channels[i])) {
-                FAULT = FAULT_CODE_I2C_COMMUNICATION_ERROR;
+                fault_raise(FAULT_CODE_I2C_COMMUNICATION_ERROR);
                 vTaskDelay(pdMS_TO_TICKS(POLL_INTERVAL_MS));
                 continue;
             }
@@ -144,9 +145,9 @@ static void analog_task(void *pvParameters) {
         }
 
         if (any_open) {
-            FAULT = FAULT_CODE_THERMOCOUPLE_OPEN;
+            fault_raise(FAULT_CODE_THERMOCOUPLE_OPEN);
         } else if (FAULT == FAULT_CODE_THERMOCOUPLE_OPEN) {
-            FAULT = FAULT_CODE_NONE;
+            fault_raise(FAULT_CODE_NONE);
         }
 
         // Read SHT35 temperature/humidity
@@ -157,7 +158,7 @@ static void analog_task(void *pvParameters) {
             sht35_temperature_c = sht_t;
             sht35_humidity = sht_rh;
         } else {
-            FAULT = FAULT_CODE_I2C_COMMUNICATION_ERROR;
+            fault_raise(FAULT_CODE_I2C_COMMUNICATION_ERROR);
             vTaskDelay(pdMS_TO_TICKS(POLL_INTERVAL_MS));
         }
     }
