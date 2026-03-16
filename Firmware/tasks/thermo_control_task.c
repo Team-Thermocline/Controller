@@ -150,7 +150,7 @@ static void thermo_control_task(void *pvParameters) {
     }
 
     float sp = current_temperature_setpoint;
-    float t = tdr0_temperature_c;
+    float t = sht35_temperature_c;
 
     // Don't run control if setpoint is not set (0.0) or temperature reading is invalid
     if (sp == 0.0f || t == 0.0f) {
