@@ -14,6 +14,7 @@ void fault_init(void) {
 }
 
 void fault_raise(fault_code_t code) {
+  // Check if the queue is initialized
   if (s_fault_queue != NULL) {
     (void)xQueueSend(s_fault_queue, &code, 0);
   }
@@ -24,12 +25,18 @@ void fault_register_on_fault(void (*handler)(fault_code_t)) {
 }
 
 void fault_process(void) {
+  // Check if the queue is initialized
   if (s_fault_queue == NULL) {
     return;
   }
+
+  // Receive the fault code from the queue
   fault_code_t code;
   if (xQueueReceive(s_fault_queue, &code, 0) == pdTRUE) {
+    // Set the global fault code
     FAULT = code;
+
+    // Call the on_fault handler
     if (s_on_fault != NULL) {
       s_on_fault(code);
     }

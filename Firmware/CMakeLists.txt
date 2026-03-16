@@ -83,7 +83,6 @@ add_executable(thermocline_controller
         lib/tcode_protocol/tcode_protocol.c
         tasks/thermo_control_task.c
         tasks/serial_task.c
-        tasks/status_led_task.c
         tasks/safety_task.c
         tasks/interior_led_task.c
         tasks/analog_task.c

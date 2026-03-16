@@ -3,6 +3,7 @@
 #include "fault.h"
 #include "globals.h"
 #include "hardware/gpio.h"
+#include "pico/stdio_usb.h"
 #include "pindefs.h"
 
 #define SAFETY_POLL_MS 50
@@ -18,18 +19,41 @@ static void safety_on_fault(fault_code_t code) {
 static void safety_task(void *pvParameters) {
   (void)pvParameters;
 
+  TickType_t last = xTaskGetTickCount();
+  uint32_t stat_phase = 0;
+
   while (true) {
+    vTaskDelayUntil(&last, pdMS_TO_TICKS(SAFETY_POLL_MS));
+
     // Drain fault queue: set FAULT and run on_fault (safe GPIO).
     fault_process();
 
     // Door sensor: SWITCH_PIN_1 is pull-up; high = door open.
     door_open = gpio_get(SWITCH_PIN_1);
 
-    vTaskDelay(pdMS_TO_TICKS(SAFETY_POLL_MS));
+    // =========================
+    // Status LED (STAT/FAULT)
+    // =========================
+    stat_phase++;
+
+    // Default heartbeat: 100ms on / 100ms off (period 200ms).
+    // With SAFETY_POLL_MS=50, 4 ticks = 200ms.
+    bool stat_on = (stat_phase % 4) < 2;
+
+    // If USB connected, overlay faster blink (100ms on / 100ms off).
+    if (stdio_usb_connected()) {
+      bool fast_on = (stat_phase % 2) == 0;
+      stat_on = fast_on;
+    }
+
+    gpio_put(STAT_LED_PIN, stat_on);
+
+    // Fault LED: solid on for any non-zero fault.
+    gpio_put(FAULT_LED_PIN, FAULT != FAULT_CODE_NONE);
   }
 }
 
 BaseType_t safety_task_create(UBaseType_t priority, TaskHandle_t *out_handle) {
   fault_register_on_fault(safety_on_fault);
-  return xTaskCreate(safety_task, "safety", 128, NULL, priority, out_handle);
+  return xTaskCreate(safety_task, "safety", 256, NULL, priority, out_handle);
 }

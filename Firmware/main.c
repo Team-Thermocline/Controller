@@ -11,7 +11,6 @@
 // Tasks
 #include "serial_task.h"
 #include "thermo_control_task.h"
-#include "status_led_task.h"
 #include "safety_task.h"
 #include "interior_led_task.h"
 #include "task.h"
@@ -98,8 +97,6 @@ int main() {
   };
 
   if (serial_task_create(&serial_cfg, 2, NULL) != pdPASS)
-    vApplicationMallocFailedHook();
-  if (status_led_task_create(1, NULL) != pdPASS)
     vApplicationMallocFailedHook();
   if (safety_task_create(2, NULL) != pdPASS)
     vApplicationMallocFailedHook();
