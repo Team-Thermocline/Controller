@@ -40,16 +40,16 @@ static void safety_task(void *pvParameters) {
     // With SAFETY_POLL_MS=50, 4 ticks = 200ms.
     bool stat_on = (stat_phase % 4) < 2;
 
-    // If USB connected, overlay faster blink (100ms on / 100ms off).
-    if (stdio_usb_connected()) {
-      bool fast_on = (stat_phase % 2) == 0;
-      stat_on = fast_on;
+    // "Work" blink, blink for any non-standby state
+    if (current_state != RUN_STATE_STANDBY) {
+      stat_on = (stat_phase % 2) == 0;
     }
-
-    gpio_put(STAT_LED_PIN, stat_on);
 
     // Fault LED: solid on for any non-zero fault.
     gpio_put(FAULT_LED_PIN, FAULT != FAULT_CODE_NONE);
+
+    // Update the status LED
+    gpio_put(STAT_LED_PIN, stat_on);
   }
 }
 

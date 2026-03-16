@@ -182,6 +182,20 @@ static void process_tcode_line(char *line) {
         char buf[50];
         build_i2c_scan_string(buf, sizeof(buf));
         printf("data: I2C_SCAN=%s\n", buf);
+      } else if (q1_arg && strcmp(q1_arg, "FREERTOS_HEAP_FREE") == 0) {
+        printf("data: FREERTOS_HEAP_FREE=%u\n", (unsigned int)xPortGetFreeHeapSize());
+      } else if (q1_arg && strcmp(q1_arg, "FREERTOS_HEAP_MIN") == 0) {
+        // Returns the minimum ever free heap size in bytes
+        printf("data: FREERTOS_HEAP_MIN=%u\n", (unsigned int)xPortGetMinimumEverFreeHeapSize());
+      // } else if (q1_arg && strcmp(q1_arg, "FREERTOS_TASKS_RUNTIME") == 0) {
+      //   char stats[512];
+      //   vTaskGetRunTimeStats(stats);
+      //   printf("data: FREERTOS_TASKS_RUNTIME_START\n%sdata: FREERTOS_TASKS_RUNTIME_END\n", stats);
+      // } else if (q1_arg && strcmp(q1_arg, "FREERTOS_TASKS_LIST") == 0) {
+      //   // Show an overview of task state/stacks, etc.
+      //   char list[512];
+      //   vTaskList(list);
+      //   printf("data: FREERTOS_TASKS_LIST_START\n%sdata: FREERTOS_TASKS_LIST_END\n", list);
       } else {
         printf("error:UNKNOWN_KEY %s\n", q1_arg ? q1_arg : "(missing)");
       }
