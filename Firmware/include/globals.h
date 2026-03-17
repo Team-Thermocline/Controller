@@ -51,6 +51,7 @@ extern volatile float ct0_amps;
 extern volatile float ct1_amps;
 extern volatile float ct2_amps;
 extern volatile float ct3_amps;
+extern volatile float current_power;
 extern volatile float tdr0_temperature_c;
 extern volatile float tdr1_temperature_c;
 extern volatile float tdr2_temperature_c;

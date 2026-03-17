@@ -56,6 +56,7 @@ volatile float ct0_amps = 0.0f;
 volatile float ct1_amps = 0.0f;
 volatile float ct2_amps = 0.0f;
 volatile float ct3_amps = 0.0f;
+volatile float current_power = 0.0f;
 volatile float tdr0_temperature_c = 0.0f;
 volatile float tdr1_temperature_c = 0.0f;
 volatile float tdr2_temperature_c = 0.0f;

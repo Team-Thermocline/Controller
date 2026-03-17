@@ -132,13 +132,14 @@ static void process_tcode_line(char *line) {
 
     if (strcmp(qarg, "0") == 0) {
       printf("data: TEMP=%.1f RH=%.1f HEAT=%s COOL=%s STATE=%s SET_TEMP=%.1f "
-             "SET_RH=%.1f FAULT=%s DOOR=%s\n",
+             "SET_RH=%.1f FAULT=%s DOOR=%s POWER=%.1f\n",
              sht35_temperature_c, sht35_humidity,
              heater_on ? "true" : "false",
              compressor_on ? "true" : "false",
              run_state_string(current_state),
              current_temperature_setpoint, current_humidity_setpoint,
-             fault_code_string(FAULT), door_open ? "true" : "false");
+             fault_code_string(FAULT), door_open ? "true" : "false",
+             current_power);
     } else if (strcmp(qarg, "1") == 0) {
       const char *q1_arg = NULL;
       if (cur_segment + 1 < segment_count)

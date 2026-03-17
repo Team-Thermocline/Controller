@@ -112,6 +112,9 @@ static void analog_task(void *pvParameters) {
             vTaskDelay(pdMS_TO_TICKS(POLL_INTERVAL_MS));
         }
 
+        // Compute total power in watts
+        current_power = (ct0_amps + ct1_amps + ct2_amps + ct3_amps) * 120.0f;
+
         // Read temperature sensor channels TDR0-3 in a loop
         const uint8_t tdr_channels[4] = {ADG_CH_TDR0, ADG_CH_TDR1, ADG_CH_TDR2, ADG_CH_TDR3};
         volatile float *tdr_temperatures[4] = {&tdr0_temperature_c, &tdr1_temperature_c, &tdr2_temperature_c, &tdr3_temperature_c};
