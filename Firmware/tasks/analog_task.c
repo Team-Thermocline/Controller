@@ -116,11 +116,11 @@ static void analog_task(void *pvParameters) {
         current_power = (ct0_amps + ct1_amps + ct2_amps + ct3_amps) * 120.0f;
 
         // Read temperature sensor channels TDR0-3 in a loop
-        const uint8_t tdr_channels[4] = {ADG_CH_TDR0, ADG_CH_TDR1, ADG_CH_TDR2, ADG_CH_TDR3};
+        const uint8_t tdr_channels[1] = {ADG_CH_TDR0};
         volatile float *tdr_temperatures[4] = {&tdr0_temperature_c, &tdr1_temperature_c, &tdr2_temperature_c, &tdr3_temperature_c};
         bool any_open = false;
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 1; i++) {
             if (!adg728_select_channel(i2c, addr, tdr_channels[i])) {
                 fault_raise(FAULT_CODE_I2C_COMMUNICATION_ERROR);
                 vTaskDelay(pdMS_TO_TICKS(POLL_INTERVAL_MS));

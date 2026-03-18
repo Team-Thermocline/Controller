@@ -133,7 +133,7 @@ static void process_tcode_line(char *line) {
     if (strcmp(qarg, "0") == 0) {
       printf("data: TEMP=%.1f RH=%.1f HEAT=%s COOL=%s STATE=%s SET_TEMP=%.1f "
              "SET_RH=%.1f FAULT=%s DOOR=%s POWER=%.1f\n",
-             sht35_temperature_c, sht35_humidity,
+             tdr0_temperature_c, sht35_humidity,
              heater_on ? "true" : "false",
              compressor_on ? "true" : "false",
              run_state_string(current_state),
