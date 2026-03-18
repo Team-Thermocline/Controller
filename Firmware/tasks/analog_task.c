@@ -2,6 +2,7 @@
 #include "ADG728.h"
 #include "fault.h"
 #include "globals.h"
+#include "constants.h"
 #include "hardware/adc.h"
 #include "hardware/timer.h"
 #include "pico/stdio.h"
@@ -113,7 +114,8 @@ static void analog_task(void *pvParameters) {
         }
 
         // Compute total power in watts
-        current_power = (ct0_amps + ct1_amps + ct2_amps + ct3_amps) * 120.0f;
+        current_power =
+            (ct0_amps + ct1_amps + ct2_amps + ct3_amps) * 120.0f + STANDBY_WATTS;
 
         // Read temperature sensor channels TDR0-3 in a loop
         const uint8_t tdr_channels[1] = {ADG_CH_TDR0};
