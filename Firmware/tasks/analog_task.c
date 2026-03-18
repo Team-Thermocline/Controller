@@ -20,7 +20,7 @@
 
 // Mux interval and poll settings
 #define MUX_SETTLE_MS    2
-#define POLL_INTERVAL_MS 500
+#define POLL_INTERVAL_MS 60 // TODO: Tune me!
 
 /* 1000:1 CT current estimate: ADC ref and burden */
 #define ADC_REF_V       3.3f
