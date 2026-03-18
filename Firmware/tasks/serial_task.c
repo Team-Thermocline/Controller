@@ -8,6 +8,9 @@
 #include "pico/error.h"
 #include "pico/stdio.h"
 #include "hardware/watchdog.h"
+#include "hardware/gpio.h"
+#include "hardware/uart.h"
+#include "pindefs.h"
 #include <sys/time.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -239,6 +242,13 @@ static void serial_task(void *pvParameters) {
 
   char line_buffer[256];
   int line_index = 0;
+
+  // HMI UART interface
+  uart_init(uart1, 115200);
+  gpio_set_function(HMI_TX_PIN, GPIO_FUNC_UART);
+  gpio_set_function(HMI_RX_PIN, GPIO_FUNC_UART);
+  uart_set_hw_flow(uart1, false, false);
+  uart_set_format(uart1, 8, 1, UART_PARITY_NONE);
 
   while (true) {
     int c = getchar_timeout_us(0);
