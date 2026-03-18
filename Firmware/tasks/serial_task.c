@@ -7,6 +7,7 @@
 #include "tools.h"
 #include "pico/error.h"
 #include "pico/stdio.h"
+#include "hardware/watchdog.h"
 #include <sys/time.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -115,9 +116,30 @@ static void process_tcode_line(char *line) {
       marg = segments[cur_segment + 1];
     }
     if (marg) {
-      printf("Machine command: %s\n", marg);
+      if (!is_unsigned_int_token(marg)) {
+        printf("Error: bad M\n");
+        return;
+      }
+
+      int mcode = atoi(marg); // Convert the string to an integer
+      if (mcode == 0) {
+        // Soft stop: set controller into standby.
+        current_state = RUN_STATE_STANDBY;
+        return;
+      }else if (mcode == 2) {
+        // Hard stop: reboot the controller.
+        // watchdog_reboot() triggers the watchdog-based reset path.
+        watchdog_reboot(0, 0, 1);
+
+        // Should never return;
+        return;
+      }
+
+      printf("Error: unsupported M%d\n", mcode);
+      return;
     } else {
       printf("Error: Missing M command argument\n");
+      return;
     }
   }
 
@@ -172,9 +194,11 @@ static void process_tcode_line(char *line) {
       } else if (q1_arg && strcmp(q1_arg, "FAULT") == 0) {
         printf("data: FAULT=%s\n", fault_code_string(FAULT));
       } else if (q1_arg && strcmp(q1_arg, "COMPRESSOR_ON_TIME") == 0) {
-        printf("data: COMPRESSOR_ON_TIME=%lu\n", thermo_control_get_compressor_on_time());
+        printf("data: COMPRESSOR_ON_TIME=%u\n",
+               (unsigned int)thermo_control_get_compressor_on_time());
       } else if (q1_arg && strcmp(q1_arg, "COMPRESSOR_OFF_TIME") == 0) {
-        printf("data: COMPRESSOR_OFF_TIME=%lu\n", thermo_control_get_compressor_off_time());
+        printf("data: COMPRESSOR_OFF_TIME=%u\n",
+               (unsigned int)thermo_control_get_compressor_off_time());
       } else if (q1_arg && strcmp(q1_arg, "SHT35_TEMPERATURE_C") == 0) {
         printf("data: SHT35_TEMPERATURE_C=%.2f\n", sht35_temperature_c);
       } else if (q1_arg && strcmp(q1_arg, "SHT35_HUMIDITY") == 0) {

@@ -137,6 +137,14 @@ static void thermo_control_task(void *pvParameters) {
 
     // In STANDBY, outputs stay off (transition to IDLE handled by serial_task when setpoint is set)
     if (current_state == RUN_STATE_STANDBY) {
+      // Turn off all loads
+      gpio_put(LOAD_PIN_1, 0);
+      gpio_put(LOAD_PIN_2, 0);
+      gpio_put(LOAD_PIN_3, 0);
+      gpio_put(LOAD_PIN_4, 0);
+      gpio_put(LOAD_PIN_5, 0);
+      gpio_put(LOAD_PIN_6, 0);
+
       command_idle(now);
       if (FAULT != FAULT_CODE_THERMOCOUPLE_OPEN)
         fault_raise(FAULT_CODE_NONE);
