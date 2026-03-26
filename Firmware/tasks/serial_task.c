@@ -132,13 +132,14 @@ static void process_tcode_line(char *line) {
 
     if (strcmp(qarg, "0") == 0) {
       printf("data: TEMP=%.1f RH=%.1f HEAT=%s COOL=%s STATE=%s SET_TEMP=%.1f "
-             "SET_RH=%.1f FAULT=%s DOOR=%s\n",
+             "SET_RH=%.1f FAULT=%s DOOR=%s POWER=%.1f\n",
              sht35_temperature_c, sht35_humidity,
              heater_on ? "true" : "false",
              compressor_on ? "true" : "false",
              run_state_string(current_state),
              current_temperature_setpoint, current_humidity_setpoint,
-             fault_code_string(FAULT), door_open ? "true" : "false");
+             fault_code_string(FAULT), door_open ? "true" : "false",
+             current_power);
     } else if (strcmp(qarg, "1") == 0) {
       const char *q1_arg = NULL;
       if (cur_segment + 1 < segment_count)
@@ -182,6 +183,20 @@ static void process_tcode_line(char *line) {
         char buf[50];
         build_i2c_scan_string(buf, sizeof(buf));
         printf("data: I2C_SCAN=%s\n", buf);
+      } else if (q1_arg && strcmp(q1_arg, "FREERTOS_HEAP_FREE") == 0) {
+        printf("data: FREERTOS_HEAP_FREE=%u\n", (unsigned int)xPortGetFreeHeapSize());
+      } else if (q1_arg && strcmp(q1_arg, "FREERTOS_HEAP_MIN") == 0) {
+        // Returns the minimum ever free heap size in bytes
+        printf("data: FREERTOS_HEAP_MIN=%u\n", (unsigned int)xPortGetMinimumEverFreeHeapSize());
+      // } else if (q1_arg && strcmp(q1_arg, "FREERTOS_TASKS_RUNTIME") == 0) {
+      //   char stats[512];
+      //   vTaskGetRunTimeStats(stats);
+      //   printf("data: FREERTOS_TASKS_RUNTIME_START\n%sdata: FREERTOS_TASKS_RUNTIME_END\n", stats);
+      // } else if (q1_arg && strcmp(q1_arg, "FREERTOS_TASKS_LIST") == 0) {
+      //   // Show an overview of task state/stacks, etc.
+      //   char list[512];
+      //   vTaskList(list);
+      //   printf("data: FREERTOS_TASKS_LIST_START\n%sdata: FREERTOS_TASKS_LIST_END\n", list);
       } else {
         printf("error:UNKNOWN_KEY %s\n", q1_arg ? q1_arg : "(missing)");
       }

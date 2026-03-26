@@ -7,6 +7,7 @@ static const char *const fault_strings[] = {
     [FAULT_CODE_NONE] = "NONE",
     [FAULT_CODE_I2C_COMMUNICATION_ERROR] = "I2C_COMMUNICATION_ERROR",
     [FAULT_CODE_THERMOCOUPLE_OPEN] = "THERMOCOUPLE_OPEN",
+    [FAULT_CODE_OVERCURRENT] = "OVERCURRENT",
 };
 
 const char *fault_code_string(fault_code_t code) {
@@ -55,6 +56,7 @@ volatile float ct0_amps = 0.0f;
 volatile float ct1_amps = 0.0f;
 volatile float ct2_amps = 0.0f;
 volatile float ct3_amps = 0.0f;
+volatile float current_power = 0.0f;
 volatile float tdr0_temperature_c = 0.0f;
 volatile float tdr1_temperature_c = 0.0f;
 volatile float tdr2_temperature_c = 0.0f;

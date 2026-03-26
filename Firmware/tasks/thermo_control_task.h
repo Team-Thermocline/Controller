@@ -12,12 +12,6 @@ typedef struct thermo_control_config {
 } thermo_control_config_t;
 
 // Creates the thermo control task.
-// The task updates:
-// - heater_on / compressor_on (load outputs)
-// - current_state (STANDBY -> IDLE when setpoint set, then IDLE/RUN based on mode)
-// - FAULT (cleared to NONE when running)
-//
-// It uses tdr0_temperature_c as temperature input and current_temperature_setpoint.
 BaseType_t thermo_control_task_create(const thermo_control_config_t *cfg,
                                       UBaseType_t priority,
                                       TaskHandle_t *out_handle);

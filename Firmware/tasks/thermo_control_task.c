@@ -1,5 +1,6 @@
 #include "thermo_control_task.h"
 
+#include "fault.h"
 #include "globals.h"
 #include "hardware/gpio.h"
 #include "pindefs.h"
@@ -138,7 +139,7 @@ static void thermo_control_task(void *pvParameters) {
     if (current_state == RUN_STATE_STANDBY) {
       command_idle(now);
       if (FAULT != FAULT_CODE_THERMOCOUPLE_OPEN)
-        FAULT = FAULT_CODE_NONE;
+        fault_raise(FAULT_CODE_NONE);
       continue;
     }
 
@@ -149,7 +150,7 @@ static void thermo_control_task(void *pvParameters) {
     }
 
     float sp = current_temperature_setpoint;
-    float t = tdr0_temperature_c;
+    float t = sht35_temperature_c;
 
     // Don't run control if setpoint is not set (0.0) or temperature reading is invalid
     if (sp == 0.0f || t == 0.0f) {
@@ -175,7 +176,7 @@ static void thermo_control_task(void *pvParameters) {
     current_state = (mode == THERMO_MODE_IDLE && !compressor_state && !heater_on) 
                     ? RUN_STATE_IDLE : RUN_STATE_RUN;
     if (FAULT != FAULT_CODE_THERMOCOUPLE_OPEN)
-      FAULT = FAULT_CODE_NONE;
+      fault_raise(FAULT_CODE_NONE);
   }
 }
 

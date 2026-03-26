@@ -3,14 +3,18 @@
 #include "hardware/i2c.h"
 #include "pico/stdio.h"
 #include "analog_task.h"
+#include "fault.h"
 #include "globals.h"
 #include "pindefs.h"
+#include <stdio.h>
+
+// Tasks
 #include "serial_task.h"
 #include "thermo_control_task.h"
-#include "status_led_task.h"
+#include "safety_task.h"
 #include "interior_led_task.h"
 #include "task.h"
-#include <stdio.h>
+
 
 bool ENABLE_ECHO = false;
 
@@ -59,10 +63,13 @@ int main() {
   gpio_set_function(I2C_SDA_PIN, GPIO_FUNC_I2C);
   gpio_set_function(I2C_SCL_PIN, GPIO_FUNC_I2C);
 
+  // Initalize fault queue
+  fault_init();
+
   // Initialize ADG728
   adg728_init(i2c0, ADG728_ADDR_MIN);
   if (!adg728_init(i2c0, ADG728_ADDR_MIN)) {
-    FAULT = FAULT_CODE_I2C_COMMUNICATION_ERROR; // Set global fault
+    fault_raise(FAULT_CODE_I2C_COMMUNICATION_ERROR);
   }
 
   // Intalize Misc
@@ -72,6 +79,9 @@ int main() {
 
   // Initialize Fault LED
   gpio_put(FAULT_LED_PIN, FAULT == FAULT_CODE_NONE);
+
+  // Process any faults that were raised before the scheduler started
+  fault_process();
 
   // ===========
   // Begin Tasks
@@ -88,7 +98,7 @@ int main() {
 
   if (serial_task_create(&serial_cfg, 2, NULL) != pdPASS)
     vApplicationMallocFailedHook();
-  if (status_led_task_create(1, NULL) != pdPASS)
+  if (safety_task_create(2, NULL) != pdPASS)
     vApplicationMallocFailedHook();
   if (interior_led_task_create(1, NULL) != pdPASS)
     vApplicationMallocFailedHook();

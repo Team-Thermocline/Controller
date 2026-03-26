@@ -10,7 +10,7 @@ typedef enum fault_code {
   FAULT_CODE_NONE = 0,
   FAULT_CODE_I2C_COMMUNICATION_ERROR = 1,
   FAULT_CODE_THERMOCOUPLE_OPEN = 2,
-  /* Add further fault codes here and in fault_code_string() in globals.c */
+  FAULT_CODE_OVERCURRENT = 3,
 } fault_code_t;
 
 /** Human-readable string for a fault code (for logging, display, Q0). */
@@ -51,6 +51,7 @@ extern volatile float ct0_amps;
 extern volatile float ct1_amps;
 extern volatile float ct2_amps;
 extern volatile float ct3_amps;
+extern volatile float current_power;
 extern volatile float tdr0_temperature_c;
 extern volatile float tdr1_temperature_c;
 extern volatile float tdr2_temperature_c;
