@@ -1,0 +1,4 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "thermocline-symbols")(type "KiCad")(uri "/home/joe/git/SNHU/Capstone/Controller/Hardware/Complete-System/libraries/thermocline-kicad-libraries/symbols/thermocline-symbols.kicad_sym")(options "")(descr ""))
+)
