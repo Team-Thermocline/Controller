@@ -50,6 +50,18 @@ int main() {
   gpio_init(LOAD_PIN_1);
   gpio_set_dir(LOAD_PIN_1, GPIO_OUT);
   gpio_put(LOAD_PIN_1, 0);
+  gpio_init(LOAD_PIN_2);
+  gpio_set_dir(LOAD_PIN_2, GPIO_OUT);
+  gpio_put(LOAD_PIN_2, 0);
+  gpio_init(LOAD_PIN_3);
+  gpio_set_dir(LOAD_PIN_3, GPIO_OUT);
+  gpio_put(LOAD_PIN_3, 0);
+  gpio_init(LOAD_PIN_4);
+  gpio_set_dir(LOAD_PIN_4, GPIO_OUT);
+  gpio_put(LOAD_PIN_4, 0);
+  gpio_init(LOAD_PIN_5);
+  gpio_set_dir(LOAD_PIN_5, GPIO_OUT);
+  gpio_put(LOAD_PIN_5, 0);
   gpio_init(LOAD_PIN_6);
   gpio_set_dir(LOAD_PIN_6, GPIO_OUT);
   gpio_put(LOAD_PIN_6, 0);

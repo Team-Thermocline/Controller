@@ -34,7 +34,7 @@ static bool update_compressor_state(bool want_on, TickType_t now) {
         compressor_state = true;
         compressor_on_time = now;
         compressor_off_time = 0;
-        gpio_put(LOAD_PIN_6, 1);
+        gpio_put(LOAD_PIN_3, 1);
       } else {
         TickType_t off_duration = now - compressor_off_time;
         if (off_duration >= pdMS_TO_TICKS(COMPRESSOR_MIN_OFF_TIME_MS)) {
@@ -42,7 +42,7 @@ static bool update_compressor_state(bool want_on, TickType_t now) {
           compressor_state = true;
           compressor_on_time = now;
           compressor_off_time = 0;
-          gpio_put(LOAD_PIN_6, 1);
+          gpio_put(LOAD_PIN_3, 1);
         }
         // else: still waiting for minimum off-time, stay off
       }
@@ -65,7 +65,7 @@ static bool update_compressor_state(bool want_on, TickType_t now) {
         compressor_state = false;
         compressor_off_time = now;
         compressor_on_time = 0;
-        gpio_put(LOAD_PIN_6, 0);
+        gpio_put(LOAD_PIN_3, 0);
       } else {
         TickType_t on_duration = now - compressor_on_time;
         if (on_duration >= pdMS_TO_TICKS(COMPRESSOR_MIN_ON_TIME_MS)) {
@@ -73,7 +73,7 @@ static bool update_compressor_state(bool want_on, TickType_t now) {
           compressor_state = false;
           compressor_off_time = now;
           compressor_on_time = 0;
-          gpio_put(LOAD_PIN_6, 0);
+          gpio_put(LOAD_PIN_3, 0);
         }
         // else: still in minimum on-time, keep it on
       }
@@ -93,7 +93,7 @@ static void command_heat(TickType_t now) {
   
   // Turn on heater
   heater_on = true;
-  gpio_put(LOAD_PIN_1, 1);
+  gpio_put(LOAD_PIN_2, 1);
 }
 
 // Command cool: safety check (turn off heating first), then handle compressor timing
@@ -101,7 +101,7 @@ static void command_cool(TickType_t now) {
   // Safety: turn off heating before cooling
   if (heater_on) {
     heater_on = false;
-    gpio_put(LOAD_PIN_1, 0);
+    gpio_put(LOAD_PIN_2, 0);
   }
   
   // Update compressor state (respects minimum on/off times)
@@ -111,7 +111,7 @@ static void command_cool(TickType_t now) {
 // Command idle: turn off both heat and cool
 static void command_idle(TickType_t now) {
   heater_on = false;
-  gpio_put(LOAD_PIN_1, 0);
+  gpio_put(LOAD_PIN_2, 0);
   
   compressor_on = update_compressor_state(false, now);
 }
@@ -137,6 +137,14 @@ static void thermo_control_task(void *pvParameters) {
 
     // In STANDBY, outputs stay off (transition to IDLE handled by serial_task when setpoint is set)
     if (current_state == RUN_STATE_STANDBY) {
+      // Turn off all loads
+      gpio_put(LOAD_PIN_1, 0);
+      gpio_put(LOAD_PIN_2, 0);
+      gpio_put(LOAD_PIN_3, 0);
+      gpio_put(LOAD_PIN_4, 0);
+      gpio_put(LOAD_PIN_5, 0);
+      gpio_put(LOAD_PIN_6, 0);
+
       command_idle(now);
       if (FAULT != FAULT_CODE_THERMOCOUPLE_OPEN)
         fault_raise(FAULT_CODE_NONE);
@@ -150,7 +158,7 @@ static void thermo_control_task(void *pvParameters) {
     }
 
     float sp = current_temperature_setpoint;
-    float t = sht35_temperature_c;
+    float t = tdr0_temperature_c;
 
     // Don't run control if setpoint is not set (0.0) or temperature reading is invalid
     if (sp == 0.0f || t == 0.0f) {

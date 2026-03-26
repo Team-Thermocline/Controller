@@ -2,6 +2,7 @@
 #include "ADG728.h"
 #include "fault.h"
 #include "globals.h"
+#include "constants.h"
 #include "hardware/adc.h"
 #include "hardware/timer.h"
 #include "pico/stdio.h"
@@ -20,7 +21,7 @@
 
 // Mux interval and poll settings
 #define MUX_SETTLE_MS    2
-#define POLL_INTERVAL_MS 500
+#define POLL_INTERVAL_MS 60 // TODO: Tune me!
 
 /* 1000:1 CT current estimate: ADC ref and burden */
 #define ADC_REF_V       3.3f
@@ -113,14 +114,15 @@ static void analog_task(void *pvParameters) {
         }
 
         // Compute total power in watts
-        current_power = (ct0_amps + ct1_amps + ct2_amps + ct3_amps) * 120.0f;
+        current_power =
+            (ct0_amps + ct1_amps + ct2_amps + ct3_amps) * 120.0f + STANDBY_WATTS;
 
         // Read temperature sensor channels TDR0-3 in a loop
-        const uint8_t tdr_channels[4] = {ADG_CH_TDR0, ADG_CH_TDR1, ADG_CH_TDR2, ADG_CH_TDR3};
+        const uint8_t tdr_channels[1] = {ADG_CH_TDR0};
         volatile float *tdr_temperatures[4] = {&tdr0_temperature_c, &tdr1_temperature_c, &tdr2_temperature_c, &tdr3_temperature_c};
         bool any_open = false;
 
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 1; i++) {
             if (!adg728_select_channel(i2c, addr, tdr_channels[i])) {
                 fault_raise(FAULT_CODE_I2C_COMMUNICATION_ERROR);
                 vTaskDelay(pdMS_TO_TICKS(POLL_INTERVAL_MS));

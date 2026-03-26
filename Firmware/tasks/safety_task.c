@@ -13,6 +13,9 @@ static void safety_on_fault(fault_code_t code) {
   if (code != FAULT_CODE_NONE) {
     gpio_put(LOAD_PIN_1, 0);
     gpio_put(LOAD_PIN_6, 0);
+
+    // Set the state
+    current_state = RUN_STATE_FAULT;
   }
 }
 

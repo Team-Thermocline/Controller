@@ -7,6 +7,10 @@
 #include "tools.h"
 #include "pico/error.h"
 #include "pico/stdio.h"
+#include "hardware/watchdog.h"
+#include "hardware/gpio.h"
+#include "hardware/uart.h"
+#include "pindefs.h"
 #include <sys/time.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -115,9 +119,30 @@ static void process_tcode_line(char *line) {
       marg = segments[cur_segment + 1];
     }
     if (marg) {
-      printf("Machine command: %s\n", marg);
+      if (!is_unsigned_int_token(marg)) {
+        printf("Error: bad M\n");
+        return;
+      }
+
+      int mcode = atoi(marg); // Convert the string to an integer
+      if (mcode == 0) {
+        // Soft stop: set controller into standby.
+        current_state = RUN_STATE_STANDBY;
+        return;
+      }else if (mcode == 2) {
+        // Hard stop: reboot the controller.
+        // watchdog_reboot() triggers the watchdog-based reset path.
+        watchdog_reboot(0, 0, 1);
+
+        // Should never return;
+        return;
+      }
+
+      printf("Error: unsupported M%d\n", mcode);
+      return;
     } else {
       printf("Error: Missing M command argument\n");
+      return;
     }
   }
 
@@ -133,7 +158,7 @@ static void process_tcode_line(char *line) {
     if (strcmp(qarg, "0") == 0) {
       printf("data: TEMP=%.1f RH=%.1f HEAT=%s COOL=%s STATE=%s SET_TEMP=%.1f "
              "SET_RH=%.1f FAULT=%s DOOR=%s POWER=%.1f\n",
-             sht35_temperature_c, sht35_humidity,
+             tdr0_temperature_c, sht35_humidity,
              heater_on ? "true" : "false",
              compressor_on ? "true" : "false",
              run_state_string(current_state),
@@ -172,9 +197,11 @@ static void process_tcode_line(char *line) {
       } else if (q1_arg && strcmp(q1_arg, "FAULT") == 0) {
         printf("data: FAULT=%s\n", fault_code_string(FAULT));
       } else if (q1_arg && strcmp(q1_arg, "COMPRESSOR_ON_TIME") == 0) {
-        printf("data: COMPRESSOR_ON_TIME=%lu\n", thermo_control_get_compressor_on_time());
+        printf("data: COMPRESSOR_ON_TIME=%u\n",
+               (unsigned int)thermo_control_get_compressor_on_time());
       } else if (q1_arg && strcmp(q1_arg, "COMPRESSOR_OFF_TIME") == 0) {
-        printf("data: COMPRESSOR_OFF_TIME=%lu\n", thermo_control_get_compressor_off_time());
+        printf("data: COMPRESSOR_OFF_TIME=%u\n",
+               (unsigned int)thermo_control_get_compressor_off_time());
       } else if (q1_arg && strcmp(q1_arg, "SHT35_TEMPERATURE_C") == 0) {
         printf("data: SHT35_TEMPERATURE_C=%.2f\n", sht35_temperature_c);
       } else if (q1_arg && strcmp(q1_arg, "SHT35_HUMIDITY") == 0) {
@@ -215,6 +242,13 @@ static void serial_task(void *pvParameters) {
 
   char line_buffer[256];
   int line_index = 0;
+
+  // HMI UART interface
+  uart_init(uart1, 115200);
+  gpio_set_function(HMI_TX_PIN, GPIO_FUNC_UART);
+  gpio_set_function(HMI_RX_PIN, GPIO_FUNC_UART);
+  uart_set_hw_flow(uart1, false, false);
+  uart_set_format(uart1, 8, 1, UART_PARITY_NONE);
 
   while (true) {
     int c = getchar_timeout_us(0);
