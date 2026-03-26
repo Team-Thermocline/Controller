@@ -19,6 +19,9 @@ typedef struct neopixel_ws2812 {
   uint32_t pixel_buf[NEOPIXEL_WS2812_MAX_PIXELS];
 } neopixel_ws2812_t;
 
+// Global brightness clamp for all channels
+extern uint8_t neopixel_ws2812_max_brightness;
+
 // Initialize a WS2812 strip on `pin` at `freq_hz` (normally 800000).
 // `num_pixels` must be <= NEOPIXEL_WS2812_MAX_PIXELS.
 void neopixel_ws2812_init(neopixel_ws2812_t *np, PIO pio, uint pin,

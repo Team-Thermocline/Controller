@@ -75,12 +75,16 @@ target_link_libraries(pico_adg728 hardware_i2c)
 add_executable(thermocline_controller
         main.c
         globals.c
+        fault.c
         lib/freertos_support.c
         lib/neopixel_ws2812/neopixel_ws2812.c
+        lib/tools.c
+        lib/sht35/sht35.c
         lib/tcode_protocol/tcode_protocol.c
-        tasks/sim_thermo_system_task.c
+        tasks/thermo_control_task.c
         tasks/serial_task.c
-        tasks/status_led_task.c
+        tasks/safety_task.c
+        tasks/interior_led_task.c
         tasks/analog_task.c
 )
 
@@ -111,6 +115,7 @@ target_include_directories(thermocline_controller PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}/include
         ${CMAKE_CURRENT_BINARY_DIR}/generated
         ${CMAKE_CURRENT_LIST_DIR}/lib/pico_adg728
+        ${CMAKE_CURRENT_LIST_DIR}/lib/sht35
         ${CMAKE_CURRENT_LIST_DIR}/lib/neopixel_ws2812
         ${CMAKE_CURRENT_LIST_DIR}/lib/tcode_protocol
         ${CMAKE_CURRENT_LIST_DIR}/tasks
@@ -121,7 +126,9 @@ target_link_libraries(thermocline_controller
         pico_stdlib
         hardware_pio
         hardware_clocks
+        hardware_i2c
         hardware_adc
+        m
         freertos_kernel
         pico_adg728
 )

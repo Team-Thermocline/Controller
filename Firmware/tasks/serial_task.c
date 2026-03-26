@@ -1,12 +1,13 @@
 #include "serial_task.h"
 
 #include "globals.h"
-#include "hardware/gpio.h"
-#include "pindefs.h"
 #include "tcode_build_info.h"
 #include "tcode_protocol.h"
+#include "thermo_control_task.h"
+#include "tools.h"
 #include "pico/error.h"
 #include "pico/stdio.h"
+#include <sys/time.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -24,10 +25,6 @@ static bool is_unsigned_int_token(const char *s) {
       return false;
   }
   return true;
-}
-
-static bool temp_door_open() {
-  return gpio_get(SWITCH_PIN_1);
 }
 
 static void process_tcode_line(char *line) {
@@ -91,8 +88,13 @@ static void process_tcode_line(char *line) {
           if (th[0] == 'T') {
             if (value < -45 || value > 90)
               printf("Error: temp out of range\n");
-            else
+            else {
               current_temperature_setpoint = (float)value;
+              // Transition from STANDBY to IDLE when setpoint is set
+              if (current_state == RUN_STATE_STANDBY) {
+                current_state = RUN_STATE_IDLE;
+              }
+            }
           } else {
             if (value < 0 || value > 100)
               printf("Error: humidity out of range\n");
@@ -130,13 +132,14 @@ static void process_tcode_line(char *line) {
 
     if (strcmp(qarg, "0") == 0) {
       printf("data: TEMP=%.1f RH=%.1f HEAT=%s COOL=%s STATE=%s SET_TEMP=%.1f "
-             "SET_RH=%.1f FAULT=%s DOOR=%s\n",
-             tdr0_temperature_c, current_humidity,
+             "SET_RH=%.1f FAULT=%s DOOR=%s POWER=%.1f\n",
+             sht35_temperature_c, sht35_humidity,
              heater_on ? "true" : "false",
              compressor_on ? "true" : "false",
              run_state_string(current_state),
              current_temperature_setpoint, current_humidity_setpoint,
-             fault_code_string(FAULT), temp_door_open() ? "true" : "false");
+             fault_code_string(FAULT), door_open ? "true" : "false",
+             current_power);
     } else if (strcmp(qarg, "1") == 0) {
       const char *q1_arg = NULL;
       if (cur_segment + 1 < segment_count)
@@ -164,6 +167,36 @@ static void process_tcode_line(char *line) {
         printf("data: TDR2_TEMPERATURE_C=%.2f\n", tdr2_temperature_c);
       } else if (q1_arg && strcmp(q1_arg, "TDR3_TEMPERATURE_C") == 0) {
         printf("data: TDR3_TEMPERATURE_C=%.2f\n", tdr3_temperature_c);
+      } else if (q1_arg && strcmp(q1_arg, "STATE") == 0) {
+        printf("data: STATE=%s\n", run_state_string(current_state));
+      } else if (q1_arg && strcmp(q1_arg, "FAULT") == 0) {
+        printf("data: FAULT=%s\n", fault_code_string(FAULT));
+      } else if (q1_arg && strcmp(q1_arg, "COMPRESSOR_ON_TIME") == 0) {
+        printf("data: COMPRESSOR_ON_TIME=%lu\n", thermo_control_get_compressor_on_time());
+      } else if (q1_arg && strcmp(q1_arg, "COMPRESSOR_OFF_TIME") == 0) {
+        printf("data: COMPRESSOR_OFF_TIME=%lu\n", thermo_control_get_compressor_off_time());
+      } else if (q1_arg && strcmp(q1_arg, "SHT35_TEMPERATURE_C") == 0) {
+        printf("data: SHT35_TEMPERATURE_C=%.2f\n", sht35_temperature_c);
+      } else if (q1_arg && strcmp(q1_arg, "SHT35_HUMIDITY") == 0) {
+        printf("data: SHT35_HUMIDITY=%.2f\n", sht35_humidity);
+      } else if (q1_arg && strcmp(q1_arg, "I2C_SCAN") == 0) {
+        char buf[50];
+        build_i2c_scan_string(buf, sizeof(buf));
+        printf("data: I2C_SCAN=%s\n", buf);
+      } else if (q1_arg && strcmp(q1_arg, "FREERTOS_HEAP_FREE") == 0) {
+        printf("data: FREERTOS_HEAP_FREE=%u\n", (unsigned int)xPortGetFreeHeapSize());
+      } else if (q1_arg && strcmp(q1_arg, "FREERTOS_HEAP_MIN") == 0) {
+        // Returns the minimum ever free heap size in bytes
+        printf("data: FREERTOS_HEAP_MIN=%u\n", (unsigned int)xPortGetMinimumEverFreeHeapSize());
+      // } else if (q1_arg && strcmp(q1_arg, "FREERTOS_TASKS_RUNTIME") == 0) {
+      //   char stats[512];
+      //   vTaskGetRunTimeStats(stats);
+      //   printf("data: FREERTOS_TASKS_RUNTIME_START\n%sdata: FREERTOS_TASKS_RUNTIME_END\n", stats);
+      // } else if (q1_arg && strcmp(q1_arg, "FREERTOS_TASKS_LIST") == 0) {
+      //   // Show an overview of task state/stacks, etc.
+      //   char list[512];
+      //   vTaskList(list);
+      //   printf("data: FREERTOS_TASKS_LIST_START\n%sdata: FREERTOS_TASKS_LIST_END\n", list);
       } else {
         printf("error:UNKNOWN_KEY %s\n", q1_arg ? q1_arg : "(missing)");
       }
