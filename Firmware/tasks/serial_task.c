@@ -94,10 +94,7 @@ static void process_tcode_line(char *line) {
               printf("Error: temp out of range\n");
             else {
               current_temperature_setpoint = (float)value;
-              // Transition from STANDBY to IDLE when setpoint is set
-              if (current_state == RUN_STATE_STANDBY) {
-                current_state = RUN_STATE_IDLE;
-              }
+              chamber_request_arm_idle();
             }
           } else {
             if (value < 0 || value > 100)
@@ -126,8 +123,7 @@ static void process_tcode_line(char *line) {
 
       int mcode = atoi(marg); // Convert the string to an integer
       if (mcode == 0) {
-        // Soft stop: set controller into standby.
-        current_state = RUN_STATE_STANDBY;
+        chamber_request_standby();
         return;
       }else if (mcode == 2) {
         // Hard stop: reboot the controller.
@@ -158,10 +154,10 @@ static void process_tcode_line(char *line) {
     if (strcmp(qarg, "0") == 0) {
       printf("data: TEMP=%.1f RH=%.1f HEAT=%s COOL=%s STATE=%s SET_TEMP=%.1f "
              "SET_RH=%.1f FAULT=%s DOOR=%s POWER=%.1f\n",
-             tdr0_temperature_c, sht35_humidity,
+             sht35_temperature_c, sht35_humidity,
              heater_on ? "true" : "false",
              compressor_on ? "true" : "false",
-             run_state_string(current_state),
+             chamber_state_string((chamber_state_t)chamber_fsm_state),
              current_temperature_setpoint, current_humidity_setpoint,
              fault_code_string(FAULT), door_open ? "true" : "false",
              current_power);
@@ -193,7 +189,8 @@ static void process_tcode_line(char *line) {
       } else if (q1_arg && strcmp(q1_arg, "TDR3_TEMPERATURE_C") == 0) {
         printf("data: TDR3_TEMPERATURE_C=%.2f\n", tdr3_temperature_c);
       } else if (q1_arg && strcmp(q1_arg, "STATE") == 0) {
-        printf("data: STATE=%s\n", run_state_string(current_state));
+        printf("data: STATE=%s\n",
+               chamber_state_string((chamber_state_t)chamber_fsm_state));
       } else if (q1_arg && strcmp(q1_arg, "FAULT") == 0) {
         printf("data: FAULT=%s\n", fault_code_string(FAULT));
       } else if (q1_arg && strcmp(q1_arg, "COMPRESSOR_ON_TIME") == 0) {

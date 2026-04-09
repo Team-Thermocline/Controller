@@ -8,6 +8,7 @@ static const char *const fault_strings[] = {
     [FAULT_CODE_I2C_COMMUNICATION_ERROR] = "I2C_COMMUNICATION_ERROR",
     [FAULT_CODE_THERMOCOUPLE_OPEN] = "THERMOCOUPLE_OPEN",
     [FAULT_CODE_OVERCURRENT] = "OVERCURRENT",
+    [FAULT_CODE_ENV_SENSOR] = "ENV_SENSOR",
 };
 
 const char *fault_code_string(fault_code_t code) {
@@ -18,20 +19,22 @@ const char *fault_code_string(fault_code_t code) {
 }
 
 /* -----------------------------------------------------------------------------
- * Run state strings
+ * Chamber FSM strings
  * ----------------------------------------------------------------------------- */
-static const char *const run_state_strings[] = {
-    [RUN_STATE_STANDBY] = "STANDBY",
-    [RUN_STATE_IDLE] = "IDLE",
-    [RUN_STATE_RUN] = "RUN",
-    [RUN_STATE_STOP] = "STOP",
-    [RUN_STATE_FAULT] = "FAULT",
+static const char *const chamber_state_strings[] = {
+    [CHAMBER_STANDBY] = "STANDBY",
+    [CHAMBER_FAULT] = "FAULT",
+    [CHAMBER_IDLE] = "IDLE",
+    [CHAMBER_HEATING] = "HEATING",
+    [CHAMBER_COOL_SLOW] = "COOL_SLOW",
+    [CHAMBER_COOL_FAST] = "COOL_FAST",
 };
 
-const char *run_state_string(run_state_t state) {
-  if ((unsigned)state >= sizeof(run_state_strings) / sizeof(run_state_strings[0]))
+const char *chamber_state_string(chamber_state_t state) {
+  if ((unsigned)state >=
+      sizeof(chamber_state_strings) / sizeof(chamber_state_strings[0]))
     return "UNKNOWN";
-  const char *s = run_state_strings[state];
+  const char *s = chamber_state_strings[state];
   return s ? s : "UNKNOWN";
 }
 
@@ -39,6 +42,8 @@ const char *run_state_string(run_state_t state) {
  * Global definitions
  * ----------------------------------------------------------------------------- */
 fault_code_t FAULT = FAULT_CODE_NONE;
+
+void fault_raise(fault_code_t code) { FAULT = code; }
 
 // Setpoints
 float current_temperature_setpoint = 20.0f;
@@ -49,7 +54,15 @@ float current_humidity = 0.0f;
 // Outputs
 bool heater_on = false;
 bool compressor_on = false;
-run_state_t current_state = RUN_STATE_STANDBY;
+
+volatile chamber_state_t chamber_fsm_state = CHAMBER_STANDBY;
+
+volatile bool chamber_post_standby = false;
+volatile bool chamber_post_arm_idle = false;
+
+void chamber_request_standby(void) { chamber_post_standby = true; }
+
+void chamber_request_arm_idle(void) { chamber_post_arm_idle = true; }
 
 // Global Sensor States
 volatile float ct0_amps = 0.0f;

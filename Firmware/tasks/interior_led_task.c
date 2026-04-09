@@ -73,7 +73,8 @@ static void interior_led_task(void *pvParameters) {
 
   while (true) {
     // Use global door_open. Alert when door closed and not standby.
-    bool should_alert_door = !door_open && current_state != RUN_STATE_STANDBY;
+    bool should_alert_door =
+        !door_open && chamber_fsm_state != CHAMBER_STANDBY;
 
     // Advance internal phase
     phase += 0.12f;

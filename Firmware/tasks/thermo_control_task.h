@@ -5,8 +5,11 @@
 #include <stdbool.h>
 
 typedef struct thermo_control_config {
-  float temp_hysteresis_c;  // hysteresis around setpoint
+  float temp_hysteresis_c; // Band for heat entry (chamber <= sp - h) and cool exit (chamber <= sp + h)
   bool enable_active_cooling;
+
+  /** Bang-bang half-band on heater block TC (TDR0) around (air_sp + HEATER_TC_OFFSET). */
+  float heater_tc_hysteresis_c;
 
   TickType_t update_period_ticks;
 } thermo_control_config_t;
