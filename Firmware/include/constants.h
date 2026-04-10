@@ -20,7 +20,7 @@
 #define THERMO_COOL_FAST_DOWNSHIFT_C 1.0f // Hysteresis when dropping from fast -> slow cool
 #define HEATER_TC_OFFSET_ABOVE_AIR_SP_C 70.0f // Heater TC (TDR0) target = air setpoint + this
 #define CONDENSER_HOT_HEADROOM_C 20.0f // Idle/heating: condenser on when (comp−amb) >= this
-#define CONDENSER_HOT_HEADROOM_HYST_C 5.0f // Drop condenser when (comp−amb) <= HEADROOM − this
+#define CONDENSER_HOT_HEADROOM_HYST_C 10.0f // Drop condenser when (comp−amb) <= HEADROOM − this
 
 // Connected Load Functions
 #define THERMO_COMPRESSOR_PIN    LOAD_PIN_2
