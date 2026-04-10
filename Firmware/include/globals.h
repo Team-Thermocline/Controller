@@ -24,7 +24,7 @@ void fault_raise(fault_code_t code);
 /** Human-readable string for chamber FSM state (Q0, logging). */
 const char *chamber_state_string(chamber_state_t state);
 
-/** Posted to thermo task (M0, fault hook, T setpoint from standby). */
+/** Posted to thermo task (M0, T setpoint from standby). */
 void chamber_request_standby(void);
 void chamber_request_arm_idle(void);
 
@@ -42,6 +42,9 @@ extern float current_humidity; // TODO: make this explicit/use this by setting o
 // Outputs
 extern bool heater_on;
 extern bool compressor_on;
+
+extern volatile bool chamber_post_standby;
+extern volatile bool chamber_post_arm_idle;
 
 /** Chamber FSM; written only by thermo_control_task, readable anywhere */
 extern volatile chamber_state_t chamber_fsm_state;

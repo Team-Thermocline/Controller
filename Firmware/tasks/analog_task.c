@@ -4,12 +4,10 @@
 #include "constants.h"
 #include "hardware/adc.h"
 #include "hardware/timer.h"
-#include "pico/stdio.h"
 #include "pindefs.h"
 #include "sht35.h"
 #include "task.h"
 #include <math.h>
-#include <stdio.h>
 
 /* Math for 60hz AC sampling */
 #define AC_HZ              60
@@ -81,36 +79,14 @@ float analog_rms_adc_to_primary_amps(float rms_adc) {
     return i_secondary_rms * (float)CT_RATIO;
 }
 
-/** Chamber SHT35: fault if not present or read fails; clear ENV_SENSOR on success. */
-static void analog_poll_sht35(i2c_inst_t *i2c) {
-    static sht35_t sht;
-    static bool sht_ok = false;
-    float t, rh;
-
-    if (!sht_ok) {
-        if (sht35_init(&sht, i2c, SHT35_I2C_ADDR_HIGH) && sht35_probe(&sht))
-            sht_ok = true;
-        else if (sht35_init(&sht, i2c, SHT35_I2C_ADDR_LOW) &&
-                 sht35_probe(&sht))
-            sht_ok = true;
-    }
-
-    if (!sht_ok || !sht35_read_single_shot(&sht, &t, &rh)) {
-        fault_raise(FAULT_CODE_ENV_SENSOR);
-        sht_ok = false;
-        return;
-    }
-
-    sht35_temperature_c = t;
-    sht35_humidity = rh;
-    if (FAULT == FAULT_CODE_ENV_SENSOR)
-        fault_raise(FAULT_CODE_NONE);
-}
-
 static void analog_task(void *pvParameters) {
     const analog_task_config_t *cfg = (const analog_task_config_t *)pvParameters;
     i2c_inst_t *i2c = cfg->i2c;
     uint8_t addr = cfg->adg728_addr;
+
+    /* Init SHT35 once before ADC; read at end of loop after mux (see below). */
+    sht35_t sht;
+    sht35_init(&sht, i2c, SHT35_DEFAULT_ADDR);
 
     adc_init();
     adc_gpio_init(ADC_TMUX_PIN);
@@ -125,8 +101,6 @@ static void analog_task(void *pvParameters) {
     }
 
     while (true) {
-        analog_poll_sht35(i2c);
-
         // Scan all current transformer channels CT0–CT3
         const uint8_t ct_channels[4] = {ADG_CH_CT0, ADG_CH_CT1, ADG_CH_CT2, ADG_CH_CT3};
         volatile float *ct_amps[4] = {&ct0_amps, &ct1_amps, &ct2_amps, &ct3_amps};
@@ -156,7 +130,7 @@ static void analog_task(void *pvParameters) {
         current_power =
             (ct0_amps + ct1_amps + ct2_amps + ct3_amps) * 120.0f + STANDBY_WATTS;
 
-        // Read temperature sensor channels TDR0-3
+        /* TDR0 only for now (mux channels 4–7 available in tdr_channels). */
         const uint8_t tdr_channels[4] = {ADG_CH_TDR0, ADG_CH_TDR1, ADG_CH_TDR2,
                                          ADG_CH_TDR3};
         volatile float *tdr_temperatures[4] = {&tdr0_temperature_c, &tdr1_temperature_c, &tdr2_temperature_c, &tdr3_temperature_c};
@@ -195,6 +169,17 @@ static void analog_task(void *pvParameters) {
             fault_raise(FAULT_CODE_NONE);
         }
 
+        float sht_t = 0.0f;
+        float sht_rh = 0.0f;
+        if (sht35_read_single_shot(&sht, &sht_t, &sht_rh)) {
+            sht35_temperature_c = sht_t;
+            sht35_humidity = sht_rh;
+            if (FAULT == FAULT_CODE_ENV_SENSOR)
+                fault_raise(FAULT_CODE_NONE);
+        } else {
+            fault_raise(FAULT_CODE_ENV_SENSOR);
+            vTaskDelay(pdMS_TO_TICKS(POLL_INTERVAL_MS));
+        }
     }
 }
 

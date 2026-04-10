@@ -14,5 +14,5 @@
 #define THERMO_COOL_ENTRY_ABOVE_SP_C 5.0f // Require this much above air setpoint before cooling
 #define THERMO_COOL_FAST_EXTRA_C 5.0f // Above cool-entry threshold to run internal fan (fast cool)
 #define THERMO_COOL_FAST_DOWNSHIFT_C 1.0f // Hysteresis when dropping from fast -> slow cool
-#define HEATER_TC_OFFSET_ABOVE_AIR_SP_C 100.0f // Heater TC (TDR0) target = air setpoint + this
+#define HEATER_TC_OFFSET_ABOVE_AIR_SP_C 70.0f // Heater TC (TDR0) target = air setpoint + this
 

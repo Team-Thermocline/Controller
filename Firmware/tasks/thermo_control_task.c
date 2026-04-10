@@ -6,9 +6,6 @@
 #include "chamber_transition.h"
 #include "globals.h"
 
-extern volatile bool chamber_post_standby;
-extern volatile bool chamber_post_arm_idle;
-
 // Main task function for thermo control
 static void thermo_control_task(void *pvParameters) {
   const thermo_control_config_t *cfg =

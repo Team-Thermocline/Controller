@@ -2,7 +2,6 @@
 
 #include "globals.h"
 #include "hardware/gpio.h"
-#include "pico/stdio_usb.h"
 #include "pindefs.h"
 
 #define SAFETY_POLL_MS 50
@@ -16,8 +15,7 @@ static void safety_task(void *pvParameters) {
   while (true) {
     vTaskDelayUntil(&last, pdMS_TO_TICKS(SAFETY_POLL_MS));
 
-    /* Failsafe: chop selected loads whenever any fault is latched (thermo also
-     * holds CHAMBER_FAULT; this runs on a faster cadence). */
+    /* Failsafe load chop on fault (50 ms vs thermo period). */
     if (FAULT != FAULT_CODE_NONE) {
       gpio_put(LOAD_PIN_1, 0);
       gpio_put(LOAD_PIN_6, 0);
