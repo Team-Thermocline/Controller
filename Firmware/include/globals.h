@@ -13,6 +13,7 @@ typedef enum fault_code {
   FAULT_CODE_THERMOCOUPLE_OPEN = 2,
   FAULT_CODE_OVERCURRENT = 3,
   FAULT_CODE_ENV_SENSOR = 4,
+  FAULT_CODE_COMPRESSOR_OVERCURRENT = 5,
 } fault_code_t;
 
 /** Human-readable string for a fault code (for logging, display, Q0). */

@@ -17,7 +17,8 @@ void chamber_state_standby_run(chamber_context_t *ctx) {
   gpio_put(LOAD_PIN_6, 0);
   chamber_outputs_apply_all_off(ctx->now);
   if (FAULT != FAULT_CODE_THERMOCOUPLE_OPEN &&
-      FAULT != FAULT_CODE_ENV_SENSOR)
+      FAULT != FAULT_CODE_ENV_SENSOR &&
+      FAULT != FAULT_CODE_COMPRESSOR_OVERCURRENT)
     fault_raise(FAULT_CODE_NONE);
 }
 

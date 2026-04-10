@@ -1,5 +1,7 @@
 #include "analog_task.h"
 #include "ADG728.h"
+#include "calibration.h"
+#include "chamber_outputs.h"
 #include "globals.h"
 #include "constants.h"
 #include "hardware/adc.h"
@@ -31,6 +33,14 @@
 
 /* Thermocouple open/broken: amp reports ~ -245°C */
 #define TDR_OPEN_THERMOCOUPLE_THRESHOLD_C  (-200.0f)
+
+/* In-range TDR for control (distinct from open-TC fault threshold). */
+#define TDR_VALID_MIN_C  (-80.0f)
+#define TDR_VALID_MAX_C  (600.0f)
+
+bool tdr_temperature_c_valid(float t_c) {
+    return t_c > TDR_VALID_MIN_C && t_c < TDR_VALID_MAX_C && t_c != 0.0f;
+}
 
 /**
  * Capture ADC0 at SAMPLE_RATE_HZ for an integer number
@@ -93,6 +103,7 @@ static void analog_task(void *pvParameters) {
 
     uint16_t samples[NUM_SAMPLES];
     float mean, rms_adc;
+    uint8_t env_sensor_fail_streak = 0;
 
     // Check ADG728
     if (!adg728_probe(i2c, addr)) {
@@ -126,6 +137,27 @@ static void analog_task(void *pvParameters) {
             vTaskDelay(pdMS_TO_TICKS(POLL_INTERVAL_MS));
         }
 
+        {
+            TickType_t now_ticks = xTaskGetTickCount(); // Get the current time
+            if (compressor_on) { // If the compressor is on
+                TickType_t t_on = chamber_outputs_compressor_on_time(); // Get the time the compressor was turned on
+                if (t_on != 0 && (now_ticks - t_on) >= // If the compressor has been on for longer than the startup time
+                                    pdMS_TO_TICKS(COMPRESSOR_STARTUP_TIME_MS)) {
+
+                    // If the compressor load is greater than the locked rotor threshold, raise a fault
+                    if (COMPRESSOR_LOAD > LOCKED_ROTOR_THRESHOLD_A)
+                        fault_raise(FAULT_CODE_COMPRESSOR_OVERCURRENT);
+                }
+            } else if (FAULT == FAULT_CODE_COMPRESSOR_OVERCURRENT) {
+                // Only clear the fault if the startup time was MIN_COMPRESSOR_OFF_TIME_MS ago
+                TickType_t t_off = chamber_outputs_compressor_off_time();
+                if (t_off != 0 && (now_ticks - t_off) >= pdMS_TO_TICKS(MIN_COMPRESSOR_OFF_TIME_MS)) {
+                    fault_raise(FAULT_CODE_NONE);
+                }
+            } // Compressor is not on so do nothing
+    
+        }
+
         // Compute total power in watts
         current_power =
             (ct0_amps + ct1_amps + ct2_amps + ct3_amps) * 120.0f + STANDBY_WATTS;
@@ -133,10 +165,12 @@ static void analog_task(void *pvParameters) {
         /* TDR0 only for now (mux channels 4–7 available in tdr_channels). */
         const uint8_t tdr_channels[4] = {ADG_CH_TDR0, ADG_CH_TDR1, ADG_CH_TDR2,
                                          ADG_CH_TDR3};
+        static const float tdr_offset_c[4] = {
+            TDR0_OFFSET_C, TDR1_OFFSET_C, TDR2_OFFSET_C, TDR3_OFFSET_C};
         volatile float *tdr_temperatures[4] = {&tdr0_temperature_c, &tdr1_temperature_c, &tdr2_temperature_c, &tdr3_temperature_c};
         bool any_open = false;
 
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 4; i++) {
             if (!adg728_select_channel(i2c, addr, tdr_channels[i])) {
                 fault_raise(FAULT_CODE_I2C_COMMUNICATION_ERROR);
                 vTaskDelay(pdMS_TO_TICKS(POLL_INTERVAL_MS));
@@ -154,9 +188,10 @@ static void analog_task(void *pvParameters) {
 
             // Calculate temperature (5 mV/°C slope; open thermocouple ~ -245°C)
             float t_c = (tdr_voltage - 1.265f) / 0.005f;
-            *(tdr_temperatures[i]) = t_c;
+            float t_cal = t_c - tdr_offset_c[i];
+            *(tdr_temperatures[i]) = t_cal;
 
-            if (t_c < TDR_OPEN_THERMOCOUPLE_THRESHOLD_C) {
+            if (t_cal < TDR_OPEN_THERMOCOUPLE_THRESHOLD_C) {
                 any_open = true;
             }
 
@@ -171,13 +206,25 @@ static void analog_task(void *pvParameters) {
 
         float sht_t = 0.0f;
         float sht_rh = 0.0f;
-        if (sht35_read_single_shot(&sht, &sht_t, &sht_rh)) {
+        bool sht_ok = sht35_read_single_shot(&sht, &sht_t, &sht_rh);
+        if (!sht_ok) {
+            vTaskDelay(pdMS_TO_TICKS(ENV_SENSOR_RETRY_DELAY_MS));
+            sht_ok = sht35_read_single_shot(&sht, &sht_t, &sht_rh);
+        }
+        if (sht_ok) {
+            env_sensor_fail_streak = 0;
             sht35_temperature_c = sht_t;
             sht35_humidity = sht_rh;
             if (FAULT == FAULT_CODE_ENV_SENSOR)
                 fault_raise(FAULT_CODE_NONE);
         } else {
-            fault_raise(FAULT_CODE_ENV_SENSOR);
+            const bool env_fault_context =
+                (FAULT == FAULT_CODE_NONE || FAULT == FAULT_CODE_ENV_SENSOR);
+            if (env_fault_context) {
+                env_sensor_fail_streak++;
+                if (env_sensor_fail_streak >= ENV_SENSOR_FAIL_STREAK)
+                    fault_raise(FAULT_CODE_ENV_SENSOR);
+            }
             vTaskDelay(pdMS_TO_TICKS(POLL_INTERVAL_MS));
         }
     }

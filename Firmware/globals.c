@@ -9,6 +9,7 @@ static const char *const fault_strings[] = {
     [FAULT_CODE_THERMOCOUPLE_OPEN] = "THERMOCOUPLE_OPEN",
     [FAULT_CODE_OVERCURRENT] = "OVERCURRENT",
     [FAULT_CODE_ENV_SENSOR] = "ENV_SENSOR",
+    [FAULT_CODE_COMPRESSOR_OVERCURRENT] = "COMPRESSOR_OVERCURRENT",
 };
 
 const char *fault_code_string(fault_code_t code) {
