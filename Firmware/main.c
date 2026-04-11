@@ -114,7 +114,7 @@ int main() {
       .i2c = i2c0,
       .adg728_addr = ADG728_ADDR_MIN,
   };
-  if (analog_task_create(&analog_cfg, 1, NULL) != pdPASS)
+  if (analog_task_create(&analog_cfg, 3, NULL) != pdPASS)
     vApplicationMallocFailedHook();
 
   if (thermo_control_task_create(&thermo_cfg, 1, NULL) != pdPASS)

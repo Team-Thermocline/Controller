@@ -138,6 +138,7 @@ target_include_directories(thermocline_controller PRIVATE
 target_link_libraries(thermocline_controller
         pico_stdlib
         hardware_pio
+        hardware_irq
         hardware_clocks
         hardware_i2c
         hardware_adc

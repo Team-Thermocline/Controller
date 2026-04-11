@@ -8,7 +8,6 @@
 #include "semphr.h"
 #include "pico/error.h"
 #include "pico/stdio.h"
-#include "hardware/timer.h"
 #include "hardware/watchdog.h"
 #include "hmi_uart.h"
 #include "pindefs.h"
@@ -350,10 +349,12 @@ static void serial_task(void *pvParameters) {
       work = true;
     }
 
-    /* PIO RX FIFO is only 4 deep at 115200 (~11 chars/ms). A 1 ms sleep here
-       overflowed the FIFO and corrupted lines (e.g. stray '*' -> CHECKSUM_FORMAT). */
+    /* Must yield: busy-spinning here starved analog_task (prio 3) vs serial
+       (prio 2), leaving TDR globals stuck at 0 and breaking fault detection.
+       HMI RX/TX FIFOs are serviced from PIO1_IRQ_0 (see hmi_uart.c); 1 tick
+       sleep when idle matches prior pacing. */
     if (!work)
-      busy_wait_us(100);
+      vTaskDelay(pdMS_TO_TICKS(1));
   }
 }
 
