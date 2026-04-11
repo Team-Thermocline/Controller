@@ -1,9 +1,21 @@
 #include "FreeRTOS.h"
 #include "task.h"
 
+#include "freertos_cpu_load.h"
 #include "hardware/gpio.h"
 #include "pico/stdlib.h"
+#include "pico/time.h"
 #include "pindefs.h"
+
+uint32_t freertos_run_time_counter_us(void) { return time_us_32(); }
+
+uint32_t freertos_cpu_load_pct(void) {
+  configRUN_TIME_COUNTER_TYPE idle_pct = ulTaskGetIdleRunTimePercent();
+  if (idle_pct > (configRUN_TIME_COUNTER_TYPE)100) {
+    idle_pct = (configRUN_TIME_COUNTER_TYPE)100;
+  }
+  return (uint32_t)((configRUN_TIME_COUNTER_TYPE)100 - idle_pct);
+}
 
 // Some Pico SDK builds keep the vector table entries as `isr_*` symbols rather
 // than CMSIS names. Provide minimal wrappers that branch straight into the

@@ -70,7 +70,7 @@ void vAssertCalled(const char *file, int line);
 #define configCHECK_FOR_STACK_OVERFLOW 2
 
 #define configUSE_TRACE_FACILITY 0
-#define configGENERATE_RUN_TIME_STATS 0
+#define configGENERATE_RUN_TIME_STATS 1
 #define configUSE_STATS_FORMATTING_FUNCTIONS 0
 
 #define configASSERT( x )                                                        \
@@ -78,6 +78,11 @@ void vAssertCalled(const char *file, int line);
     portDISABLE_INTERRUPTS();                                                    \
     vAssertCalled(__FILE__, __LINE__);                                           \
   }
+
+// Run-time stats clock: Pico SDK microsecond counter (see `lib/freertos_support.c`).
+uint32_t freertos_run_time_counter_us(void);
+#define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS() do { } while (0)
+#define portGET_RUN_TIME_COUNTER_VALUE() freertos_run_time_counter_us()
 
 // -----------------------------
 // RP2040 / Cortex-M0+ specifics
@@ -104,7 +109,7 @@ void vAssertCalled(const char *file, int line);
 #define INCLUDE_xTaskGetSchedulerState 1
 #define INCLUDE_xTaskGetCurrentTaskHandle 1
 #define INCLUDE_vTaskCleanUpResources 0
-#define INCLUDE_xTaskGetIdleTaskHandle 0
+#define INCLUDE_xTaskGetIdleTaskHandle 1
 #define INCLUDE_eTaskGetState 0
 #define INCLUDE_uxTaskGetStackHighWaterMark 0
 #define INCLUDE_xTaskAbortDelay 0

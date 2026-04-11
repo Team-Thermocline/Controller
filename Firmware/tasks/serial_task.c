@@ -1,5 +1,6 @@
 #include "serial_task.h"
 
+#include "freertos_cpu_load.h"
 #include "globals.h"
 #include "tcode_build_info.h"
 #include "tcode_protocol.h"
@@ -20,6 +21,13 @@
 
 #define SERIAL_LINE_CAP 256
 #define SERIAL_REPLY_BUF_SIZE 512
+
+/* When neither USB nor HMI produced a byte this pass, sleep this long before
+ * polling again. Slightly >1 ms gives safety_task more regular CPU
+ */
+#ifndef SERIAL_TASK_IDLE_MS
+#define SERIAL_TASK_IDLE_MS 2
+#endif
 
 /** Which interface supplied the current line */
 typedef enum {
@@ -270,6 +278,9 @@ static void process_tcode_line(char *line, serial_reply_to_t reply_to) {
       } else if (q1_arg && strcmp(q1_arg, "FREERTOS_HEAP_MIN") == 0) {
         // Returns the minimum ever free heap size in bytes
         serial_reply_printf(reply_to, "data: FREERTOS_HEAP_MIN=%u\n", (unsigned int)xPortGetMinimumEverFreeHeapSize());
+      } else if (q1_arg && strcmp(q1_arg, "FREERTOS_CPU_LOAD_PCT") == 0) {
+        serial_reply_printf(reply_to, "data: FREERTOS_CPU_LOAD_PCT=%u\n",
+                            (unsigned int)freertos_cpu_load_pct());
       // } else if (q1_arg && strcmp(q1_arg, "FREERTOS_TASKS_RUNTIME") == 0) {
       //   char stats[512];
       //   vTaskGetRunTimeStats(stats);
@@ -350,11 +361,9 @@ static void serial_task(void *pvParameters) {
     }
 
     /* Must yield: busy-spinning here starved analog_task (prio 3) vs serial
-       (prio 2), leaving TDR globals stuck at 0 and breaking fault detection.
-       HMI RX/TX FIFOs are serviced from PIO1_IRQ_0 (see hmi_uart.c); 1 tick
-       sleep when idle matches prior pacing. */
+       (prio 2). HMI RX/TX FIFOs are serviced from PIO1_IRQ_0 (see hmi_uart.c). */
     if (!work)
-      vTaskDelay(pdMS_TO_TICKS(1));
+      vTaskDelay(pdMS_TO_TICKS(SERIAL_TASK_IDLE_MS));
   }
 }
 
