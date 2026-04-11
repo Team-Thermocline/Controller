@@ -49,7 +49,7 @@ static void thermo_control_task(void *pvParameters) {
     } else if (state == CHAMBER_FAULT) {
       chamber_state_run_current(state, &ctx);
       if (FAULT == FAULT_CODE_NONE) {
-        chamber_dispatch(&state, CHAMBER_IDLE, &ctx);
+        chamber_dispatch(&state, CHAMBER_STANDBY, &ctx); // Return to standby upon clearing a fault
         chamber_state_run_current(state, &ctx);
       }
     } else if (sp == 0.0f) {
