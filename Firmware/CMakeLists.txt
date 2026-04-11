@@ -91,6 +91,7 @@ add_executable(thermocline_controller
         tasks/states/state_cool_fast.c
         tasks/thermo_control_task.c
         tasks/serial_task.c
+        lib/hmi_uart/hmi_uart.c
         tasks/safety_task.c
         tasks/interior_led_task.c
         tasks/analog_task.c
@@ -117,6 +118,7 @@ add_dependencies(thermocline_controller tcode_build_info_h)
 
 # Generate PIO header(s)
 pico_generate_pio_header(thermocline_controller ${CMAKE_CURRENT_LIST_DIR}/lib/neopixel_ws2812/ws2812.pio)
+pico_generate_pio_header(thermocline_controller ${CMAKE_CURRENT_LIST_DIR}/lib/hmi_uart/hmi_uart.pio)
 
 # Project headers
 target_include_directories(thermocline_controller PRIVATE
@@ -127,6 +129,7 @@ target_include_directories(thermocline_controller PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}/lib/neopixel_ws2812
         ${CMAKE_CURRENT_LIST_DIR}/lib/tcode_protocol
         ${CMAKE_CURRENT_LIST_DIR}/lib
+        ${CMAKE_CURRENT_LIST_DIR}/lib/hmi_uart
         ${CMAKE_CURRENT_LIST_DIR}/tasks
         ${CMAKE_CURRENT_LIST_DIR}/tasks/states
 )

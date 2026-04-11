@@ -22,6 +22,7 @@ static void heartbeat_task(void *pvParameters) {
   while (true) {
     printf(".\n");
     fflush(stdout);
+    serial_hmi_puts(".\n");
     vTaskDelay(pdMS_TO_TICKS(5000));
   }
 }
