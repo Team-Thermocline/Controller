@@ -56,9 +56,7 @@ Mermaid charts derived from the code directly.
 
 ### Chamber control FSM
 
-The diagram below is **temperature-driven transitions** from `chamber_transition()` after supervisory logic runs each thermo period.
-
-**Supervisory logic first** (`thermo_control_task.c`, same tick, before `chamber_transition` when not in STANDBY/FAULT-only paths): if `chamber_post_standby`, dispatch STANDBY (latch off, clear most faults). Else if `chamber_post_arm_idle` and state was STANDBY, go IDLE. If `FAULT` is set and state is not STANDBY, go FAULT. While in FAULT, when `FAULT` clears, dispatch STANDBY (not IDLE) so the chamber stays fully off until arm idle. If setpoint `sp == 0`, force IDLE (any of IDLE, HEAT, COOL slow, COOL fast). Otherwise run `chamber_transition()` and dispatch its result.
+The diagram below is from `chamber_transition()`
 
 ```mermaid
 stateDiagram-v2
@@ -142,7 +140,7 @@ flowchart LR
   OFF --> gpio
 ```
 
-### Locked-rotor check and compressor overcurrent fault (parallel to FSM)
+### Locked-rotor check and compressor overcurrent fault
 
 ```mermaid
 sequenceDiagram
