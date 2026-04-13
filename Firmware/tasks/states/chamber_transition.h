@@ -5,13 +5,9 @@
 float chamber_air_temp_c(void);
 
 /*
- * Transition to the next state based on the current state, the chamber temperature, the setpoint, the hysteresis, and whether cooling is enabled.
- * Returns the next state.
- * cur: The current state
- * chamber: The chamber temperature
- * sp: The setpoint
- * h: The hysteresis
- * cool_en: Whether cooling is enabled
+ * Cooling: from idle, enter COOL_FAST when chamber >= sp + T_DEADBAND_C; COOL_SLOW only after
+ * FAST when chamber <= that same threshold. Upshift slow→fast at sp + T_DEADBAND + THERMO_COOL_FAST_EXTRA_C.
+ * Exit cooling at sp − T_DEADBAND_C. Heating: chamber <= sp − h.
  */
 chamber_state_t chamber_transition(chamber_state_t cur, float chamber, float sp,
                                  float h, bool cool_en);

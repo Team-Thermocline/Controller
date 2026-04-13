@@ -10,15 +10,17 @@ chamber_state_t chamber_transition(chamber_state_t cur, float chamber, float sp,
   if (cur == CHAMBER_STANDBY || cur == CHAMBER_FAULT)
     return cur;
 
-  const float cool_in = sp + THERMO_COOL_ENTRY_ABOVE_SP_C;
+  const float cool_in = sp + T_DEADBAND_C;
+  const float cool_out = sp - T_DEADBAND_C;
   const float cool_fast_in = cool_in + THERMO_COOL_FAST_EXTRA_C;
-  const float fast_down = cool_fast_in - THERMO_COOL_FAST_DOWNSHIFT_C;
+  // In FAST: stay fast while chamber is still above the cool-in line (sp+deadband);
+  const float fast_down = cool_in;
 
   // If we're currently cooling..
   if (cur == CHAMBER_COOL_FAST || cur == CHAMBER_COOL_SLOW) {
 
-    // ..and the chamber is below the setpoint + hysteresis, or cooling is disabled, return to idle
-    if (chamber <= sp + h || !cool_en)
+    // ..chamber at or below setpoint − deadband, or cooling disabled → idle
+    if (chamber <= cool_out || !cool_en)
       return CHAMBER_IDLE;
 
     // If we're currently cooling fast..
@@ -44,14 +46,10 @@ chamber_state_t chamber_transition(chamber_state_t cur, float chamber, float sp,
     return CHAMBER_HEATING;
   }
 
-  // If cooling is enabled..
-  if (cool_en && chamber >= cool_in) {
-    // ..and the chamber is above the cool fast in threshold, return to fast cool
-    if (chamber >= cool_fast_in)
-      return CHAMBER_COOL_FAST;
-    // Otherwise, return to slow cool
-    return CHAMBER_COOL_SLOW;
-  }
+  // If cooling is enabled and we're above the cool-in band, enter fast cool.
+  // (Slow cool is reached by downshifting from fast near cool_in, not from idle here.)
+  if (cool_en && chamber >= cool_in)
+    return CHAMBER_COOL_FAST;
 
   // If the chamber is below the setpoint - hysteresis, return to heating
   if (chamber <= sp - h)
