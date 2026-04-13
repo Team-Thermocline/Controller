@@ -43,3 +43,6 @@
 // SHT35 sensor tolerance
 #define ENV_SENSOR_FAIL_STREAK 3 // Number of missed updates in a row
 #define ENV_SENSOR_RETRY_DELAY_MS 5 // Time to delay to retry
+
+// Safety Constants
+#define SAFETY_POLL_MS 50 // ms between safety checks
