@@ -10,7 +10,8 @@ float chamber_air_temp_c(void) { return sht35_temperature_c; }
 
 chamber_state_t chamber_transition(chamber_state_t cur, float chamber, float sp,
                                    float h, bool cool_en,
-                                   bool inhibit_cooling_entry) {
+                                   bool inhibit_cooling_entry, TickType_t now,
+                                   TickType_t state_entered_at) {
   if (cur == CHAMBER_STANDBY || cur == CHAMBER_FAULT)
     return cur;
 
@@ -25,6 +26,15 @@ chamber_state_t chamber_transition(chamber_state_t cur, float chamber, float sp,
       amb_ok && fabsf(sp - amb) <= THERMO_COOL_EXCLUDE_WITHIN_AMBIENT_C;
   const bool cool_allowed = cool_en && !sp_near_ambient;
 
+  if (cur == CHAMBER_DEFROST) {
+    if (!cool_allowed)
+      return CHAMBER_IDLE;
+    if ((TickType_t)(now - state_entered_at) >=
+        pdMS_TO_TICKS(MIN_COMPRESSOR_OFF_TIME_MS))
+      return CHAMBER_COOL_FAST;
+    return CHAMBER_DEFROST;
+  }
+
   // If we're currently cooling..
   if (cur == CHAMBER_COOL_FAST || cur == CHAMBER_COOL_SLOW) {
 
@@ -34,6 +44,10 @@ chamber_state_t chamber_transition(chamber_state_t cur, float chamber, float sp,
 
     // If we're currently cooling fast..
     if (cur == CHAMBER_COOL_FAST) {
+      // If the Evaporator - Chamber differential is greater than the defrost threshold, move to defrost
+      if (tdr_temperature_c_valid(EVAPORATOR_TEMP) &&
+          fabsf(EVAPORATOR_TEMP - chamber) > THERMO_DEFROST_EVAP_AIR_DELTA_C)
+        return CHAMBER_DEFROST;
       if (chamber <= fast_to_slow)
         return CHAMBER_COOL_SLOW;
       // Otherwise, stay in fast cool

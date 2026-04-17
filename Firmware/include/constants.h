@@ -9,7 +9,7 @@
 
 // Time Limits
 #define MIN_COMPRESSOR_ON_TIME_MS 30000 // 30 seconds
-#define MIN_COMPRESSOR_OFF_TIME_MS 60000 // 1 minute
+#define MIN_COMPRESSOR_OFF_TIME_MS 120000 // 2 minutes
 #define MAX_HEATER_ON_TIME_MS 30000 // The max amount of time the heater can be on for
 #define MIN_RELAY_ON_TIME_MS 2000 // For any load that dosn't have its own min time
 
@@ -22,6 +22,7 @@
 #define THERMO_COOL_FAST_TO_SLOW_BELOW_SP_C 2.0f // FAST→SLOW when chamber <= setpoint − this
 #define THERMO_COOL_EXCLUDE_WITHIN_AMBIENT_C 5.0f // no cooling if |setpoint − ambient| <= this
 #define THERMO_COOL_POST_HEAT_LOCKOUT_MS 10000u // block idle→cooling after leaving HEATING
+#define THERMO_DEFROST_EVAP_AIR_DELTA_C 30.0f // COOL_FAST→defrost if |evap − chamber air| exceeds this
 #define THERMO_HEAT_SUBAMBIENT_MIN_BELOW_SP_C 5.0f // sp below ambient: idle→heat when chamber <= sp − this
 #define HEATER_TC_OFFSET_ABOVE_AIR_SP_C 70.0f // Heater TC (TDR0) target = air setpoint + this
 #define CONDENSER_HOT_HEADROOM_C 20.0f // Idle/heating: condenser on when (comp−amb) >= this

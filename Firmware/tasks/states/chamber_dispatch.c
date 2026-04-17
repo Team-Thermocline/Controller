@@ -25,6 +25,9 @@ void chamber_dispatch(chamber_state_t *cur, chamber_state_t next,
   case CHAMBER_COOL_FAST:
     chamber_state_cool_fast_exit(ctx);
     break;
+  case CHAMBER_DEFROST:
+    chamber_state_defrost_exit(ctx);
+    break;
   }
 
   *cur = next;
@@ -49,6 +52,9 @@ void chamber_dispatch(chamber_state_t *cur, chamber_state_t next,
   case CHAMBER_COOL_FAST:
     chamber_state_cool_fast_entry(ctx);
     break;
+  case CHAMBER_DEFROST:
+    chamber_state_defrost_entry(ctx);
+    break;
   }
 }
 
@@ -72,6 +78,9 @@ void chamber_state_run_current(chamber_state_t cur, chamber_context_t *ctx) {
     break;
   case CHAMBER_COOL_FAST:
     chamber_state_cool_fast_run(ctx);
+    break;
+  case CHAMBER_DEFROST:
+    chamber_state_defrost_run(ctx);
     break;
   }
 }

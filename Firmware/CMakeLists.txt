@@ -89,6 +89,7 @@ add_executable(thermocline_controller
         tasks/states/state_heating.c
         tasks/states/state_cool_slow.c
         tasks/states/state_cool_fast.c
+        tasks/states/state_defrost.c
         tasks/thermo_control_task.c
         tasks/serial_task.c
         lib/hmi_uart/hmi_uart.c

@@ -19,6 +19,7 @@ static void thermo_control_task(void *pvParameters) {
   TickType_t last = xTaskGetTickCount();
   const float h = cfg->temp_hysteresis_c;
   static TickType_t cool_entry_inhibit_until = 0; // Time to inhibit entering cooling
+  static TickType_t chamber_state_entered_at = 0;
 
   while (true) {
     vTaskDelayUntil(&last, cfg->update_period_ticks);
@@ -27,8 +28,11 @@ static void thermo_control_task(void *pvParameters) {
     const float sp = current_temperature_setpoint;
     const float chamber = chamber_air_temp_c();
 
-    chamber_context_t ctx = {
-        .cfg = cfg, .now = now, .air_sp = sp, .chamber = chamber};
+    chamber_context_t ctx = {.cfg = cfg,
+                             .now = now,
+                             .air_sp = sp,
+                             .chamber = chamber,
+                             .state_entered_at = chamber_state_entered_at};
 
     const bool post_standby = chamber_post_standby;
     chamber_post_standby = false;
@@ -63,7 +67,7 @@ static void thermo_control_task(void *pvParameters) {
       const chamber_state_t prev = state;
       chamber_state_t next = chamber_transition(
           state, chamber, sp, h, cfg->enable_active_cooling,
-          inhibit_cooling_entry);
+          inhibit_cooling_entry, now, ctx.state_entered_at);
       chamber_dispatch(&state, next, &ctx);
       if (prev == CHAMBER_HEATING && state != CHAMBER_HEATING)
         cool_entry_inhibit_until =
@@ -71,6 +75,7 @@ static void thermo_control_task(void *pvParameters) {
       chamber_state_run_current(state, &ctx);
     }
 
+    chamber_state_entered_at = ctx.state_entered_at;
     chamber_fsm_state = state;
   }
 }
