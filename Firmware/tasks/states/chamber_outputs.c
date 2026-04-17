@@ -116,7 +116,8 @@ void chamber_outputs_apply_heating(const thermo_control_config_t *cfg,
 
 void chamber_outputs_apply_cool_slow(TickType_t now) {
   hyst_below_reset(&heater_tc_hyst);
-  commit_chamber_loads(false, true, true, false, false, now);
+  /* Compressor off: coast on cold evap; internal fan on to pull chamber heat to evap. */
+  commit_chamber_loads(false, false, true, true, false, now);
 }
 
 void chamber_outputs_apply_cool_fast(TickType_t now) {

@@ -73,10 +73,23 @@ BaseType_t thermo_control_task_create(const thermo_control_config_t *cfg,
                      priority, out_handle);
 }
 
-TickType_t thermo_control_get_compressor_on_time(void) {
-  return chamber_outputs_compressor_on_time();
+float thermo_control_get_compressor_on_time(void) {
+  TickType_t now = xTaskGetTickCount();
+  TickType_t on_time_tick = chamber_outputs_compressor_on_time();
+  if (now < on_time_tick) {
+    return 0.0f;
+  }
+  // Seconds
+  return (float)(now - on_time_tick) / (float)configTICK_RATE_HZ;
 }
-
-TickType_t thermo_control_get_compressor_off_time(void) {
-  return chamber_outputs_compressor_off_time();
+  
+float thermo_control_get_compressor_off_time(void) {
+  TickType_t now = xTaskGetTickCount();
+  TickType_t off_time_tick = chamber_outputs_compressor_off_time();
+  if (now < off_time_tick) {
+    return 0.0f;
+  }
+  
+  // Seconds
+  return (float)(now - off_time_tick) / (float)configTICK_RATE_HZ;
 }

@@ -260,11 +260,11 @@ static void process_tcode_line(char *line, serial_reply_to_t reply_to) {
       } else if (q1_arg && strcmp(q1_arg, "FAULT") == 0) {
         serial_reply_printf(reply_to, "data: FAULT=%s\n", fault_code_string(FAULT));
       } else if (q1_arg && strcmp(q1_arg, "COMPRESSOR_ON_TIME") == 0) {
-        serial_reply_printf(reply_to, "data: COMPRESSOR_ON_TIME=%u\n",
-               (unsigned int)thermo_control_get_compressor_on_time());
+        serial_reply_printf(reply_to, "data: COMPRESSOR_ON_TIME=%.2f\n",
+               (double)thermo_control_get_compressor_on_time());
       } else if (q1_arg && strcmp(q1_arg, "COMPRESSOR_OFF_TIME") == 0) {
-        serial_reply_printf(reply_to, "data: COMPRESSOR_OFF_TIME=%u\n",
-               (unsigned int)thermo_control_get_compressor_off_time());
+        serial_reply_printf(reply_to, "data: COMPRESSOR_OFF_TIME=%.2f\n",
+               (double)thermo_control_get_compressor_off_time());
       } else if (q1_arg && strcmp(q1_arg, "SHT35_TEMPERATURE_C") == 0) {
         serial_reply_printf(reply_to, "data: SHT35_TEMPERATURE_C=%.2f\n", sht35_temperature_c);
       } else if (q1_arg && strcmp(q1_arg, "SHT35_HUMIDITY") == 0) {
