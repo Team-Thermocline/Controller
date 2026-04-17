@@ -19,7 +19,7 @@
 
 // State Machine Constants
 #define THERMO_COOL_FAST_ABOVE_SP_C 1.0f // slow→fast when chamber >= setpoint + this
-#define THERMO_COOL_FAST_TO_SLOW_BELOW_SP_C 1.0f // FAST→SLOW when chamber <= setpoint − this
+#define THERMO_COOL_FAST_TO_SLOW_BELOW_SP_C 2.0f // FAST→SLOW when chamber <= setpoint − this
 #define THERMO_COOL_EXCLUDE_WITHIN_AMBIENT_C 5.0f // no cooling if |setpoint − ambient| <= this
 #define THERMO_HEAT_SUBAMBIENT_MIN_BELOW_SP_C 5.0f // sp below ambient: idle→heat when chamber <= sp − this
 #define HEATER_TC_OFFSET_ABOVE_AIR_SP_C 70.0f // Heater TC (TDR0) target = air setpoint + this
