@@ -9,12 +9,14 @@
 float chamber_air_temp_c(void) { return sht35_temperature_c; }
 
 chamber_state_t chamber_transition(chamber_state_t cur, float chamber, float sp,
-                                   float h, bool cool_en) {
+                                   float h, bool cool_en,
+                                   bool inhibit_cooling_entry) {
   if (cur == CHAMBER_STANDBY || cur == CHAMBER_FAULT)
     return cur;
 
   const float cool_out = sp - T_DEADBAND_C; // idle: 3 °C below setpoint
-  const float cool_fast_in = sp + THERMO_COOL_FAST_ABOVE_SP_C;
+  const float cool_in = sp + T_DEADBAND_C; // idle→cool only above deadband (symmetric to cool_out)
+  const float cool_fast_in = cool_in + THERMO_COOL_FAST_ABOVE_SP_C;
   const float fast_to_slow = sp - THERMO_COOL_FAST_TO_SLOW_BELOW_SP_C;
   const bool amb_ok = tdr_temperature_c_valid(tdr3_temperature_c);
   const float amb = tdr3_temperature_c;
@@ -52,9 +54,9 @@ chamber_state_t chamber_transition(chamber_state_t cur, float chamber, float sp,
     return CHAMBER_HEATING;
   }
 
-  if (cool_allowed && chamber >= cool_fast_in)
+  if (cool_allowed && !inhibit_cooling_entry && chamber >= cool_fast_in)
     return CHAMBER_COOL_FAST;
-  if (cool_allowed && chamber >= sp)
+  if (cool_allowed && !inhibit_cooling_entry && chamber >= cool_in)
     return CHAMBER_COOL_SLOW;
 
   if (sub_ambient_sp) {

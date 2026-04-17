@@ -4,6 +4,7 @@
 #include "chamber_outputs.h"
 #include "chamber_states.h"
 #include "chamber_transition.h"
+#include "constants.h"
 #include "globals.h"
 
 // Main task function for thermo control
@@ -17,6 +18,7 @@ static void thermo_control_task(void *pvParameters) {
 
   TickType_t last = xTaskGetTickCount();
   const float h = cfg->temp_hysteresis_c;
+  static TickType_t cool_entry_inhibit_until = 0; // Time to inhibit entering cooling
 
   while (true) {
     vTaskDelayUntil(&last, cfg->update_period_ticks);
@@ -56,9 +58,16 @@ static void thermo_control_task(void *pvParameters) {
       chamber_dispatch(&state, CHAMBER_IDLE, &ctx);
       chamber_state_run_current(state, &ctx);
     } else {
+      // Inhibit cooling entry if we're within the post heat lockout period
+      const bool inhibit_cooling_entry = (now < cool_entry_inhibit_until);
+      const chamber_state_t prev = state;
       chamber_state_t next = chamber_transition(
-          state, chamber, sp, h, cfg->enable_active_cooling);
+          state, chamber, sp, h, cfg->enable_active_cooling,
+          inhibit_cooling_entry);
       chamber_dispatch(&state, next, &ctx);
+      if (prev == CHAMBER_HEATING && state != CHAMBER_HEATING)
+        cool_entry_inhibit_until =
+            now + pdMS_TO_TICKS(THERMO_COOL_POST_HEAT_LOCKOUT_MS);
       chamber_state_run_current(state, &ctx);
     }
 

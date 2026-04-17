@@ -8,8 +8,8 @@
 #define T_DEADBAND_C 3.0f // Allowable deadband for temperature control
 
 // Time Limits
-#define MIN_COMPRESSOR_ON_TIME_MS 60000 // 1 minute
-#define MIN_COMPRESSOR_OFF_TIME_MS 180000 // 3 minutes
+#define MIN_COMPRESSOR_ON_TIME_MS 30000 // 30 seconds
+#define MIN_COMPRESSOR_OFF_TIME_MS 60000 // 1 minute
 #define MAX_HEATER_ON_TIME_MS 30000 // The max amount of time the heater can be on for
 #define MIN_RELAY_ON_TIME_MS 2000 // For any load that dosn't have its own min time
 
@@ -21,6 +21,7 @@
 #define THERMO_COOL_FAST_ABOVE_SP_C 1.0f // slow→fast when chamber >= setpoint + this
 #define THERMO_COOL_FAST_TO_SLOW_BELOW_SP_C 2.0f // FAST→SLOW when chamber <= setpoint − this
 #define THERMO_COOL_EXCLUDE_WITHIN_AMBIENT_C 5.0f // no cooling if |setpoint − ambient| <= this
+#define THERMO_COOL_POST_HEAT_LOCKOUT_MS 10000u // block idle→cooling after leaving HEATING
 #define THERMO_HEAT_SUBAMBIENT_MIN_BELOW_SP_C 5.0f // sp below ambient: idle→heat when chamber <= sp − this
 #define HEATER_TC_OFFSET_ABOVE_AIR_SP_C 70.0f // Heater TC (TDR0) target = air setpoint + this
 #define CONDENSER_HOT_HEADROOM_C 20.0f // Idle/heating: condenser on when (comp−amb) >= this
