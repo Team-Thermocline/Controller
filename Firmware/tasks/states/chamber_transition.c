@@ -16,17 +16,17 @@ chamber_state_t chamber_transition(chamber_state_t cur, float chamber, float sp,
   const float cool_out = sp - T_DEADBAND_C; // idle: 3 °C below setpoint
   const float cool_fast_in = sp + THERMO_COOL_FAST_ABOVE_SP_C;
   const float fast_to_slow = sp - THERMO_COOL_FAST_TO_SLOW_BELOW_SP_C;
-  const bool sub_ambient_sp = tdr_temperature_c_valid(tdr3_temperature_c) &&
-                              sp < tdr3_temperature_c;
-  const bool near_ambient =
-      tdr_temperature_c_valid(tdr3_temperature_c) &&
-      fabsf(chamber - tdr3_temperature_c) <= THERMO_COOL_EXCLUDE_WITHIN_AMBIENT_C;
-  const bool cool_allowed = cool_en && !near_ambient;
+  const bool amb_ok = tdr_temperature_c_valid(tdr3_temperature_c);
+  const float amb = tdr3_temperature_c;
+  const bool sub_ambient_sp = amb_ok && sp < amb;
+  const bool sp_near_ambient =
+      amb_ok && fabsf(sp - amb) <= THERMO_COOL_EXCLUDE_WITHIN_AMBIENT_C;
+  const bool cool_allowed = cool_en && !sp_near_ambient;
 
   // If we're currently cooling..
   if (cur == CHAMBER_COOL_FAST || cur == CHAMBER_COOL_SLOW) {
 
-    // ..chamber at or below setpoint − 3 °C, cooling disabled, or near ambient → idle
+    // ..chamber at or below setpoint − 3 °C, cooling disabled, or setpoint ~ambient → idle
     if (chamber <= cool_out || !cool_allowed)
       return CHAMBER_IDLE;
 

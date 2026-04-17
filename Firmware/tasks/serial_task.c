@@ -222,11 +222,12 @@ static void process_tcode_line(char *line, serial_reply_to_t reply_to) {
              "SET_RH=%.1f FAULT=%s DOOR=%s POWER=%.1f\n",
              sht35_temperature_c, sht35_humidity,
              heater_on ? "true" : "false",
-             compressor_on ? "true" : "false",
+             (chamber_fsm_state == CHAMBER_COOL_SLOW || chamber_fsm_state == CHAMBER_COOL_FAST) ? "true" : "false",
              chamber_state_string((chamber_state_t)chamber_fsm_state),
              current_temperature_setpoint, current_humidity_setpoint,
              fault_code_string(FAULT), door_open ? "true" : "false",
              current_power);
+        
     } else if (strcmp(qarg, "1") == 0) {
       const char *q1_arg = NULL;
       if (cur_segment + 1 < segment_count)
