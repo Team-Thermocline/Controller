@@ -29,8 +29,13 @@ chamber_state_t chamber_transition(chamber_state_t cur, float chamber, float sp,
   if (cur == CHAMBER_DEFROST) {
     if (!cool_allowed)
       return CHAMBER_IDLE;
-    if ((TickType_t)(now - state_entered_at) >=
-        pdMS_TO_TICKS(MIN_COMPRESSOR_OFF_TIME_MS))
+    const bool evap_warm_enough =
+        tdr_temperature_c_valid(EVAPORATOR_TEMP) &&
+        EVAPORATOR_TEMP > THERMO_DEFROST_EXIT_EVAP_ABOVE_C;
+    const bool defrost_timeout =
+        (TickType_t)(now - state_entered_at) >=
+        pdMS_TO_TICKS(THERMO_DEFROST_MAX_MS);
+    if (evap_warm_enough || defrost_timeout)
       return CHAMBER_COOL_FAST;
     return CHAMBER_DEFROST;
   }
