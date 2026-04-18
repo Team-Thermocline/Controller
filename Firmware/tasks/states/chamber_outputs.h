@@ -11,6 +11,7 @@ void chamber_outputs_apply_heating(const thermo_control_config_t *cfg,
                                    float air_sp, TickType_t now);
 void chamber_outputs_apply_cool_slow(TickType_t now);
 void chamber_outputs_apply_cool_fast(TickType_t now);
+void chamber_outputs_apply_dehumidify(TickType_t now);
 void chamber_outputs_apply_all_off(TickType_t now);
 
 bool chamber_outputs_compressor_is_on(void);

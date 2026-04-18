@@ -29,9 +29,9 @@ void chamber_state_cool_fast_entry(chamber_context_t *ctx);
 void chamber_state_cool_fast_run(chamber_context_t *ctx);
 void chamber_state_cool_fast_exit(chamber_context_t *ctx);
 
-void chamber_state_defrost_entry(chamber_context_t *ctx);
-void chamber_state_defrost_run(chamber_context_t *ctx);
-void chamber_state_defrost_exit(chamber_context_t *ctx);
+void chamber_state_dehumidify_entry(chamber_context_t *ctx);
+void chamber_state_dehumidify_run(chamber_context_t *ctx);
+void chamber_state_dehumidify_exit(chamber_context_t *ctx);
 
 void chamber_dispatch(chamber_state_t *cur, chamber_state_t next,
                       chamber_context_t *ctx);

@@ -25,8 +25,8 @@ void chamber_dispatch(chamber_state_t *cur, chamber_state_t next,
   case CHAMBER_COOL_FAST:
     chamber_state_cool_fast_exit(ctx);
     break;
-  case CHAMBER_DEFROST:
-    chamber_state_defrost_exit(ctx);
+  case CHAMBER_DEHUMIDIFY:
+    chamber_state_dehumidify_exit(ctx);
     break;
   }
 
@@ -52,8 +52,8 @@ void chamber_dispatch(chamber_state_t *cur, chamber_state_t next,
   case CHAMBER_COOL_FAST:
     chamber_state_cool_fast_entry(ctx);
     break;
-  case CHAMBER_DEFROST:
-    chamber_state_defrost_entry(ctx);
+  case CHAMBER_DEHUMIDIFY:
+    chamber_state_dehumidify_entry(ctx);
     break;
   }
 }
@@ -79,8 +79,8 @@ void chamber_state_run_current(chamber_state_t cur, chamber_context_t *ctx) {
   case CHAMBER_COOL_FAST:
     chamber_state_cool_fast_run(ctx);
     break;
-  case CHAMBER_DEFROST:
-    chamber_state_defrost_run(ctx);
+  case CHAMBER_DEHUMIDIFY:
+    chamber_state_dehumidify_run(ctx);
     break;
   }
 }

@@ -32,9 +32,17 @@ static bool condenser_hot_headroom_wanted(void) {
 }
 
 /**
- * Compressor contactor FSM
+ * Compressor contactor FSM.
+ * @param force_off Bypass min-on / min-off (fault, standby, all_off only).
  */
-static void fsm_compressor(bool want_on, TickType_t now) {
+static void fsm_compressor(bool want_on, bool force_off, TickType_t now) {
+  if (force_off) {
+    compressor_state = false;
+    compressor_off_time = now;
+    compressor_on_time = 0;
+    return;
+  }
+
   if (want_on) {
     if (!compressor_state) {
       if (compressor_off_time == 0) {
@@ -52,17 +60,14 @@ static void fsm_compressor(bool want_on, TickType_t now) {
     }
   } else {
     if (compressor_state) {
-      if (compressor_on_time == 0) {
+      /* Never drop compressor before MIN_ON (avoids instant-off if on_time was unset). */
+      if (compressor_on_time == 0)
+        compressor_on_time = now;
+      const TickType_t on_duration = (TickType_t)(now - compressor_on_time);
+      if (on_duration >= pdMS_TO_TICKS(MIN_COMPRESSOR_ON_TIME_MS)) {
         compressor_state = false;
         compressor_off_time = now;
         compressor_on_time = 0;
-      } else {
-        TickType_t on_duration = now - compressor_on_time;
-        if (on_duration >= pdMS_TO_TICKS(MIN_COMPRESSOR_ON_TIME_MS)) {
-          compressor_state = false;
-          compressor_off_time = now;
-          compressor_on_time = 0;
-        }
       }
     }
   }
@@ -75,12 +80,13 @@ static void fsm_compressor(bool want_on, TickType_t now) {
  */
 static void commit_chamber_loads(bool heater_request, bool compressor_want,
                                  bool cooling_demand, bool internal_fan,
-                                 bool condenser_hot_headroom, TickType_t now) {
+                                 bool condenser_hot_headroom,
+                                 bool force_compressor_off, TickType_t now) {
   if (heater_request && compressor_want)
     heater_request = false;
 
   cooling_requested = cooling_demand;
-  fsm_compressor(compressor_want, now);
+  fsm_compressor(compressor_want, force_compressor_off, now);
 
   const bool heat_gpio = heater_request && !compressor_state;
   const bool condenser_gpio =
@@ -104,31 +110,37 @@ static bool heater_bangbang(float air_sp, float t_heater_tc, float tc_hyst) {
 
 void chamber_outputs_apply_idle(TickType_t now) {
   hyst_below_reset(&heater_tc_hyst);
-  commit_chamber_loads(false, false, false, true, true, now);
+  commit_chamber_loads(false, false, false, true, true, false, now);
 }
 
 void chamber_outputs_apply_heating(const thermo_control_config_t *cfg,
                                    float air_sp, TickType_t now) {
   bool heat =
       heater_bangbang(air_sp, tdr0_temperature_c, cfg->heater_tc_hysteresis_c);
-  commit_chamber_loads(heat, false, false, true, true, now);
+  commit_chamber_loads(heat, false, false, true, true, false, now);
 }
 
 void chamber_outputs_apply_cool_slow(TickType_t now) {
   hyst_below_reset(&heater_tc_hyst);
   /* Compressor off: coast on cold evap; internal fan on to pull chamber heat to evap. */
-  commit_chamber_loads(false, false, true, true, false, now);
+  commit_chamber_loads(false, false, true, true, false, false, now);
 }
 
 void chamber_outputs_apply_cool_fast(TickType_t now) {
   hyst_below_reset(&heater_tc_hyst);
-  commit_chamber_loads(false, true, true, true, false, now);
+  commit_chamber_loads(false, true, true, true, false, false, now);
+}
+
+void chamber_outputs_apply_dehumidify(TickType_t now) {
+  hyst_below_reset(&heater_tc_hyst);
+  /* Compressor off, internal fan on; condenser only if compressor hot (same as idle). */
+  commit_chamber_loads(false, false, false, true, true, false, now);
 }
 
 void chamber_outputs_apply_all_off(TickType_t now) {
   hyst_below_reset(&heater_tc_hyst);
   hyst_above_reset(&condenser_headroom_hyst);
-  commit_chamber_loads(false, false, false, false, false, now);
+  commit_chamber_loads(false, false, false, false, false, true, now);
 }
 
 bool chamber_outputs_compressor_is_on(void) { return compressor_state; }

@@ -11,7 +11,7 @@ typedef enum chamber_state {
   CHAMBER_HEATING,
   CHAMBER_COOL_SLOW,
   CHAMBER_COOL_FAST,
-  CHAMBER_DEFROST,
+  CHAMBER_DEHUMIDIFY,
 } chamber_state_t;
 
 typedef struct chamber_context {

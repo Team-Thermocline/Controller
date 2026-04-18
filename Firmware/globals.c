@@ -29,7 +29,7 @@ static const char *const chamber_state_strings[] = {
     [CHAMBER_HEATING] = "HEATING",
     [CHAMBER_COOL_SLOW] = "COOL_SLOW",
     [CHAMBER_COOL_FAST] = "COOL_FAST",
-    [CHAMBER_DEFROST] = "DEFROST",
+    [CHAMBER_DEHUMIDIFY] = "DEHUMIDIFY",
 };
 
 const char *chamber_state_string(chamber_state_t state) {

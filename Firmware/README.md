@@ -56,7 +56,9 @@ Mermaid charts derived from the code directly.
 
 ### Chamber control FSM
 
-The diagram below is from `chamber_transition()`
+The diagram below is from `chamber_transition()` (plus fault / setpoint-off routing from `thermo_control_task()`).
+
+**Dehumidify entry:** only from **COOL_FAST**. Chamber air (SHT35) must be **above 0 °C**, RH must exceed **`MAX_HUMIDITY_BEFORE_ENTERING_FREEZE`** (60 %RH default), and **evaporator TDR1** must be **at or below `THERMO_DEHUMIDIFY_ENTRY_EVAP_MAX_C`** (8 °C default) so the coil is actually cold before a dry cycle is considered. That avoids jumping to dehumidify with a warm coil (e.g. ~18 °C) where normal cooling should run.
 
 ```mermaid
 stateDiagram-v2
@@ -68,6 +70,7 @@ stateDiagram-v2
   state "CHAMBER_HEATING" as HEAT
   state "CHAMBER_COOL_SLOW" as CSLOW
   state "CHAMBER_COOL_FAST" as CFAST
+  state "CHAMBER_DEHUMIDIFY" as DEHUM
 
   [*] --> STBY : reset / boot
 
@@ -83,6 +86,7 @@ stateDiagram-v2
   HEAT --> FLT : fault
   CSLOW --> FLT : fault
   CFAST --> FLT : fault
+  DEHUM --> FLT : fault
 
   note right of FLT
     FAULT: all loads off,
@@ -96,6 +100,7 @@ stateDiagram-v2
   HEAT --> IDLE : setpoint off
   CSLOW --> IDLE : setpoint off
   CFAST --> IDLE : setpoint off
+  DEHUM --> IDLE : setpoint off
 
   IDLE --> HEAT : need heat
   IDLE --> CSLOW : need slow cool
@@ -108,6 +113,22 @@ stateDiagram-v2
 
   CSLOW --> CFAST : ramp up to fast cool
   CFAST --> CSLOW : fast cool hysteresis
+
+  CFAST --> DEHUM : air > 0 C, RH high, evap cold
+
+  DEHUM --> IDLE : cool disabled or near-ambient
+  DEHUM --> CFAST : dry dwell done
+
+  note right of DEHUM
+    Dehumidify: internal fan on,
+    compressor off (chamber_outputs_apply_dehumidify).
+    Enter from COOL_FAST when chamber air > 0 C,
+    SHT35 RH > MAX_HUMIDITY_BEFORE_ENTERING_FREEZE (60 %RH default),
+    and TDR1 evap <= THERMO_DEHUMIDIFY_ENTRY_EVAP_MAX_C (8 C default).
+    Exit to COOL_FAST: elapsed >= 10 min AND
+    |evap − 2 C| <= 0.75 C, OR elapsed >= 30 min.
+    Exit to IDLE if active cooling is not allowed.
+  end note
 ```
 
 ### Compressor contactor vs chamber mode
@@ -117,15 +138,15 @@ Nested FSM in `fsm_compressor()`; chamber states only request `compressor_want`.
 ```mermaid
 flowchart LR
   subgraph req["Request from chamber_outputs_apply_*"]
-    WON["compressor_want true: cool_slow / cool_fast"]
-    WOFF["compressor_want false: idle / heating / all_off"]
+    WON["compressor_want true: cool_fast only"]
+    WOFF["compressor_want false: idle / heating / cool_slow / dehumidify / all_off"]
   end
 
   subgraph fsm["fsm_compressor (chamber_outputs.c)"]
     OFF["compressor_state OFF"]
     ON["compressor_state ON"]
-    OFF -->|"want_on AND (first time OR off_duration >= MIN_COMPRESSOR_OFF_TIME_MS = 180000)"| ON
-    ON -->|"want_off AND on_duration >= MIN_COMPRESSOR_ON_TIME_MS = 60000"| OFF
+    OFF -->|"want_on AND (first time OR off_duration >= MIN_COMPRESSOR_OFF_TIME_MS = 120000)"| ON
+    ON -->|"want_off AND on_duration >= MIN_COMPRESSOR_ON_TIME_MS = 30000"| OFF
   end
 
   WON --> fsm
@@ -152,11 +173,11 @@ sequenceDiagram
 
   O->>A: compressor_on true, t_on set
   loop each analog cycle
-    A->>A: if compressor_on AND (now - t_on) >= COMPRESSOR_STARTUP_TIME_MS (500) <br> THEN if COMPRESSOR_LOAD > LOCKED_ROTOR_THRESHOLD_A (15) <br> finally → FAULT_CODE_COMPRESSOR_OVERCURRENT
+    A->>A: if compressor_on AND (now - t_on) >= COMPRESSOR_STARTUP_TIME_MS (500) <br> THEN if COMPRESSOR_LOAD > LOCKED_ROTOR_THRESHOLD_A (15) <br> finally -> FAULT_CODE_COMPRESSOR_OVERCURRENT
   end
 
   Note over A: During first COMPRESSOR_STARTUP_TIME_MS after on, no LR compare (gated startup window).
 
   O->>A: compressor off
-  A->>A: if FAULT was COMPRESSOR_OVERCURRENT <br> AND (now - t_off) >= MIN_COMPRESSOR_OFF_TIME_MS (180000) <br> finally → fault_raise(NONE)
+  A->>A: if FAULT was COMPRESSOR_OVERCURRENT <br> AND (now - t_off) >= MIN_COMPRESSOR_OFF_TIME_MS (120000) <br> finally -> fault_raise(NONE)
 ```
