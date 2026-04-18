@@ -22,7 +22,7 @@
 #define THERMO_COOL_FAST_TO_SLOW_BELOW_SP_C 2.0f // FAST→SLOW when chamber <= setpoint − this
 #define THERMO_COOL_EXCLUDE_WITHIN_AMBIENT_C 5.0f // no cooling if |setpoint − ambient| <= this
 #define THERMO_COOL_POST_HEAT_LOCKOUT_MS 10000u // block idle→cooling after leaving HEATING
-#define THERMO_DEFROST_EVAP_AIR_DELTA_C 40.0f // COOL_FAST→defrost if |evap − chamber air| exceeds this
+#define THERMO_DEFROST_EVAP_AIR_DELTA_C 30.0f // COOL_FAST→defrost if |evap − chamber air| exceeds this
 #define THERMO_DEFROST_EXIT_EVAP_ABOVE_C 1.0f // leave defrost when evap (TDR1) > this (°C)
 #define THERMO_DEFROST_MAX_MS (5u * 60u * 1000u) // cap defrost dwell (ms)
 #define THERMO_HEAT_SUBAMBIENT_MIN_BELOW_SP_C 5.0f // sp below ambient: idle→heat when chamber <= sp − this
