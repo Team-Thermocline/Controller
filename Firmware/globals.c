@@ -59,8 +59,9 @@ bool compressor_on = false;
 
 volatile chamber_state_t chamber_fsm_state = CHAMBER_STANDBY;
 
-volatile bool chamber_post_standby = false;
-volatile bool chamber_post_arm_idle = false;
+// These get used to gate active mode/inactive mode on the first M0 commands
+volatile bool chamber_post_standby = false; // Signals ahead that we are post-standby (ie, we're ready to transition out of idle)
+volatile bool chamber_post_arm_idle = false; // Post arm, signals ahead that we're ready to arm after idle
 
 void chamber_request_standby(void) { chamber_post_standby = true; }
 

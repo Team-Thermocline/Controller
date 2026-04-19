@@ -56,10 +56,6 @@ Mermaid charts derived from the code directly.
 
 ### Chamber control FSM
 
-The diagram below is from `chamber_transition()` (plus fault / setpoint-off routing from `thermo_control_task()`).
-
-**Dehumidify entry:** only from **COOL_FAST**. Chamber air (SHT35) must be **above 0 °C**, RH must exceed **`MAX_HUMIDITY_BEFORE_ENTERING_FREEZE`** (60 %RH default), and **evaporator TDR1** must be **at or below `THERMO_DEHUMIDIFY_ENTRY_EVAP_MAX_C`** (8 °C default) so the coil is actually cold before a dry cycle is considered. That avoids jumping to dehumidify with a warm coil (e.g. ~18 °C) where normal cooling should run.
-
 ```mermaid
 stateDiagram-v2
   direction LR
@@ -96,11 +92,6 @@ stateDiagram-v2
   end note
 
   FLT --> STBY : fault cleared
-
-  HEAT --> IDLE : setpoint off
-  CSLOW --> IDLE : setpoint off
-  CFAST --> IDLE : setpoint off
-  DEHUM --> IDLE : setpoint off
 
   IDLE --> HEAT : need heat
   IDLE --> CSLOW : need slow cool

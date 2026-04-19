@@ -17,22 +17,32 @@
 #define COMPRESSOR_STARTUP_TIME_MS 500 // Milliseconds to wait before interrogating compressure load for stall-check
 #define LOCKED_ROTOR_THRESHOLD_A 15.0f // Amps to consider the compressor to be locked rotor
 
-// State Machine Constants
-#define THERMO_COOL_FAST_ABOVE_SP_C 1.0f // slow->fast when chamber >= setpoint + this
-#define THERMO_COOL_FAST_TO_SLOW_BELOW_SP_C 2.0f // FAST->SLOW when chamber <= setpoint − this
+/* -----------------------
+ * State Machine Constants
+ * ----------------------- */
+// Cooling
+#define THERMO_COOL_FAST_ABOVE_SP_C 1.0f // COOL_SLOW -> COOL_FAST when chamber >= setpoint + this
+#define THERMO_COOL_FAST_TO_SLOW_BELOW_SP_C 2.0f // COOL_FAST -> COOL_SLOW when chamber <= setpoint − this
 #define THERMO_COOL_EXCLUDE_WITHIN_AMBIENT_C 5.0f // no cooling if |setpoint − ambient| <= this
-#define THERMO_COOL_POST_HEAT_LOCKOUT_MS 10000u // block idle->cooling after leaving HEATING
+#define THERMO_COOL_POST_HEAT_LOCKOUT_MS 10000u // block IDLE -> COOLING after leaving HEATING
+
+// Dehumidify
 #define MAX_HUMIDITY_BEFORE_ENTERING_FREEZE 60.0f // %RH: COOL_FAST->dehumidify when above this (with air > 0 C)
 #define THERMO_DEHUMIDIFY_ENTRY_EVAP_MAX_C 8.0f // TDR1 evap must be <= this to enter dehumidify
 #define THERMO_DEHUMIDIFY_TARGET_EVAP_C 2.0f // aim for evap (TDR1) near this (°C)
 #define THERMO_DEHUMIDIFY_EVAP_BAND_C 0.75f // exit when |evap − target| <= this (after min dwell)
 #define THERMO_DEHUMIDIFY_MIN_MS (10u * 60u * 1000u) // at least this long in dehumidify (ms)
 #define THERMO_DEHUMIDIFY_MAX_MS (30u * 60u * 1000u) // safety cap if evap never reaches band (ms)
+
+// Heating
 #define THERMO_HEAT_SUBAMBIENT_MIN_BELOW_SP_C 5.0f // sp below ambient: idle->heat when chamber <= sp − this
 #define HEATER_TC_OFFSET_ABOVE_AIR_SP_C 70.0f // Heater TC (TDR0) target = air setpoint + this
 #define CONDENSER_HOT_HEADROOM_C 20.0f // Idle/heating: condenser on when (comp−amb) >= this
 #define CONDENSER_HOT_HEADROOM_HYST_C 10.0f // Drop condenser when (comp−amb) <= HEADROOM − this
 
+/* -----------------
+ * Pins and Hardware
+ * ----------------- */
 // Connected Load Functions
 #define THERMO_COMPRESSOR_PIN    LOAD_PIN_2
 #define THERMO_HEAT_PIN          LOAD_PIN_1

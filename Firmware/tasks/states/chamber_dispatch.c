@@ -3,9 +3,12 @@
 // Take the state we're in now and transition to the next state
 void chamber_dispatch(chamber_state_t *cur, chamber_state_t next,
                       chamber_context_t *ctx) {
+  
+  // If the current state is the same as the next state, return
   if (*cur == next)
     return;
 
+  // Exit the current state
   switch (*cur) {
   case CHAMBER_STANDBY:
     chamber_state_standby_exit(ctx);
@@ -30,9 +33,11 @@ void chamber_dispatch(chamber_state_t *cur, chamber_state_t next,
     break;
   }
 
+  // Set the current state to the next state
   *cur = next;
   ctx->state_entered_at = ctx->now;
 
+  // Enter the new state
   switch (*cur) {
   case CHAMBER_STANDBY:
     chamber_state_standby_entry(ctx);

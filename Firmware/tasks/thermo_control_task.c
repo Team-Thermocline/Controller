@@ -39,30 +39,39 @@ static void thermo_control_task(void *pvParameters) {
     const bool post_arm_idle = chamber_post_arm_idle;
     chamber_post_arm_idle = false;
 
+    // Get the current state
     chamber_state_t state = (chamber_state_t)chamber_fsm_state;
 
+    // If we're post-standby then we can transition to standby
     if (post_standby)
       chamber_dispatch(&state, CHAMBER_STANDBY, &ctx);
+
+    // If we're post-arm-idle then we can transition to idle
     else if (post_arm_idle && state == CHAMBER_STANDBY)
       chamber_dispatch(&state, CHAMBER_IDLE, &ctx);
 
+    // If we have a fault then we transition to fault
     if (FAULT != FAULT_CODE_NONE && state != CHAMBER_FAULT &&
         state != CHAMBER_STANDBY)
       chamber_dispatch(&state, CHAMBER_FAULT, &ctx);
 
+    // If we're currently in standby..
     if (state == CHAMBER_STANDBY) {
+      // then continue to standby
       chamber_state_run_current(state, &ctx);
+    // Otherwise, if we're in fault mode..
     } else if (state == CHAMBER_FAULT) {
+      // continue in fault
       chamber_state_run_current(state, &ctx);
+      // But if the fault code is none/ckleared..
       if (FAULT == FAULT_CODE_NONE) {
-        chamber_dispatch(&state, CHAMBER_STANDBY, &ctx); // Return to standby upon clearing a fault
+        // Return to standby after clearing
+        chamber_dispatch(&state, CHAMBER_STANDBY, &ctx);
         chamber_state_run_current(state, &ctx);
       }
-    } else if (sp == 0.0f) {
-      chamber_dispatch(&state, CHAMBER_IDLE, &ctx);
-      chamber_state_run_current(state, &ctx);
+
     } else {
-      // Inhibit cooling entry if we're within the post heat lockout period
+      // Run normal
       const bool inhibit_cooling_entry = (now < cool_entry_inhibit_until);
       const chamber_state_t prev = state;
       chamber_state_t next = chamber_transition(
