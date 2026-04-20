@@ -67,3 +67,22 @@
 
 // Safety Constants
 #define SAFETY_POLL_MS 50 // ms between safety checks
+
+/* --------------
+ * Misc and Color
+ * -------------- */
+#define LED_TINT_NEUTRAL_C 20.0f
+#define LED_TINT_COLDEST_C -20.0f
+#define LED_TINT_HOTTEST_C 80.0f
+
+/* Target colors at full tint (0..255 each). */
+#define LED_TINT_COLD_R 0u
+#define LED_TINT_COLD_G 10u
+#define LED_TINT_COLD_B 255u
+#define LED_TINT_HOT_R 255u
+#define LED_TINT_HOT_G 10u
+#define LED_TINT_HOT_B 0u
+
+/* Max tint strength (0..1) and slew rate. */
+#define LED_TINT_MAX_STRENGTH 0.90f
+#define LED_TINT_SLEW_PER_SEC 0.60f
