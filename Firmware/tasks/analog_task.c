@@ -28,9 +28,6 @@
 #define CT_RATIO        1000
 #define BURDEN_OHMS     68.f
 
-/* Theres some slight nearby coupling to the sensors, this sets the zero noise floor */
-#define CT_ZERO_THRESHOLD_A  0.05f
-
 /* Thermocouple open/broken: amp reports ~ -245°C */
 #define TDR_OPEN_THERMOCOUPLE_THRESHOLD_C  (-200.0f)
 
@@ -130,8 +127,8 @@ static void analog_task(void *pvParameters) {
             // Convert ADC counts to current (A)
             float a = analog_rms_adc_to_primary_amps(rms_adc);
 
-            // Account for noise floor
-            *ct_amps[i] = (a < CT_ZERO_THRESHOLD_A) ? 0.0f : a;
+            /* Below minimum resolvable load, treat as zero */
+            *ct_amps[i] = (a < MINIMUM_POSSIBLE_LOAD_A) ? 0.0f : a;
 
             // Wait for next poll
             vTaskDelay(pdMS_TO_TICKS(POLL_INTERVAL_MS));

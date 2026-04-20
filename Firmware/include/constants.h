@@ -16,6 +16,7 @@
 // Locked Rotor Constants
 #define COMPRESSOR_STARTUP_TIME_MS 500 // Milliseconds to wait before interrogating compressure load for stall-check
 #define LOCKED_ROTOR_THRESHOLD_A 15.0f // Amps to consider the compressor to be locked rotor
+#define MINIMUM_POSSIBLE_LOAD_A 0.1f // Amps to consider the load to be zero
 
 /* -----------------------
  * State Machine Constants
