@@ -33,7 +33,7 @@
 // Neopixel driver
 #define NEOPIXEL_PIN 19
 
-// HMI
+// HMI See lib/hmi_uart/
 #define HMI_AUX_PIN 20
 #define HMI_RX_PIN 21
 #define HMI_TX_PIN 22

@@ -35,3 +35,6 @@ BaseType_t analog_task_create(const analog_task_config_t *cfg,
  * Assumes 1000:1 CT and circuit scaling (burden, ref) – tune BURDEN_OHMS in .c to match hardware.
  */
 float analog_rms_adc_to_primary_amps(float rms_adc);
+
+/** True if TDR temperature reading is usable for control */
+bool tdr_temperature_c_valid(float t_c);

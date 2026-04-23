@@ -4,10 +4,10 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-// Super simple SHT35 driver: single-shot temperature/humidity read.
-// Default 7-bit I2C address here assumes ADDR pin tied to VDD (0x45)
-
-#define SHT35_DEFAULT_ADDR 0x45u
+// SHT35 (SHT3x): ADDR low = 0x44, ADDR high (VDD) = 0x45.
+#define SHT35_I2C_ADDR_LOW  0x44u
+#define SHT35_I2C_ADDR_HIGH 0x45u
+#define SHT35_DEFAULT_ADDR  SHT35_I2C_ADDR_HIGH
 
 typedef struct {
   i2c_inst_t *i2c;

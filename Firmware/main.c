@@ -3,7 +3,6 @@
 #include "hardware/i2c.h"
 #include "pico/stdio.h"
 #include "analog_task.h"
-#include "fault.h"
 #include "globals.h"
 #include "pindefs.h"
 #include <stdio.h>
@@ -23,6 +22,7 @@ static void heartbeat_task(void *pvParameters) {
   while (true) {
     printf(".\n");
     fflush(stdout);
+    serial_hmi_puts(".\n");
     vTaskDelay(pdMS_TO_TICKS(5000));
   }
 }
@@ -75,9 +75,6 @@ int main() {
   gpio_set_function(I2C_SDA_PIN, GPIO_FUNC_I2C);
   gpio_set_function(I2C_SCL_PIN, GPIO_FUNC_I2C);
 
-  // Initalize fault queue
-  fault_init();
-
   // Initialize ADG728
   adg728_init(i2c0, ADG728_ADDR_MIN);
   if (!adg728_init(i2c0, ADG728_ADDR_MIN)) {
@@ -92,9 +89,6 @@ int main() {
   // Initialize Fault LED
   gpio_put(FAULT_LED_PIN, FAULT == FAULT_CODE_NONE);
 
-  // Process any faults that were raised before the scheduler started
-  fault_process();
-
   // ===========
   // Begin Tasks
   // ===========
@@ -105,6 +99,7 @@ int main() {
   static const thermo_control_config_t thermo_cfg = {
       .temp_hysteresis_c = 3.0f,
       .enable_active_cooling = true,
+      .heater_tc_hysteresis_c = 5.0f,
       .update_period_ticks = pdMS_TO_TICKS(100),
   };
 
@@ -119,7 +114,7 @@ int main() {
       .i2c = i2c0,
       .adg728_addr = ADG728_ADDR_MIN,
   };
-  if (analog_task_create(&analog_cfg, 1, NULL) != pdPASS)
+  if (analog_task_create(&analog_cfg, 3, NULL) != pdPASS)
     vApplicationMallocFailedHook();
 
   if (thermo_control_task_create(&thermo_cfg, 1, NULL) != pdPASS)

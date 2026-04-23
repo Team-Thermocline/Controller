@@ -1,120 +1,11 @@
 #include "thermo_control_task.h"
 
-#include "fault.h"
+#include "chamber_context.h"
+#include "chamber_outputs.h"
+#include "chamber_states.h"
+#include "chamber_transition.h"
+#include "constants.h"
 #include "globals.h"
-#include "hardware/gpio.h"
-#include "pindefs.h"
-#include <stdbool.h>
-
-// Compressor time constraints
-#define COMPRESSOR_MIN_ON_TIME_MS  10000  // 10 seconds minimum on-time
-#define COMPRESSOR_MIN_OFF_TIME_MS 30000  // 30 seconds minimum off-time
-
-// Enum for control modes
-typedef enum thermo_mode {
-  THERMO_MODE_IDLE = 0,
-  THERMO_MODE_HEAT = 1,
-  THERMO_MODE_COOL = 2,
-} thermo_mode_t;
-
-// State tracking for compressor timing
-static TickType_t compressor_on_time = 0;   // When compressor was turned on (0 = off)
-static TickType_t compressor_off_time = 0;   // When compressor was turned off (0 = never off or currently on)
-static bool compressor_state = false;        // Actual GPIO state
-
-// Updates compressor GPIO state respecting minimum on/off times
-// Returns true if compressor is actually on, false if off (may differ from want_on due to timing)
-static bool update_compressor_state(bool want_on, TickType_t now) {
-  if (want_on) {
-    // Desire compressor on
-    if (!compressor_state) {
-      // Currently off - check if we've waited long enough
-      if (compressor_off_time == 0) {
-        // Never been off before, or was just initialized - allow on
-        compressor_state = true;
-        compressor_on_time = now;
-        compressor_off_time = 0;
-        gpio_put(LOAD_PIN_3, 1);
-      } else {
-        TickType_t off_duration = now - compressor_off_time;
-        if (off_duration >= pdMS_TO_TICKS(COMPRESSOR_MIN_OFF_TIME_MS)) {
-          // Minimum off-time satisfied
-          compressor_state = true;
-          compressor_on_time = now;
-          compressor_off_time = 0;
-          gpio_put(LOAD_PIN_3, 1);
-        }
-        // else: still waiting for minimum off-time, stay off
-      }
-    } else {
-      // Already on - check minimum on-time if we just turned it on
-      if (compressor_on_time != 0) {
-        TickType_t on_duration = now - compressor_on_time;
-        if (on_duration < pdMS_TO_TICKS(COMPRESSOR_MIN_ON_TIME_MS)) {
-          // Still in minimum on-time, keep it on even if logic wants off
-          // (This case shouldn't happen if want_on is true, but handle it)
-        }
-      }
-    }
-  } else {
-    // Want compressor off
-    if (compressor_state) {
-      // Currently on - check minimum on-time
-      if (compressor_on_time == 0) {
-        // Shouldn't happen, but handle it
-        compressor_state = false;
-        compressor_off_time = now;
-        compressor_on_time = 0;
-        gpio_put(LOAD_PIN_3, 0);
-      } else {
-        TickType_t on_duration = now - compressor_on_time;
-        if (on_duration >= pdMS_TO_TICKS(COMPRESSOR_MIN_ON_TIME_MS)) {
-          // Minimum on-time satisfied, can turn off
-          compressor_state = false;
-          compressor_off_time = now;
-          compressor_on_time = 0;
-          gpio_put(LOAD_PIN_3, 0);
-        }
-        // else: still in minimum on-time, keep it on
-      }
-    }
-  }
-  
-  return compressor_state;
-}
-
-// Command heat: safety check (turn off cooling first), then turn on heater
-static void command_heat(TickType_t now) {
-  // Safety: turn off cooling before heating
-  if (compressor_state) {
-    // Force compressor off (will respect minimum on-time)
-    update_compressor_state(false, now);
-  }
-  
-  // Turn on heater
-  heater_on = true;
-  gpio_put(LOAD_PIN_2, 1);
-}
-
-// Command cool: safety check (turn off heating first), then handle compressor timing
-static void command_cool(TickType_t now) {
-  // Safety: turn off heating before cooling
-  if (heater_on) {
-    heater_on = false;
-    gpio_put(LOAD_PIN_2, 0);
-  }
-  
-  // Update compressor state (respects minimum on/off times)
-  compressor_on = update_compressor_state(true, now);
-}
-
-// Command idle: turn off both heat and cool
-static void command_idle(TickType_t now) {
-  heater_on = false;
-  gpio_put(LOAD_PIN_2, 0);
-  
-  compressor_on = update_compressor_state(false, now);
-}
 
 // Main task function for thermo control
 static void thermo_control_task(void *pvParameters) {
@@ -125,82 +16,103 @@ static void thermo_control_task(void *pvParameters) {
     return;
   }
 
-  thermo_mode_t mode = THERMO_MODE_IDLE;
   TickType_t last = xTaskGetTickCount();
-  float h = cfg->temp_hysteresis_c;
+  const float h = cfg->temp_hysteresis_c;
+  static TickType_t cool_entry_inhibit_until = 0; // Time to inhibit entering cooling
+  static TickType_t chamber_state_entered_at = 0;
 
-  // Main loop
   while (true) {
     vTaskDelayUntil(&last, cfg->update_period_ticks);
 
     TickType_t now = xTaskGetTickCount();
+    const float sp = current_temperature_setpoint;
+    const float chamber = chamber_air_temp_c();
 
-    // In STANDBY, outputs stay off (transition to IDLE handled by serial_task when setpoint is set)
-    if (current_state == RUN_STATE_STANDBY) {
-      // Turn off all loads
-      gpio_put(LOAD_PIN_1, 0);
-      gpio_put(LOAD_PIN_2, 0);
-      gpio_put(LOAD_PIN_3, 0);
-      gpio_put(LOAD_PIN_4, 0);
-      gpio_put(LOAD_PIN_5, 0);
-      gpio_put(LOAD_PIN_6, 0);
+    chamber_context_t ctx = {.cfg = cfg,
+                             .now = now,
+                             .air_sp = sp,
+                             .chamber = chamber,
+                             .state_entered_at = chamber_state_entered_at};
 
-      command_idle(now);
-      if (FAULT != FAULT_CODE_THERMOCOUPLE_OPEN)
-        fault_raise(FAULT_CODE_NONE);
-      continue;
-    }
+    const bool post_standby = chamber_post_standby;
+    chamber_post_standby = false;
+    const bool post_arm_idle = chamber_post_arm_idle;
+    chamber_post_arm_idle = false;
 
-    // Only control if we're in IDLE or RUN state (not STANDBY, STOP, FAULT)
-    if (current_state != RUN_STATE_IDLE && current_state != RUN_STATE_RUN) {
-      command_idle(now);
-      continue;
-    }
+    // Get the current state
+    chamber_state_t state = (chamber_state_t)chamber_fsm_state;
 
-    float sp = current_temperature_setpoint;
-    float t = tdr0_temperature_c;
+    // If we're post-standby then we can transition to standby
+    if (post_standby)
+      chamber_dispatch(&state, CHAMBER_STANDBY, &ctx);
 
-    // Don't run control if setpoint is not set (0.0) or temperature reading is invalid
-    if (sp == 0.0f || t == 0.0f) {
-      mode = THERMO_MODE_IDLE;
-      command_idle(now);
-      current_state = RUN_STATE_IDLE;
-      continue;
-    }
+    // If we're post-arm-idle then we can transition to idle
+    else if (post_arm_idle && state == CHAMBER_STANDBY)
+      chamber_dispatch(&state, CHAMBER_IDLE, &ctx);
 
-    // Simple control: if colder than setpoint - hysteresis, heat; if hotter than setpoint + hysteresis, cool
-    if (t <= sp - h) {
-      mode = THERMO_MODE_HEAT;
-      command_heat(now);
-    } else if (cfg->enable_active_cooling && t >= sp + h) {
-      mode = THERMO_MODE_COOL;
-      command_cool(now);
+    // If we have a fault then we transition to fault
+    if (FAULT != FAULT_CODE_NONE && state != CHAMBER_FAULT &&
+        state != CHAMBER_STANDBY)
+      chamber_dispatch(&state, CHAMBER_FAULT, &ctx);
+
+    // If we're currently in standby..
+    if (state == CHAMBER_STANDBY) {
+      // then continue to standby
+      chamber_state_run_current(state, &ctx);
+    // Otherwise, if we're in fault mode..
+    } else if (state == CHAMBER_FAULT) {
+      // continue in fault
+      chamber_state_run_current(state, &ctx);
+      // But if the fault code is none/ckleared..
+      if (FAULT == FAULT_CODE_NONE) {
+        // Return to standby after clearing
+        chamber_dispatch(&state, CHAMBER_STANDBY, &ctx);
+        chamber_state_run_current(state, &ctx);
+      }
+
     } else {
-      mode = THERMO_MODE_IDLE;
-      command_idle(now);
+      // Run normal
+      const bool inhibit_cooling_entry = (now < cool_entry_inhibit_until);
+      const chamber_state_t prev = state;
+      chamber_state_t next = chamber_transition(
+          state, chamber, sp, h, cfg->enable_active_cooling,
+          inhibit_cooling_entry, now, ctx.state_entered_at);
+      chamber_dispatch(&state, next, &ctx);
+      if (prev == CHAMBER_HEATING && state != CHAMBER_HEATING)
+        cool_entry_inhibit_until =
+            now + pdMS_TO_TICKS(THERMO_COOL_POST_HEAT_LOCKOUT_MS);
+      chamber_state_run_current(state, &ctx);
     }
 
-    // Update state: IDLE if both are off, RUN if either is on
-    current_state = (mode == THERMO_MODE_IDLE && !compressor_state && !heater_on) 
-                    ? RUN_STATE_IDLE : RUN_STATE_RUN;
-    if (FAULT != FAULT_CODE_THERMOCOUPLE_OPEN)
-      fault_raise(FAULT_CODE_NONE);
+    chamber_state_entered_at = ctx.state_entered_at;
+    chamber_fsm_state = state;
   }
 }
 
 BaseType_t thermo_control_task_create(const thermo_control_config_t *cfg,
-                                     UBaseType_t priority,
-                                     TaskHandle_t *out_handle) {
+                                      UBaseType_t priority,
+                                      TaskHandle_t *out_handle) {
   return xTaskCreate(thermo_control_task, "thermo_control", 512, (void *)cfg,
                      priority, out_handle);
 }
-/* ========================================================
- * For Debugging/monitoring
- * ======================================================== */
-TickType_t thermo_control_get_compressor_on_time(void) {
-  return compressor_on_time;
-}
 
-TickType_t thermo_control_get_compressor_off_time(void) {
-  return compressor_off_time;
+float thermo_control_get_compressor_on_time(void) {
+  TickType_t now = xTaskGetTickCount();
+  TickType_t on_time_tick = chamber_outputs_compressor_on_time();
+  if (now < on_time_tick) {
+    return 0.0f;
+  }
+  // Seconds
+  return (float)(now - on_time_tick) / (float)configTICK_RATE_HZ;
+}
+  
+float thermo_control_get_compressor_off_time(void) {
+  TickType_t now = xTaskGetTickCount();
+  TickType_t off_time_tick = chamber_outputs_compressor_off_time();
+  if (now < off_time_tick) {
+    return 0.0f;
+  }
+  
+  // Seconds
+  return (float)(now - off_time_tick) / (float)configTICK_RATE_HZ;
 }

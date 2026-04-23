@@ -1,5 +1,6 @@
 #pragma once
 
+#include "chamber_context.h"
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -11,24 +12,22 @@ typedef enum fault_code {
   FAULT_CODE_I2C_COMMUNICATION_ERROR = 1,
   FAULT_CODE_THERMOCOUPLE_OPEN = 2,
   FAULT_CODE_OVERCURRENT = 3,
+  FAULT_CODE_ENV_SENSOR = 4,
+  FAULT_CODE_COMPRESSOR_OVERCURRENT = 5,
 } fault_code_t;
 
 /** Human-readable string for a fault code (for logging, display, Q0). */
 const char *fault_code_string(fault_code_t code);
 
-/* -----------------------------------------------------------------------------
- * Run state (chamber controller state machine)
- * ----------------------------------------------------------------------------- */
-typedef enum run_state {
-  RUN_STATE_STANDBY = 0, // Totally standby, all systems off and no automatic logic
-  RUN_STATE_IDLE = 1, // Automatic logic is ready, choose to be idle
-  RUN_STATE_RUN = 2, // We're running, either heating or cooling
-  RUN_STATE_STOP = 3, // We're instructed to stop (move to standby quickly)
-  RUN_STATE_FAULT = 4, // Theres a fault, stay here, then when cleared move to standby
-} run_state_t;
+/** Set global FAULT (NONE clears). Thermo task drives CHAMBER_FAULT from this. */
+void fault_raise(fault_code_t code);
 
-/** Human-readable string for run state. */
-const char *run_state_string(run_state_t state);
+/** Human-readable string for chamber FSM state (Q0, logging). */
+const char *chamber_state_string(chamber_state_t state);
+
+/** Posted to thermo task (M0, T setpoint from standby). */
+void chamber_request_standby(void);
+void chamber_request_arm_idle(void);
 
 /* -----------------------------------------------------------------------------
  * Global state (defined in globals.c)
@@ -44,7 +43,12 @@ extern float current_humidity; // TODO: make this explicit/use this by setting o
 // Outputs
 extern bool heater_on;
 extern bool compressor_on;
-extern run_state_t current_state;
+
+extern volatile bool chamber_post_standby;
+extern volatile bool chamber_post_arm_idle;
+
+/** Chamber FSM; written only by thermo_control_task, readable anywhere */
+extern volatile chamber_state_t chamber_fsm_state;
 
 // Global Sensor States
 extern volatile float ct0_amps;

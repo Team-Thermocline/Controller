@@ -1,16 +1,15 @@
 #include "analog_task.h"
 #include "ADG728.h"
-#include "fault.h"
+#include "calibration.h"
+#include "chamber_outputs.h"
 #include "globals.h"
 #include "constants.h"
 #include "hardware/adc.h"
 #include "hardware/timer.h"
-#include "pico/stdio.h"
 #include "pindefs.h"
 #include "sht35.h"
 #include "task.h"
 #include <math.h>
-#include <stdio.h>
 
 /* Math for 60hz AC sampling */
 #define AC_HZ              60
@@ -21,7 +20,7 @@
 
 // Mux interval and poll settings
 #define MUX_SETTLE_MS    2
-#define POLL_INTERVAL_MS 60 // TODO: Tune me!
+#define POLL_INTERVAL_MS 45
 
 /* 1000:1 CT current estimate: ADC ref and burden */
 #define ADC_REF_V       3.3f
@@ -29,35 +28,56 @@
 #define CT_RATIO        1000
 #define BURDEN_OHMS     68.f
 
-/* Theres some slight nearby coupling to the sensors, this sets the zero noise floor */
-#define CT_ZERO_THRESHOLD_A  0.05f
-
 /* Thermocouple open/broken: amp reports ~ -245°C */
 #define TDR_OPEN_THERMOCOUPLE_THRESHOLD_C  (-200.0f)
 
+/* In-range TDR for control (distinct from open-TC fault threshold). */
+#define TDR_VALID_MIN_C  (-80.0f)
+#define TDR_VALID_MAX_C  (600.0f)
+
+bool tdr_temperature_c_valid(float t_c) {
+    return t_c > TDR_VALID_MIN_C && t_c < TDR_VALID_MAX_C && t_c != 0.0f;
+}
+
 /**
- * Sample ADC over the configured AC window and compute DC mean and AC RMS.
- * Caller must have already selected the mux channel and waited for settle.
- * Fills buf[0..num_samples-1] and writes mean and rms (ADC counts) to *out_mean, *out_rms.
+ * Capture ADC0 at SAMPLE_RATE_HZ for an integer number
+ * of 60 Hz line periods (see NUM_SAMPLES).
+ *
+ * Idea Credit: Professor Monk
  */
-static void sample_ac_rms(uint16_t *buf, int num_samples,
-                          float *out_mean, float *out_rms) {
+static void adc_sample_line_sync_window(uint16_t *buf, int num_samples) {
     adc_select_input(0); /* ADC0 = GPIO26 (ADC_TMUX_PIN) */
     for (int i = 0; i < num_samples; i++) {
         buf[i] = adc_read();
         busy_wait_us(SAMPLE_INTERVAL_US);
     }
+}
+
+static float adc_buffer_mean_counts(const uint16_t *buf, int num_samples) {
     uint32_t sum = 0;
     for (int i = 0; i < num_samples; i++)
         sum += buf[i];
-    float mean = (float)sum / (float)num_samples;
+    return (float)sum / (float)num_samples;
+}
+
+static float adc_buffer_ac_rms_counts(const uint16_t *buf, int num_samples,
+                                        float mean) {
     float sum_sq = 0.f;
     for (int i = 0; i < num_samples; i++) {
         float d = (float)buf[i] - mean;
         sum_sq += d * d;
     }
-    *out_mean = mean;
-    *out_rms = sqrtf(sum_sq / (float)num_samples);
+    return sqrtf(sum_sq / (float)num_samples);
+}
+
+/**
+ * Line-sync capture plus DC mean and AC RMS (ADC counts). For CT channels.
+ */
+static void sample_ac_rms(uint16_t *buf, int num_samples, float *out_mean,
+                          float *out_rms) {
+    adc_sample_line_sync_window(buf, num_samples);
+    *out_mean = adc_buffer_mean_counts(buf, num_samples);
+    *out_rms = adc_buffer_ac_rms_counts(buf, num_samples, *out_mean);
 }
 
 float analog_rms_adc_to_primary_amps(float rms_adc) {
@@ -71,7 +91,7 @@ static void analog_task(void *pvParameters) {
     i2c_inst_t *i2c = cfg->i2c;
     uint8_t addr = cfg->adg728_addr;
 
-    // Check and Initialize SHT35
+    /* Init SHT35 once before ADC; read at end of loop after mux (see below). */
     sht35_t sht;
     sht35_init(&sht, i2c, SHT35_DEFAULT_ADDR);
 
@@ -80,6 +100,7 @@ static void analog_task(void *pvParameters) {
 
     uint16_t samples[NUM_SAMPLES];
     float mean, rms_adc;
+    uint8_t env_sensor_fail_streak = 0;
 
     // Check ADG728
     if (!adg728_probe(i2c, addr)) {
@@ -106,23 +127,47 @@ static void analog_task(void *pvParameters) {
             // Convert ADC counts to current (A)
             float a = analog_rms_adc_to_primary_amps(rms_adc);
 
-            // Account for noise floor
-            *ct_amps[i] = (a < CT_ZERO_THRESHOLD_A) ? 0.0f : a;
+            /* Below minimum resolvable load, treat as zero */
+            *ct_amps[i] = (a < MINIMUM_POSSIBLE_LOAD_A) ? 0.0f : a;
 
             // Wait for next poll
             vTaskDelay(pdMS_TO_TICKS(POLL_INTERVAL_MS));
+        }
+
+        {
+            TickType_t now_ticks = xTaskGetTickCount(); // Get the current time
+            if (compressor_on) { // If the compressor is on
+                TickType_t t_on = chamber_outputs_compressor_on_time(); // Get the time the compressor was turned on
+                if (t_on != 0 && (now_ticks - t_on) >= // If the compressor has been on for longer than the startup time
+                                    pdMS_TO_TICKS(COMPRESSOR_STARTUP_TIME_MS)) {
+
+                    // If the compressor load is greater than the locked rotor threshold, raise a fault
+                    if (COMPRESSOR_LOAD > LOCKED_ROTOR_THRESHOLD_A)
+                        fault_raise(FAULT_CODE_COMPRESSOR_OVERCURRENT);
+                }
+            } else if (FAULT == FAULT_CODE_COMPRESSOR_OVERCURRENT) {
+                // Only clear the fault if the startup time was MIN_COMPRESSOR_OFF_TIME_MS ago
+                TickType_t t_off = chamber_outputs_compressor_off_time();
+                if (t_off != 0 && (now_ticks - t_off) >= pdMS_TO_TICKS(MIN_COMPRESSOR_OFF_TIME_MS)) {
+                    fault_raise(FAULT_CODE_NONE);
+                }
+            } // Compressor is not on so do nothing
+    
         }
 
         // Compute total power in watts
         current_power =
             (ct0_amps + ct1_amps + ct2_amps + ct3_amps) * 120.0f + STANDBY_WATTS;
 
-        // Read temperature sensor channels TDR0-3 in a loop
-        const uint8_t tdr_channels[1] = {ADG_CH_TDR0};
+        /* TDR0 only for now (mux channels 4–7 available in tdr_channels). */
+        const uint8_t tdr_channels[4] = {ADG_CH_TDR0, ADG_CH_TDR1, ADG_CH_TDR2,
+                                         ADG_CH_TDR3};
+        static const float tdr_offset_c[4] = {
+            TDR0_OFFSET_C, TDR1_OFFSET_C, TDR2_OFFSET_C, TDR3_OFFSET_C};
         volatile float *tdr_temperatures[4] = {&tdr0_temperature_c, &tdr1_temperature_c, &tdr2_temperature_c, &tdr3_temperature_c};
         bool any_open = false;
 
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 4; i++) {
             if (!adg728_select_channel(i2c, addr, tdr_channels[i])) {
                 fault_raise(FAULT_CODE_I2C_COMMUNICATION_ERROR);
                 vTaskDelay(pdMS_TO_TICKS(POLL_INTERVAL_MS));
@@ -132,17 +177,18 @@ static void analog_task(void *pvParameters) {
             // Allow for mux to settle
             vTaskDelay(pdMS_TO_TICKS(MUX_SETTLE_MS));
 
-            // Read temperature sensor ADC value
-            uint16_t tdr_adc = adc_read();
+            /* Average over line cycles so 60 Hz pickup tends to zero; DC is TC voltage */
+            adc_sample_line_sync_window(samples, NUM_SAMPLES);
+            float tdr_mean = adc_buffer_mean_counts(samples, NUM_SAMPLES);
 
-            // Convert ADC value to voltage
-            float tdr_voltage = ((float)tdr_adc / ADC_MAX_COUNTS) * ADC_REF_V;
+            float tdr_voltage = (tdr_mean / ADC_MAX_COUNTS) * ADC_REF_V;
 
             // Calculate temperature (5 mV/°C slope; open thermocouple ~ -245°C)
             float t_c = (tdr_voltage - 1.265f) / 0.005f;
-            *(tdr_temperatures[i]) = t_c;
+            float t_cal = t_c - tdr_offset_c[i];
+            *(tdr_temperatures[i]) = t_cal;
 
-            if (t_c < TDR_OPEN_THERMOCOUPLE_THRESHOLD_C) {
+            if (t_cal < TDR_OPEN_THERMOCOUPLE_THRESHOLD_C) {
                 any_open = true;
             }
 
@@ -155,15 +201,27 @@ static void analog_task(void *pvParameters) {
             fault_raise(FAULT_CODE_NONE);
         }
 
-        // Read SHT35 temperature/humidity
-        // On success, update globals; on failure, leave previous values, fault
         float sht_t = 0.0f;
         float sht_rh = 0.0f;
-        if (sht35_read_single_shot(&sht, &sht_t, &sht_rh)) {
+        bool sht_ok = sht35_read_single_shot(&sht, &sht_t, &sht_rh);
+        if (!sht_ok) {
+            vTaskDelay(pdMS_TO_TICKS(ENV_SENSOR_RETRY_DELAY_MS));
+            sht_ok = sht35_read_single_shot(&sht, &sht_t, &sht_rh);
+        }
+        if (sht_ok) {
+            env_sensor_fail_streak = 0;
             sht35_temperature_c = sht_t;
             sht35_humidity = sht_rh;
+            if (FAULT == FAULT_CODE_ENV_SENSOR)
+                fault_raise(FAULT_CODE_NONE);
         } else {
-            fault_raise(FAULT_CODE_I2C_COMMUNICATION_ERROR);
+            const bool env_fault_context =
+                (FAULT == FAULT_CODE_NONE || FAULT == FAULT_CODE_ENV_SENSOR);
+            if (env_fault_context) {
+                env_sensor_fail_streak++;
+                if (env_sensor_fail_streak >= ENV_SENSOR_FAIL_STREAK)
+                    fault_raise(FAULT_CODE_ENV_SENSOR);
+            }
             vTaskDelay(pdMS_TO_TICKS(POLL_INTERVAL_MS));
         }
     }

@@ -26,7 +26,8 @@ void build_i2c_scan_string(char *out, size_t out_len) {
   // I didn't have a great way to probe SHT35 so i just used its the soft-reset
   // the same way i check for its health on init in analog_task.c
   sht35_t dev;
-  for (uint8_t addr = 0x44u; addr <= 0x45u; ++addr) {
+  for (uint8_t addr = SHT35_I2C_ADDR_LOW; addr <= SHT35_I2C_ADDR_HIGH;
+       ++addr) {
     sht35_init(&dev, i2c0, addr);
     if (sht35_probe(&dev)) {
       snprintf(out + strlen(out), out_len - strlen(out),

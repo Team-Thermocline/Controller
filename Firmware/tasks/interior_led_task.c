@@ -1,5 +1,6 @@
 #include "interior_led_task.h"
 
+#include "constants.h"
 #include "globals.h"
 #include "hardware/pio.h"
 #include "neopixel_ws2812.h"
@@ -25,9 +26,47 @@ static inline uint32_t pack_grb(uint8_t r, uint8_t g, uint8_t b) {
   return ((uint32_t)g << 16) | ((uint32_t)r << 8) | (uint32_t)b;
 }
 
+static inline float clampf(float x, float lo, float hi) {
+  if (x < lo)
+    return lo;
+  if (x > hi)
+    return hi;
+  return x;
+}
+
+static inline uint8_t lerp_u8(uint8_t a, uint8_t b, float t) {
+  t = clampf(t, 0.0f, 1.0f);
+  const float v = (float)a + ((float)b - (float)a) * t;
+  if (v <= 0.0f)
+    return 0u;
+  if (v >= 255.0f)
+    return 255u;
+  return (uint8_t)(v + 0.5f);
+}
+
+static uint32_t apply_temp_tint_grb(uint8_t base_r, uint8_t base_g,
+                                   uint8_t base_b, float tint_strength,
+                                   bool cold_side) {
+  const float t = clampf(tint_strength, 0.0f, 1.0f);
+
+  const uint8_t tr =
+      cold_side ? (uint8_t)LED_TINT_COLD_R : (uint8_t)LED_TINT_HOT_R;
+  const uint8_t tg =
+      cold_side ? (uint8_t)LED_TINT_COLD_G : (uint8_t)LED_TINT_HOT_G;
+  const uint8_t tb =
+      cold_side ? (uint8_t)LED_TINT_COLD_B : (uint8_t)LED_TINT_HOT_B;
+
+  const uint8_t out_r = lerp_u8(base_r, tr, t);
+  const uint8_t out_g = lerp_u8(base_g, tg, t);
+  const uint8_t out_b = lerp_u8(base_b, tb, t);
+  return pack_grb(out_r, out_g, out_b);
+}
+
 static void update_interior_strip(interior_anim_mode_t mode,
                                   bool fault_on,
-                                  float phase) {
+                                  float phase,
+                                  float tint_strength,
+                                  bool cold_side) {
   // Vanity lights: steady, soft white.
   const uint8_t vanity_level = 128;
   for (uint i = 0; i < 6; ++i) {
@@ -52,8 +91,13 @@ static void update_interior_strip(interior_anim_mode_t mode,
           pack_grb(status_level, status_level, 0);
     } else {
       // No status to display: keep these as steady white like vanity lights.
-      g_interior_strip.pixel_buf[index] =
-          pack_grb(vanity_level, vanity_level, vanity_level);
+      if (mode == INTERIOR_ANIM_IDLE) {
+        g_interior_strip.pixel_buf[index] = apply_temp_tint_grb(
+            vanity_level, vanity_level, vanity_level, tint_strength, cold_side);
+      } else {
+        g_interior_strip.pixel_buf[index] =
+            pack_grb(vanity_level, vanity_level, vanity_level);
+      }
     }
   }
 
@@ -70,10 +114,12 @@ static void interior_led_task(void *pvParameters) {
 
   float phase = 0.0f;
   uint32_t fault_tick = 0;
+  float tint_strength = 0.0f;
 
   while (true) {
     // Use global door_open. Alert when door closed and not standby.
-    bool should_alert_door = !door_open && current_state != RUN_STATE_STANDBY;
+    bool should_alert_door =
+        !door_open && chamber_fsm_state != CHAMBER_STANDBY;
 
     // Advance internal phase
     phase += 0.12f;
@@ -99,8 +145,31 @@ static void interior_led_task(void *pvParameters) {
       fault_on = ((fault_tick / 10u) & 0x1u) != 0;
     }
 
+    /* Temperature tint */
+    const float temp_c = (float)sht35_temperature_c;
+    const bool cold_side = temp_c < LED_TINT_NEUTRAL_C;
+    float target_strength = 0.0f;
+    if (temp_c < LED_TINT_NEUTRAL_C) {
+      const float denom = (LED_TINT_NEUTRAL_C - LED_TINT_COLDEST_C);
+      const float x = (denom > 0.001f) ? ((LED_TINT_NEUTRAL_C - temp_c) / denom) : 0.0f;
+      target_strength = clampf(x, 0.0f, 1.0f) * LED_TINT_MAX_STRENGTH;
+    } else if (temp_c > LED_TINT_NEUTRAL_C) {
+      const float denom = (LED_TINT_HOTTEST_C - LED_TINT_NEUTRAL_C);
+      const float x = (denom > 0.001f) ? ((temp_c - LED_TINT_NEUTRAL_C) / denom) : 0.0f;
+      target_strength = clampf(x, 0.0f, 1.0f) * LED_TINT_MAX_STRENGTH;
+    }
+
+    /* Slew tint slowly for smoothness (runs every 25 ms). */
+    const float dt = 0.025f;
+    const float max_step = LED_TINT_SLEW_PER_SEC * dt;
+    if (tint_strength < target_strength) {
+      tint_strength = fminf(tint_strength + max_step, target_strength);
+    } else if (tint_strength > target_strength) {
+      tint_strength = fmaxf(tint_strength - max_step, target_strength);
+    }
+
     // Update the strip
-    update_interior_strip(mode, fault_on, phase);
+    update_interior_strip(mode, fault_on, phase, tint_strength, cold_side);
 
     // Delay
     vTaskDelay(pdMS_TO_TICKS(25));

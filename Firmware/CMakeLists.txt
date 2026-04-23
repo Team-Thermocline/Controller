@@ -75,14 +75,24 @@ target_link_libraries(pico_adg728 hardware_i2c)
 add_executable(thermocline_controller
         main.c
         globals.c
-        fault.c
         lib/freertos_support.c
         lib/neopixel_ws2812/neopixel_ws2812.c
         lib/tools.c
         lib/sht35/sht35.c
         lib/tcode_protocol/tcode_protocol.c
+        tasks/states/chamber_outputs.c
+        tasks/states/chamber_transition.c
+        tasks/states/chamber_dispatch.c
+        tasks/states/state_standby.c
+        tasks/states/state_fault.c
+        tasks/states/state_idle.c
+        tasks/states/state_heating.c
+        tasks/states/state_cool_slow.c
+        tasks/states/state_cool_fast.c
+        tasks/states/state_dehumidify.c
         tasks/thermo_control_task.c
         tasks/serial_task.c
+        lib/hmi_uart/hmi_uart.c
         tasks/safety_task.c
         tasks/interior_led_task.c
         tasks/analog_task.c
@@ -109,6 +119,7 @@ add_dependencies(thermocline_controller tcode_build_info_h)
 
 # Generate PIO header(s)
 pico_generate_pio_header(thermocline_controller ${CMAKE_CURRENT_LIST_DIR}/lib/neopixel_ws2812/ws2812.pio)
+pico_generate_pio_header(thermocline_controller ${CMAKE_CURRENT_LIST_DIR}/lib/hmi_uart/hmi_uart.pio)
 
 # Project headers
 target_include_directories(thermocline_controller PRIVATE
@@ -118,13 +129,17 @@ target_include_directories(thermocline_controller PRIVATE
         ${CMAKE_CURRENT_LIST_DIR}/lib/sht35
         ${CMAKE_CURRENT_LIST_DIR}/lib/neopixel_ws2812
         ${CMAKE_CURRENT_LIST_DIR}/lib/tcode_protocol
+        ${CMAKE_CURRENT_LIST_DIR}/lib
+        ${CMAKE_CURRENT_LIST_DIR}/lib/hmi_uart
         ${CMAKE_CURRENT_LIST_DIR}/tasks
+        ${CMAKE_CURRENT_LIST_DIR}/tasks/states
 )
 
 # Link pico_stdlib + PIO deps (NeoPixel)
 target_link_libraries(thermocline_controller
         pico_stdlib
         hardware_pio
+        hardware_irq
         hardware_clocks
         hardware_i2c
         hardware_adc
