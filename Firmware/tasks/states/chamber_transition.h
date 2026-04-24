@@ -7,6 +7,7 @@ float chamber_air_rh_pct(void);
 
 /*
  * Cooling: idle->COOL_SLOW when chamber >= sp + T_DEADBAND_C; idle->COOL_FAST when >= that + FAST_ABOVE.
+ * COOL_SLOW->COOL_FAST when chamber >= sp + THERMO_COOL_FAST_ABOVE_SP_C.
  * inhibit_cooling_entry: suppress idle->cool only (e.g. post-heat lockout). FAST->SLOW / SLOW->FAST unchanged.
  * Exit cooling to idle at sp − T_DEADBAND_C. COOL_SLOW: compressor off, internal fan on (evap bleed).
  * No cooling when |setpoint − ambient| <= THERMO_COOL_EXCLUDE_WITHIN_AMBIENT_C (valid TDR3).

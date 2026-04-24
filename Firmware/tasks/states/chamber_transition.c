@@ -66,8 +66,8 @@ chamber_state_t chamber_transition(chamber_state_t cur, float chamber, float sp,
       return CHAMBER_COOL_FAST;
     }
 
-    // If the chamber is above the cool fast in threshold, return to fast cool
-    if (chamber >= cool_fast_in)
+    /* Re-enter fast from slow at sp + margin */
+    if (chamber >= sp + THERMO_COOL_FAST_ABOVE_SP_C)
       return CHAMBER_COOL_FAST;
     return CHAMBER_COOL_SLOW;
   }

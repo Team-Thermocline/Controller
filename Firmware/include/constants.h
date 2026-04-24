@@ -22,7 +22,7 @@
  * State Machine Constants
  * ----------------------- */
 // Cooling
-#define THERMO_COOL_FAST_ABOVE_SP_C 1.0f // COOL_SLOW -> COOL_FAST when chamber >= setpoint + this
+#define THERMO_COOL_FAST_ABOVE_SP_C 2.0f // COOL_SLOW -> COOL_FAST when chamber >= setpoint + this
 #define THERMO_COOL_FAST_TO_SLOW_BELOW_SP_C 2.0f // COOL_FAST -> COOL_SLOW when chamber <= setpoint − this
 #define THERMO_COOL_EXCLUDE_WITHIN_AMBIENT_C 5.0f // no cooling if |setpoint − ambient| <= this
 #define THERMO_COOL_POST_HEAT_LOCKOUT_MS 10000u // block IDLE -> COOLING after leaving HEATING
