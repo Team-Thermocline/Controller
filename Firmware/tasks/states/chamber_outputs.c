@@ -37,9 +37,14 @@ static bool condenser_hot_headroom_wanted(void) {
  */
 static void fsm_compressor(bool want_on, bool force_off, TickType_t now) {
   if (force_off) {
-    compressor_state = false;
-    compressor_off_time = now;
-    compressor_on_time = 0;
+    /* Only record min-off start when we actually drop the compressor. Standby
+     * calls force_off every tick while already off; refreshing off_time here
+     * incorrectly blocked the first cool start after power-up. */
+    if (compressor_state) {
+      compressor_state = false;
+      compressor_off_time = now;
+      compressor_on_time = 0;
+    }
     return;
   }
 
