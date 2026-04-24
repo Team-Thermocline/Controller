@@ -4,6 +4,8 @@ cmake_minimum_required(VERSION 3.13)
 # - TCODE_REPO_ROOT
 # - TCODE_BUILD_INFO_IN
 # - TCODE_BUILD_INFO_OUT
+#
+# Optional: set env TCODE_BUILD_BUILDER for a one-off builder string
 
 if(NOT DEFINED TCODE_REPO_ROOT OR TCODE_REPO_ROOT STREQUAL "")
   message(FATAL_ERROR "TCODE_REPO_ROOT not set")
@@ -53,6 +55,10 @@ if(GIT_EXECUTABLE)
   if(_git_ct_res EQUAL 0 AND NOT _git_ct STREQUAL "")
     set(TCODE_BUILD_DATE_UNIX "${_git_ct}")
   endif()
+endif()
+
+if(DEFINED ENV{TCODE_BUILD_BUILDER} AND NOT "$ENV{TCODE_BUILD_BUILDER}" STREQUAL "")
+  set(TCODE_BUILD_BUILDER "$ENV{TCODE_BUILD_BUILDER}")
 endif()
 
 get_filename_component(_out_dir "${TCODE_BUILD_INFO_OUT}" DIRECTORY)
