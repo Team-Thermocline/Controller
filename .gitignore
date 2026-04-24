@@ -2,9 +2,10 @@
 version.h
 _build
 
-# Binaries
+# Binaries and Backups
 *.FCStd1
 *.FCBak
+*.bak
 *.stl
 *.pdf
 *.zip
@@ -15,24 +16,6 @@ _build
 
 # Doc artifacts
 _*/
-
-# Temporary files
-*.000
-*.bak
-*.bck
-*.kicad_pcb-bak
-*.kicad_sch-bak
-*-backups
-*.kicad_prl
-*.sch-bak
-*~
-_autosave-*
-*.tmp
-*-save.pro
-*-save.kicad_pcb
-fp-info-cache
-*auto_saved_files#
-*.lck
 
 # Netlist files (exported from Eeschema)
 *.net

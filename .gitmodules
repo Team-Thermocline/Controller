@@ -22,3 +22,6 @@
 [submodule "Firmware/lib/pico_adg728"]
 	path = Firmware/lib/pico_adg728
 	url = https://github.com/Team-Thermocline/Pico-ADG728
+[submodule "Hardware/Complete-System/libraries/thermocline-kicad-libraries"]
+	path = Hardware/Complete-System/libraries/thermocline-kicad-libraries
+	url = https://github.com/Team-Thermocline/thermocline-kicad-libraries.git
